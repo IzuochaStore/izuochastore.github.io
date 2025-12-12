@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tienda Anime - Catálogo</title>
+  <meta name="description" content="Catálogo de productos anime: stickers, vasos, gashapons, acrílicos y más." />
+  <style>
+    /* ---------- Reset y tipografía ---------- */
+    :root{--accent:#1f8ef1;--card:#fff;--muted:#666}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;margin:0;background:#f4f6f8;color:#111}
+    a{color:inherit}
+
+    /* ---------- Header ---------- */
+    header{background:linear-gradient(90deg,var(--accent),#6bd3ff);color:white;padding:18px 16px;display:flex;align-items:center;gap:12px}
+    .brand{font-weight:700;font-size:1.1rem}
+    .search{margin-left:auto;display:flex;gap:8px}
+    .search input{padding:8px 12px;border-radius:8px;border:0;width:220px}
+
+    /* ---------- Layout ---------- */
+    .container{max-width:1100px;margin:18px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:250px 1fr;gap:18px}
+
+    /* ---------- Sidebar (categorías) ---------- */
+    aside.card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
+    .cats h3{margin:0 0 8px 0}
+    .cats ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+    .cats li{cursor:pointer;padding:8px;border-radius:8px}
+    .cats li.active{background:#eef8ff}
+
+    /* ---------- Productos ---------- */
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+    .card-prod{background:var(--card);padding:10px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06);display:flex;flex-direction:column}
+    .thumb{height:180px;border-radius:8px;background:#ddd;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .title{font-weight:600;margin:8px 0 4px}
+    .price{color:var(--accent);font-weight:700}
+    .meta{font-size:0.9rem;color:var(--muted)}
+    .stock{margin-top:auto;font-size:0.85rem}
+
+    /* ---------- Modal de producto (carrusel) ---------- */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:60}
+    .modal.open{display:flex}
+    .modal .sheet{width:min(980px,96%);max-height:92%;background:white;border-radius:10px;padding:14px;display:flex;gap:12px;overflow:hidden}
+    .carousel{flex:1;display:flex;flex-direction:column}
+    .carousel .stage{flex:1;position:relative;overflow:hidden;border-radius:8px;background:#111}
+    .carousel img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .25s}
+    .thumbs{display:flex;gap:8px;margin-top:8px;overflow:auto}
+    .thumbs img{width:64px;height:64px;object-fit:cover;border-radius:6px}
+    .detail{width:320px;max-width:40%;display:flex;flex-direction:column}
+    .detail h2{margin:0 0 6px}
+    .detail p{margin:6px 0;color:var(--muted)}
+    .closeBtn{margin-left:auto;cursor:pointer}
+
+    /* ---------- Footer ---------- */
+    footer{padding:14px 16px;text-align:center;color:var(--muted);font-size:0.95rem}
+
+    /* ---------- Responsive ---------- */
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      aside{order:2}
+      .detail{width:100%;max-width:none}
+      .carousel{order:1}
+      .search input{width:120px}
+      .thumb{height:160px}
+      .modal .sheet{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Tienda-Apodo (nombre-de-la-tienda)</div>
+    <nav style="display:flex;gap:10px;align-items:center">
+      <a href="#" id="ver-todos">Todos</a>
+      <a href="#contacto" style="color:white;background:rgba(255,255,255,0.12);padding:8px;border-radius:8px;text-decoration:none">Contacto</a>
+    </nav>
+    <div class="search">
+      <input id="searchInput" placeholder="Buscar producto..." />
+      <button id="btnSearch">Buscar</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <aside class="card">
+        <div class="cats">
+          <h3>Categorías (por anime)</h3>
+          <ul id="categoriesList">
+            <!-- categorías generadas por JS -->
+          </ul>
+        </div>
+        <hr style="margin:12px 0">
+        <div><strong>Filtros</strong></div>
+        <div style="font-size:0.9rem;color:var(--muted);margin-top:8px">Busca por nombre, filtra por anime, ordena manualmente desde products.json</div>
+      </aside>
+
+      <section>
+        <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
+          <h2 style="margin:0">Catálogo</h2>
+          <div style="color:var(--muted);font-size:0.95rem">Resultados: <span id="resultsCount">0</span></div>
+        </div>
+
+        <div class="products" id="productsGrid">
+          <!-- tarjetas generadas por JS -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal producto -->
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="sheet">
+      <div class="carousel">
+        <div class="stage" id="carouselStage"></div>
+        <div class="thumbs" id="carouselThumbs"></div>
+      </div>
+      <div class="detail">
+        <div style="display:flex;align-items:center;gap:8px">
+          <h2 id="modalTitle">Titulo</h2>
+          <div class="closeBtn" id="modalClose">✕</div>
+        </div>
+        <div style="margin-top:6px"><strong class="price" id="modalPrice">$0</strong></div>
+        <p id="modalDesc">Descripción larga</p>
+        <div class="meta">Cantidad disponible: <span id="modalStock">0</span></div>
+        <div style="margin-top:auto">
+          <h4>Contacto</h4>
+          <p style="margin:6px 0"><a id="igLink" href="#" target="_blank">Instagram</a></p>
+          <p style="margin:6px 0"><a id="fbLink" href="#" target="_blank">Facebook</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="contacto">Instagram: <a id="igFooter" href="#" target="_blank">@mi_tienda</a> — Facebook: <a id="fbFooter" href="#" target="_blank">Mi Tienda</a></footer>
+
+  <script>
+    /*
+      INSTRUCCIONES GENERALES (resumen):
+      - Este archivo es un sitio estático completo. Para publicarlo gratis y con HTTPS 24/7:
+        1) Crear un repositorio en GitHub con el nombre EXACTO: <NOMBRE-DE-TU-TIENDA>.github.io (ej: akatsuki-store.github.io).
+        2) Subir este index.html (y las imágenes dentro de una carpeta /images) al repo.
+        3) En GitHub, Settings -> Pages, habilitar Pages desde la rama main (o gh-pages). GitHub Pages provee HTTPS y estará siempre activo.
+      - Subir imágenes y editar catálogo:
+        * Crea una carpeta /images en el repo y sube ahí tus fotos (GitHub web UI permite subir archivos hasta 100MB cada uno; 5MB es OK).
+        * Edita el array `products` abajo para añadir/editar productos. Cada producto debe tener un campo images[] con rutas relativas a /images/.
+        * Puedes editar products desde el editor web de GitHub (owner only). Nadie más podrá cambiar la web salvo que les des acceso.
+      - Alternativa: si te familiarizas con Git, puedes clonar el repo, editar localmente y pushear.
+
+      NOTAS TÉCNICAS:
+      - No hay pagos ni backend. Todo es estático y sencillo. Si en el futuro quieres un admin que suba imágenes desde la web, necesitaremos servicios externos (Netlify, Firebase, etc.) y una cuenta gratuita.
+      - Las imágenes se muestran con object-fit:cover/contain para mantener máxima calidad.
+    */
+
+    // ----------------- Datos de ejemplo: edítalos en el repo (products array) -----------------
+    // Subir imágenes a /images y usar rutas como "images/nombre.jpg"
+    const products = [
+      {
+        id: "p-001",
+        title: "Sticker Pack Deku",
+        price: "3.500",
+        anime: "My Hero Academia",
+        type: "Sticker",
+        stock: 12,
+        description: "Pack de 6 stickers en vinilo resistente. Tamaño aproximado 6cm.",
+        images: ["images/deku1.jpg","images/deku2.jpg","images/deku3.jpg"]
+      },
+      {
+        id: "p-002",
+        title: "Vaso Naruto Chibi",
+        price: "7.000",
+        anime: "Naruto",
+        type: "Vaso",
+        stock: 5,
+        description: "Vaso acrílico 330ml con arte de Naruto chibi. Ideal para colección.",
+        images: ["images/naruto1.jpg","images/naruto2.jpg"]
+      },
+      {
+        id: "p-003",
+        title: "Gashapon Jujutsu",
+        price: "4.500",
+        anime: "Jujutsu Kaisen",
+        type: "Gashapon",
+        stock: 20,
+        description: "Mini figura sorpresa en cápsula. Cada unidad es al azar.",
+        images: ["images/jujutsu1.jpg"]
+      }
+      // Añade más objetos aquí.
+    ];
+
+    // Config (edita con el nombre real de tus enlaces)
+    const CONFIG = {
+      storeName: 'MiTiendaAnime', // aparecerá en el header
+      instagram: 'https://www.instagram.com/mi_tienda',
+      facebook: 'https://www.facebook.com/mi_tienda'
+    };
+
+    // ----------------- Lógica de render -----------------
+    document.querySelector('.brand').textContent = CONFIG.storeName;
+    document.getElementById('igFooter').href = CONFIG.instagram;
+    document.getElementById('fbFooter').href = CONFIG.facebook;
+    document.getElementById('igLink').href = CONFIG.instagram;
+    document.getElementById('fbLink').href = CONFIG.facebook;
+
+    const productsGrid = document.getElementById('productsGrid');
+    const resultsCount = document.getElementById('resultsCount');
+    const categoriesList = document.getElementById('categoriesList');
+    const searchInput = document.getElementById('searchInput');
+
+    // Deriva categorías desde products
+    const categories = Array.from(new Set(products.map(p=>p.anime))).sort();
+    const cats = ['Todos', ...categories, 'Otros'];
+    let activeCat = 'Todos';
+
+    function renderCategories(){
+      categoriesList.innerHTML = '';
+      cats.forEach(c=>{
+        const li = document.createElement('li');
+        li.textContent = c;
+        if(c===activeCat) li.classList.add('active');
+        li.onclick = ()=>{ activeCat=c; renderCategories(); renderProducts(); }
+        categoriesList.appendChild(li);
+      });
+    }
+
+    function matchesFilter(p, q){
+      if(activeCat!=='Todos' && activeCat!=='Otros'){
+        if(p.anime!==activeCat) return false;
+      }
+      if(activeCat==='Otros'){
+        // "Otros" = productos que no tengan anime en la lista de categorías detectadas
+        if(categories.includes(p.anime)) return false;
+      }
+      if(!q) return true;
+      const s = q.toLowerCase();
+      return (p.title+p.description+p.anime+p.type).toLowerCase().includes(s);
+    }
+
+    function renderProducts(){
+      const q = searchInput.value.trim();
+      const filtered = products.filter(p => matchesFilter(p, q));
+      productsGrid.innerHTML = '';
+      resultsCount.textContent = filtered.length;
+      filtered.forEach(p=>{
+        const card = document.createElement('article');
+        card.className='card-prod';
+        card.innerHTML = `
+          <div class="thumb"><img loading="lazy" src="${p.images[0]}" alt="${p.title}"/></div>
+          <div class="title">${p.title}</div>
+          <div class="meta">${p.anime} • ${p.type}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+            <div class="price">$${p.price}</div>
+            <div class="stock">Stock: ${p.stock}</div>
+          </div>
+        `;
+        card.onclick = ()=> openModal(p);
+        productsGrid.appendChild(card);
+      });
+    }
+
+    renderCategories(); renderProducts();
+
+    document.getElementById('btnSearch').onclick = ()=> renderProducts();
+    document.getElementById('ver-todos').onclick = (e)=>{ e.preventDefault(); activeCat='Todos'; renderCategories(); renderProducts(); };
+
+    // ----------------- Modal + Carrusel simple (touch + botones) -----------------
+    const modal = document.getElementById('productModal');
+    const modalClose = document.getElementById('modalClose');
+    const carouselStage = document.getElementById('carouselStage');
+    const carouselThumbs = document.getElementById('carouselThumbs');
+
+    let currentImages = [];
+    let currentIndex = 0;
+
+    function openModal(product){
+      document.getElementById('modalTitle').textContent = product.title;
+      document.getElementById('modalPrice').textContent = '$'+product.price;
+      document.getElementById('modalDesc').textContent = product.description;
+      document.getElementById('modalStock').textContent = product.stock;
+      document.getElementById('igLink').href = CONFIG.instagram;
+      document.getElementById('fbLink').href = CONFIG.facebook;
+
+      currentImages = product.images.slice(0,8); // límite 8
+      carouselStage.innerHTML = '';
+      carouselThumbs.innerHTML = '';
+
+      currentImages.forEach((src,i)=>{
+        const img = document.createElement('img');
+        img.src = src; img.alt = product.title+ ' - ' + (i+1);
+        img.style.transform = `translateX(${i*100}%)`;
+        carouselStage.appendChild(img);
+
+        const t = document.createElement('img'); t.src = src; t.alt='thumb';
+        t.onclick = ()=> showIndex(i);
+        carouselThumbs.appendChild(t);
+      });
+      currentIndex = 0; showIndex(0);
+      modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+    }
+
+    function showIndex(i){
+      const imgs = carouselStage.querySelectorAll('img');
+      currentIndex = (i+imgs.length)%imgs.length;
+      imgs.forEach((img,idx)=> img.style.transform = `translateX(${(idx-currentIndex)*100}%)`);
+    }
+
+    modalClose.onclick = ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+    modal.onclick = (e)=>{ if(e.target===modal) modal.classList.remove('open'); }
+
+    // touch swipe
+    let startX=null; carouselStage.addEventListener('touchstart',e=>{ startX = e.touches[0].clientX; });
+    carouselStage.addEventListener('touchend',e=>{
+      if(startX===null) return; const endX = e.changedTouches[0].clientX; const dx = endX-startX;
+      if(Math.abs(dx)>40){ if(dx<0) showIndex(currentIndex+1); else showIndex(currentIndex-1); }
+      startX=null;
+    });
+
+    // ----------------- Cómo agregar/editar productos e imágenes (pasos rápidos) -----------------
+    /*
+      1) En tu repo de GitHub (ej: MiTiendaAnime.github.io) crea carpeta /images.
+      2) Sube cada imagen (máx 5MB recomendados) usando el botón "Add file" -> "Upload files".
+      3) Haz click en el archivo products.json (o edita este index.html) y modifica el array `products` arriba.
+         - Cada producto: id, title, price (texto), anime (categoria), type, stock (número), description (texto), images: ["images/miFoto1.jpg",...]
+      4) Guarda commit; GitHub Pages actualizará la web automáticamente en unos segundos.
+
+      Ventajas de este enfoque (sin pagar):
+      - HTTPS gratis y sin expiraciones (GitHub Pages).
+      - Control completo: solo tú con acceso a GitHub puede cambiar la web.
+      - Puedes editar el HTML/CSS/JS cuando quieras para cambiar colores, diseño y funcionalidades.
+
+      Limitaciones:
+      - No hay "subida desde la página" (para esto necesitarías un backend o servicio como Netlify, Firebase o Cloudinary con una interfaz de admin y una cuenta gratuita). Si después quieres esa funcionalidad te puedo guiar para integrarla.
+    */
+
+  </script>
+</body>
+</html>
