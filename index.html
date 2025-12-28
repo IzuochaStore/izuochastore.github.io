@@ -2,148 +2,133 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Izuocha Store - Catálogo</title>
-  <meta name="description" content="Catálogo de productos anime: stickers, vasos, gashapons, acrílicos y más." />
+  <meta charset="utf-8" /> <!-- Codificación UTF-8 para soportar acentos y caracteres especiales -->
+  <meta name="viewport" content="width=device-width,initial-scale=1" /> <!-- Escala móvil: ancho igual al dispositivo -->
+  <title>Izuocha Store - Catálogo</title> <!-- Título de la pestaña del navegador -->
+  <meta name="description" content="Catálogo de productos anime: stickers, vasos, gashapons, acrílicos y más." /> <!-- Descripción para SEO -->
+
   <style>
-    /* ---------- Reset y tipografía ---------- */
-    :root{--accent:#1f8ef1;--card:#fff;--muted:#666}
-    *{box-sizing:border-box}
-    body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;margin:0;background:#f4f6f8;color:#111}
-    a{color:inherit}
+    :root{--accent:#1f8ef1;--card:#fff;--muted:#666} /* Variables de color reutilizables */
+    *{box-sizing:border-box} /* Incluye padding/border en el tamaño total de los elementos */
+    body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;margin:0;background:#f4f6f8;color:#111} /* Tipografía y colores base */
+    a{color:inherit} /* Los enlaces heredan el color del texto */
 
-    /* ---------- Header ---------- */
-    header{background:linear-gradient(90deg,var(--accent),#6bd3ff);color:white;padding:18px 16px;display:flex;align-items:center;gap:12px}
-    .brand{font-weight:700;font-size:1.1rem}
-    .search{margin-left:auto;display:flex;gap:8px}
-    .search input{padding:8px 12px;border-radius:8px;border:0;width:220px}
+    header{background:linear-gradient(90deg,var(--accent),#6bd3ff);color:white;padding:18px 16px;display:flex;align-items:center;gap:12px} /* Barra superior con degradado y layout flex */
+    .brand{font-weight:700;font-size:1.1rem} /* Marca con énfasis tipográfico */
+    .search{margin-left:auto;display:flex;gap:8px} /* Empuja el buscador a la derecha y separa sus elementos */
+    .search input{padding:8px 12px;border-radius:8px;border:0;width:220px} /* Estilo del input de búsqueda */
 
-    /* ---------- Layout ---------- */
-    .container{max-width:1100px;margin:18px auto;padding:0 16px}
-    .grid{display:grid;grid-template-columns:250px 1fr;gap:18px}
+    .container{max-width:1100px;margin:18px auto;padding:0 16px} /* Contenedor centrado con ancho máximo */
+    .grid{display:grid;grid-template-columns:250px 1fr;gap:18px} /* Layout principal: sidebar + contenido */
 
-    /* ---------- Sidebar (categorías) ---------- */
-    aside.card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
-    .cats h3{margin:0 0 8px 0}
-    .cats ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
-    .cats li{cursor:pointer;padding:8px;border-radius:8px}
-    .cats li.active{background:#eef8ff}
+    aside.card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06)} /* Caja de categorías con fondo y sombra */
+    .cats h3{margin:0 0 8px 0} /* Espaciado del título de categorías */
+    .cats ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px} /* Lista sin viñetas, en columna, con separación */
+    .cats li{cursor:pointer;padding:8px;border-radius:8px} /* Ítems de categoría clicables */
+    .cats li.active{background:#eef8ff} /* Categoría activa resaltada */
 
-    /* ---------- Productos ---------- */
-    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-    .card-prod{background:var(--card);padding:10px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06);display:flex;flex-direction:column}
-    .thumb{height:180px;border-radius:8px;background:#ddd;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .thumb img{width:100%;height:100%;object-fit:cover}
-    .title{font-weight:600;margin:8px 0 4px}
-    .price{color:var(--accent);font-weight:700}
-    .meta{font-size:0.9rem;color:var(--muted)}
-    .stock{margin-top:auto;font-size:0.85rem}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px} /* Grid de tarjetas de producto responsivo */
+    .card-prod{background:var(--card);padding:10px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06);display:flex;flex-direction:column} /* Tarjeta con sombra y layout vertical */
+    .thumb{height:180px;border-radius:8px;background:#ddd;display:flex;align-items:center;justify-content:center;overflow:hidden} /* Contenedor de imagen con altura fija */
+    .thumb img{width:100%;height:100%;object-fit:cover} /* La imagen llena y recorta sin deformarse */
+    .title{font-weight:600;margin:8px 0 4px} /* Título destacado de la tarjeta */
+    .price{color:var(--accent);font-weight:700} /* Precio con color de acento */
+    .meta{font-size:0.9rem;color:var(--muted)} /* Texto secundario (anime • tipo) */
+    .stock{margin-top:auto;font-size:0.85rem} /* Stock al fondo de la tarjeta */
 
-    /* ---------- Modal de producto (carrusel) ---------- */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:60}
-    .modal.open{display:flex}
-    .modal .sheet{width:min(980px,96%);max-height:92%;background:white;border-radius:10px;padding:14px;display:flex;gap:12px;overflow:hidden}
-    .carousel{flex:1;display:flex;flex-direction:column}
-    .carousel .stage{flex:1;position:relative;overflow:hidden;border-radius:8px;background:#111}
-    .carousel img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .25s}
-    .thumbs{display:flex;gap:8px;margin-top:8px;overflow:auto}
-    .thumbs img{width:64px;height:64px;object-fit:cover;border-radius:6px}
-    .detail{width:320px;max-width:40%;display:flex;flex-direction:column}
-    .detail h2{margin:0 0 6px}
-    .detail p{margin:6px 0;color:var(--muted)}
-    .closeBtn{margin-left:auto;cursor:pointer}
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:60} /* Capa oscura para el modal, oculta por defecto */
+    .modal.open{display:flex} /* Muestra el modal al agregar la clase .open */
+    .modal .sheet{width:min(980px,96%);max-height:92%;background:white;border-radius:10px;padding:14px;display:flex;gap:12px;overflow:hidden} /* Contenedor del contenido del modal */
+    .carousel{flex:1;display:flex;flex-direction:column} /* Área del carrusel, ocupa el espacio disponible */
+    .carousel .stage{flex:1;position:relative;overflow:hidden;border-radius:8px;background:#111} /* Escenario donde se muestran las imágenes grandes */
+    .carousel img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .25s} /* Imágenes posicionadas para deslizar con transform */
+    .thumbs{display:flex;gap:8px;margin-top:8px;overflow:auto} /* Tira de miniaturas desplazable horizontalmente */
+    .thumbs img{width:64px;height:64px;object-fit:cover;border-radius:6px} /* Miniaturas cuadradas */
+    .detail{width:320px;max-width:40%;display:flex;flex-direction:column} /* Columna derecha con detalles del producto */
+    .detail h2{margin:0 0 6px} /* Espaciado del título del modal */
+    .detail p{margin:6px 0;color:var(--muted)} /* Párrafos de detalle con color secundario */
+    .closeBtn{margin-left:auto;cursor:pointer} /* Botón de cierre alineado a la derecha */
 
-    /* ---------- Footer ---------- */
-    footer{padding:14px 16px;text-align:center;color:var(--muted);font-size:0.95rem}
+    footer{padding:14px 16px;text-align:center;color:var(--muted);font-size:0.95rem} /* Pie de página con enlaces de contacto */
 
-    /* ---------- Responsive ---------- */
-    @media (max-width:900px){
-      .grid{grid-template-columns:1fr}
-      aside{order:2}
-      .detail{width:100%;max-width:none}
-      .carousel{order:1}
-      .search input{width:120px}
-      .thumb{height:160px}
-      .modal .sheet{flex-direction:column}
+    @media (max-width:900px){ /* Reglas para pantallas pequeñas */
+      .grid{grid-template-columns:1fr} /* Sidebar debajo del contenido en móvil */
+      aside{order:2} /* Mueve el sidebar al final visual */
+      .detail{width:100%;max-width:none} /* Detalles ocupan ancho completo en modal */
+      .carousel{order:1} /* Carrusel por encima en modal móvil */
+      .search input{width:120px} /* Input más compacto en móvil */
+      .thumb{height:160px} /* Imagen principal más baja en móvil */
+      .modal .sheet{flex-direction:column} /* Modal apilado en columnas en móvil */
     }
   </style>
 
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="images/favicon.png">
-
-  
+  <link rel="icon" type="image/png" href="images/favicon.png"> <!-- Favicon del sitio, mostrado en la pestaña -->
 </head>
 
-
-
-
-  
 <body>
   <header>
-    <div class="brand">Tienda-Apodo (nombre-de-la-tienda)</div>
-    <nav style="display:flex;gap:10px;align-items:center">
-      <a href="#" id="ver-todos">Todos</a>
-      <a href="#contacto" style="color:white;background:rgba(255,255,255,0.12);padding:8px;border-radius:8px;text-decoration:none">Contacto</a>
+    <div class="brand">Tienda-Apodo (nombre-de-la-tienda)</div> <!-- Nombre visible de la tienda -->
+    <nav style="display:flex;gap:10px;align-items:center"> <!-- Navegación simple: enlaces principales -->
+      <a href="#" id="ver-todos">Todos</a> <!-- Enlace para resetear filtro a 'Todos' -->
+      <a href="#contacto" style="color:white;background:rgba(255,255,255,0.12);padding:8px;border-radius:8px;text-decoration:none">Contacto</a> <!-- Ancla al footer de contacto -->
     </nav>
-    <div class="search">
-      <input id="searchInput" placeholder="Buscar producto..." />
-      <button id="btnSearch">Buscar</button>
+    <div class="search"> <!-- Contenedor del buscador -->
+      <input id="searchInput" placeholder="Buscar producto..." /> <!-- Campo de búsqueda por nombre/desc -->
+      <button id="btnSearch">Buscar</button> <!-- Botón que dispara el filtrado -->
     </div>
   </header>
 
-  <main class="container">
-    <div class="grid">
-      <aside class="card">
+  <main class="container"> <!-- Área principal centrada -->
+    <div class="grid"> <!-- Layout de dos columnas -->
+      <aside class="card"> <!-- Sidebar con categorías -->
         <div class="cats">
-          <h3>Productos por anime:</h3>
-          <ul id="categoriesList">
+          <h3>Categorías (por anime)</h3> <!-- Título del bloque de categorías -->
+          <ul id="categoriesList"> <!-- Aquí se insertan categorías por JS -->
             <!-- categorías generadas por JS -->
           </ul>
         </div>
-        <hr style="margin:12px 0">
-        <div><strong>Filtros</strong></div>
-        <div style="font-size:0.9rem;color:var(--muted);margin-top:8px">Busca por nombre, filtra por anime, ordena manualmente desde products.json</div>
+        <hr style="margin:12px 0"> <!-- Separador visual -->
+        <div><strong>Filtros</strong></div> <!-- Subtítulo de filtros -->
+        <div style="font-size:0.9rem;color:var(--muted);margin-top:8px">Busca por nombre, filtra por anime, ordena manualmente desde products.json</div> <!-- Ayuda contextual -->
       </aside>
 
-      <section>
-        <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
-          <h2 style="margin:0">Catálogo</h2>
-          <div style="color:var(--muted);font-size:0.95rem">Resultados: <span id="resultsCount">0</span></div>
+      <section> <!-- Columna de catálogo -->
+        <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"> <!-- Cabecera del catálogo -->
+          <h2 style="margin:0">Catálogo</h2> <!-- Título de la sección -->
+          <div style="color:var(--muted);font-size:0.95rem">Resultados: <span id="resultsCount">0</span></div> <!-- Contador de productos filtrados -->
         </div>
 
-        <div class="products" id="productsGrid">
+        <div class="products" id="productsGrid"> <!-- Grid donde se renderizan las tarjetas -->
           <!-- tarjetas generadas por JS -->
         </div>
       </section>
     </div>
   </main>
 
-  <!-- Modal producto -->
-  <div class="modal" id="productModal" aria-hidden="true">
-    <div class="sheet">
-      <div class="carousel">
-        <div class="stage" id="carouselStage"></div>
-        <div class="thumbs" id="carouselThumbs"></div>
+  <div class="modal" id="productModal" aria-hidden="true"> <!-- Modal oculto: se abre al seleccionar un producto -->
+    <div class="sheet"> <!-- Contenedor principal del modal -->
+      <div class="carousel"> <!-- Área izquierda: carrusel de imágenes -->
+        <div class="stage" id="carouselStage"></div> <!-- Escenario con imágenes grandes -->
+        <div class="thumbs" id="carouselThumbs"></div> <!-- Miniaturas para cambiar imagen -->
       </div>
-      <div class="detail">
-        <div style="display:flex;align-items:center;gap:8px">
-          <h2 id="modalTitle">Titulo</h2>
-          <div class="closeBtn" id="modalClose">✕</div>
+      <div class="detail"> <!-- Área derecha: información del producto -->
+        <div style="display:flex;align-items:center;gap:8px"> <!-- Fila de título y botón cerrar -->
+          <h2 id="modalTitle">Titulo</h2> <!-- Título dinámico del producto -->
+          <div class="closeBtn" id="modalClose">✕</div> <!-- Botón para cerrar el modal -->
         </div>
-        <div style="margin-top:6px"><strong class="price" id="modalPrice">$0</strong></div>
-        <p id="modalDesc">Descripción larga</p>
-        <div class="meta">Cantidad disponible: <span id="modalStock">0</span></div>
-        <div style="margin-top:auto">
-          <h4>Contacto</h4>
-          <p style="margin:6px 0"><a id="igLink" href="#" target="_blank">Instagram</a></p>
-          <p style="margin:6px 0"><a id="fbLink" href="#" target="_blank">Facebook</a></p>
+        <div style="margin-top:6px"><strong class="price" id="modalPrice">$0</strong></div> <!-- Precio del producto -->
+        <p id="modalDesc">Descripción larga</p> <!-- Descripción detallada -->
+        <div class="meta">Cantidad disponible: <span id="modalStock">0</span></div> <!-- Stock disponible -->
+        <div style="margin-top:auto"> <!-- Bloque de contacto al final -->
+          <h4>Contacto</h4> <!-- Título de la sección de contacto -->
+          <p style="margin:6px 0"><a id="igLink" href="#" target="_blank">Instagram</a></p> <!-- Enlace a Instagram -->
+          <p style="margin:6px 0"><a id="fbLink" href="#" target="_blank">Facebook</a></p> <!-- Enlace a Facebook -->
         </div>
       </div>
     </div>
   </div>
 
-  <footer id="contacto">Instagram: <a id="igFooter" href="#" target="_blank">@mi_tienda</a> — Facebook: <a id="fbFooter" href="#" target="_blank">Mi Tienda</a></footer>
+  <footer id="contacto">Instagram: <a id="igFooter" href="#" target="_blank">@mi_tienda</a> — Facebook: <a id="fbFooter" href="#" target="_blank">Mi Tienda</a></footer> <!-- Footer con enlaces de contacto -->
 
   <script>
     // ----------------- Datos de ejemplo: edítalos en el repo (products array) -----------------
