@@ -96,7 +96,7 @@
     <div class="grid">
       <aside class="card">
         <div class="cats">
-          <h3>Categorías (por anime)</h3>
+          <h3>Productos por anime:</h3>
           <ul id="categoriesList">
             <!-- categorías generadas por JS -->
           </ul>
@@ -146,23 +146,6 @@
   <footer id="contacto">Instagram: <a id="igFooter" href="#" target="_blank">@mi_tienda</a> — Facebook: <a id="fbFooter" href="#" target="_blank">Mi Tienda</a></footer>
 
   <script>
-    /*
-      INSTRUCCIONES GENERALES (resumen):
-      - Este archivo es un sitio estático completo. Para publicarlo gratis y con HTTPS 24/7:
-        1) Crear un repositorio en GitHub con el nombre EXACTO: <NOMBRE-DE-TU-TIENDA>.github.io (ej: akatsuki-store.github.io).
-        2) Subir este index.html (y las imágenes dentro de una carpeta /images) al repo.
-        3) En GitHub, Settings -> Pages, habilitar Pages desde la rama main (o gh-pages). GitHub Pages provee HTTPS y estará siempre activo.
-      - Subir imágenes y editar catálogo:
-        * Crea una carpeta /images en el repo y sube ahí tus fotos (GitHub web UI permite subir archivos hasta 100MB cada uno; 5MB es OK).
-        * Edita el array `products` abajo para añadir/editar productos. Cada producto debe tener un campo images[] con rutas relativas a /images/.
-        * Puedes editar products desde el editor web de GitHub (owner only). Nadie más podrá cambiar la web salvo que les des acceso.
-      - Alternativa: si te familiarizas con Git, puedes clonar el repo, editar localmente y pushear.
-
-      NOTAS TÉCNICAS:
-      - No hay pagos ni backend. Todo es estático y sencillo. Si en el futuro quieres un admin que suba imágenes desde la web, necesitaremos servicios externos (Netlify, Firebase, etc.) y una cuenta gratuita.
-      - Las imágenes se muestran con object-fit:cover/contain para mantener máxima calidad.
-    */
-
     // ----------------- Datos de ejemplo: edítalos en el repo (products array) -----------------
     // Subir imágenes a /images y usar rutas como "images/nombre.jpg"
     const products = [
@@ -305,23 +288,6 @@
       if(Math.abs(dx)>40){ if(dx<0) showIndex(currentIndex+1); else showIndex(currentIndex-1); }
       startX=null;
     });
-
-    // ----------------- Cómo agregar/editar productos e imágenes (pasos rápidos) -----------------
-    /*
-      1) En tu repo de GitHub (ej: MiTiendaAnime.github.io) crea carpeta /images.
-      2) Sube cada imagen (máx 5MB recomendados) usando el botón "Add file" -> "Upload files".
-      3) Haz click en el archivo products.json (o edita este index.html) y modifica el array `products` arriba.
-         - Cada producto: id, title, price (texto), anime (categoria), type, stock (número), description (texto), images: ["images/miFoto1.jpg",...]
-      4) Guarda commit; GitHub Pages actualizará la web automáticamente en unos segundos.
-
-      Ventajas de este enfoque (sin pagar):
-      - HTTPS gratis y sin expiraciones (GitHub Pages).
-      - Control completo: solo tú con acceso a GitHub puede cambiar la web.
-      - Puedes editar el HTML/CSS/JS cuando quieras para cambiar colores, diseño y funcionalidades.
-
-      Limitaciones:
-      - No hay "subida desde la página" (para esto necesitarías un backend o servicio como Netlify, Firebase o Cloudinary con una interfaz de admin y una cuenta gratuita). Si después quieres esa funcionalidad te puedo guiar para integrarla.
-    */
 
   </script>
 </body>
