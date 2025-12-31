@@ -64,11 +64,11 @@
     /* =========================================================
        Contenedor principal
     ==========================================================*/
-    .container{
-      max-width: 1280px;
-      margin: 24px auto 40px;
-      padding: 0 16px;
-    }
+    .container {
+  padding: 20px;
+  background: transparent; /* antes estaba #fff */
+}
+
 
     /* Header del catálogo (título, búsqueda, etc.) */
     .header{
@@ -124,21 +124,22 @@
     /* =========================================================
        Tarjeta de producto (estilo Inumoon, bordes redondeados)
     ==========================================================*/
-    .product-card{
-      background: var(--bg-card);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px var(--shadow);
-      overflow: hidden;
-      display:flex;
-      flex-direction:column;
-      cursor:pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      backdrop-filter: blur(2px);
-    }
-    .product-card:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
-    }
+   .product-card {
+  background: #fff; /* fondo sólido blanco */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12); /* sombra suave */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18); /* sombra más marcada al hover */
+}
+
 
     .product-image{
       width:100%;
