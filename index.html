@@ -177,6 +177,19 @@
       font-size:1.02rem;
     }
 
+    .banner {
+  height: 200px; /* alto del banner rectangular */
+  background: #fff; /* o la imagen del banner */
+}
+
+.scroll-image {
+  height: 200vh; /* el contenedor mide el doble de la pantalla */
+  background: url("images/FondoIzuochaStore16-9.jpg") no-repeat center top;
+  background-size: cover; /* mantiene 16:9 */
+  background-attachment: fixed; /* efecto parallax */
+}
+
+
     /* Bloque inferior estilo “botón” pero para stock (rosado) */
     .stock{
       background: var(--accent-pink);
@@ -376,11 +389,13 @@
 </head>
 
 <body>
-  <!-- Banner superior (cuando lo agregues, reemplaza el placeholder) -->
+  <!-- Banner superior -->
   <div class="banner">
-    <div class="placeholder">Banner superior (lo agregarás luego con tus 3 imágenes horizontales)</div>
+    <!-- aquí va tu banner rectangular -->
   </div>
-  <div class="separator"></div>
+
+  <!-- Imagen scroll en 16:9 -->
+  <div class="scroll-image"></div>
 
   <!-- Contenido principal -->
   <div class="container">
@@ -392,9 +407,9 @@
       </div>
     </div>
 
-    <!-- Grid de productos (se renderiza con JS) -->
     <div class="products" id="productsGrid"></div>
   </div>
+
 
   <!-- Espacio final para ver el fondo completo sin superposiciones -->
   <div class="bottom-space"></div>
