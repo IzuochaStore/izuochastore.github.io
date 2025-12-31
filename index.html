@@ -1,374 +1,662 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Izuocha Store — Catálogo</title>
+  <link rel="icon" type="image/png" href="images/favicon.png" />
 
+  <style>
+    /* =========================================================
+       Reset y variables
+    ==========================================================*/
+    :root{
+      --text:#1a1a1a;
+      --muted:#6b6b6b;
+      --bg-card:#ffffff;
+      --shadow:rgba(0,0,0,0.1);
+      --accent-red:#C62828;      /* Precio (Deku/urgencia) */
+      --accent-pink:#F4A6C0;     /* Stock (Uraraka) */
+      --accent-pink-text:#5a2440;/* Texto sobre rosa suave */
+      --separator:#ffffff;       /* Línea blanca */
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
 
-
-
-  
-<head> <!-- Define metadatos y configuración global del documento:
-  codificación, título, descripción, estilos, favicons y recursos que se cargan antes del contenido visual. -->
-  
-  <meta charset="utf-8" /> <!-- Codificación UTF-8 para soportar acentos y caracteres especiales -->
-  <meta name="viewport" content="width=device-width,initial-scale=1" /> <!-- Escala móvil: ancho igual al dispositivo -->
-  <title>Izuocha Store - Catálogo</title> <!-- Título de la pestaña del navegador -->
-  <meta name="description" content="Catálogo de productos anime: stickers, vasos, gashapons, acrílicos y más." /> <!-- Descripción para SEO -->
-
-  <style> /* INICIO CSS */
-    :root{--accent:#1f8ef1;--card:#fff;--muted:#666} /* Variables de color reutilizables */
-    *{box-sizing:border-box} /* Incluye padding/border en el tamaño total de los elementos */
-    body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;margin:0;background:#f4f6f8;color:#111} /* Tipografía y colores base */
-    a{color:inherit} /* Los enlaces heredan el color del texto */
-
-    header {
-  background: linear-gradient(135deg, #2E7D6E, #F4A6C0),
-              url('images/pattern.png'); /* Patrón temático */
-  background-blend-mode: overlay;
-}
-
- /* Barra superior con degradado y layout flex */
-    .brand{font-weight:700;font-size:1.1rem} /* Marca con énfasis tipográfico */
-    .search{margin-left:auto;display:flex;gap:8px} /* Empuja el buscador a la derecha y separa sus elementos */
-    .search input{padding:8px 12px;border-radius:8px;border:0;width:220px} /* Estilo del input de búsqueda */
-
-    .container{max-width:1100px;margin:18px auto;padding:0 16px} /* Contenedor centrado con ancho máximo */
-    .grid{display:grid;grid-template-columns:250px 1fr;gap:18px} /* Layout principal: sidebar + contenido */
-
-    aside.card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06)} /* Caja de categorías con fondo y sombra */
-    .cats h3{margin:0 0 8px 0} /* Espaciado del título de categorías */
-    .cats ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px} /* Lista sin viñetas, en columna, con separación */
-    .cats li{cursor:pointer;padding:8px;border-radius:8px} /* Ítems de categoría clicables */
-    .cats li.active{background:#eef8ff} /* Categoría activa resaltada */
-
-    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px} /* Grid de tarjetas de producto responsivo */
-    .card-prod{background:var(--card);padding:10px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.06);display:flex;flex-direction:column} /* Tarjeta con sombra y layout vertical */
-    .thumb{height:180px;border-radius:8px;background:#ddd;display:flex;align-items:center;justify-content:center;overflow:hidden} /* Contenedor de imagen con altura fija */
-    .thumb img{width:100%;height:100%;object-fit:cover} /* La imagen llena y recorta sin deformarse */
-    .title{font-weight:600;margin:8px 0 4px} /* Título destacado de la tarjeta */
-    .price{color:var(--accent);font-weight:700} /* Precio con color de acento */
-    .meta{font-size:0.9rem;color:var(--muted)} /* Texto secundario (anime • tipo) */
-    .stock{margin-top:auto;font-size:0.85rem} /* Stock al fondo de la tarjeta */
-
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:60} /* Capa oscura para el modal, oculta por defecto */
-    .modal.open{display:flex} /* Muestra el modal al agregar la clase .open */
-    .modal .sheet{width:min(980px,96%);max-height:92%;background:white;border-radius:10px;padding:14px;display:flex;gap:12px;overflow:hidden} /* Contenedor del contenido del modal */
-    .carousel{flex:1;display:flex;flex-direction:column} /* Área del carrusel, ocupa el espacio disponible */
-    .carousel .stage{flex:1;position:relative;overflow:hidden;border-radius:8px;background:#111} /* Escenario donde se muestran las imágenes grandes */
-    .carousel img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .25s} /* Imágenes posicionadas para deslizar con transform */
-    .thumbs{display:flex;gap:8px;margin-top:8px;overflow:auto} /* Tira de miniaturas desplazable horizontalmente */
-    .thumbs img{width:64px;height:64px;object-fit:cover;border-radius:6px} /* Miniaturas cuadradas */
-    .detail{width:320px;max-width:40%;display:flex;flex-direction:column} /* Columna derecha con detalles del producto */
-    .detail h2{margin:0 0 6px} /* Espaciado del título del modal */
-    .detail p{margin:6px 0;color:var(--muted)} /* Párrafos de detalle con color secundario */
-    .closeBtn{margin-left:auto;cursor:pointer} /* Botón de cierre alineado a la derecha */
-
-    footer{padding:14px 16px;text-align:center;color:var(--muted);font-size:0.95rem} /* Pie de página con enlaces de contacto */
-
-    @media (max-width:900px){ /* Reglas para pantallas pequeñas */
-      .grid{grid-template-columns:1fr} /* Sidebar debajo del contenido en móvil */
-      aside{order:2} /* Mueve el sidebar al final visual */
-      .detail{width:100%;max-width:none} /* Detalles ocupan ancho completo en modal */
-      .carousel{order:1} /* Carrusel por encima en modal móvil */
-      .search input{width:120px} /* Input más compacto en móvil */
-      .thumb{height:160px} /* Imagen principal más baja en móvil */
-      .modal .sheet{flex-direction:column} /* Modal apilado en columnas en móvil */
+    /* =========================================================
+       Fondo general (cuadrado estático)
+    ==========================================================*/
+    body{
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: url("images/FondoIzuochaStore.jpg") no-repeat center center fixed;
+      background-size: cover;
+      line-height: 1.45;
     }
 
-    .product-card {
-  background: #fff; /* Rectángulo blanco */
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  overflow: hidden;
-  width: 220px; /* Ajusta según tu grid */
-  display: flex;
-  flex-direction: column;
-}
+    /* =========================================================
+       Banner superior (placeholder para cuando lo agregues)
+       — ahora es una franja en blanco para que veas la separación
+    ==========================================================*/
+    .banner{
+      width: 100%;
+      min-height: 120px; /* Ajusta cuando pongas tus 3 imágenes horizontales */
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .banner .placeholder{
+      color: #888;
+      font-size: 0.95rem;
+      letter-spacing: 0.4px;
+    }
 
-.product-image img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover; /* Imagen recortada sin deformarse */
-}
+    /* Línea separadora blanca entre banner y contenido */
+    .separator{
+      width: 100%;
+      height: 2px;
+      background: var(--separator);
+    }
 
-.product-info {
-  padding: 10px;
-  text-align: center;
-}
+    /* =========================================================
+       Contenedor principal
+    ==========================================================*/
+    .container{
+      max-width: 1280px;
+      margin: 24px auto 40px;
+      padding: 0 16px;
+    }
 
-.product-info .brand {
-  font-size: 0.8rem;
-  color: #666; /* Gris tenue */
-}
+    /* Header del catálogo (título, búsqueda, etc.) */
+    .header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:16px;
+    }
+    .header h1{
+      color:#fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      font-size:1.6rem;
+      font-weight:700;
+    }
 
-.product-info .name {
-  font-weight: 600;
-  margin: 6px 0;
-}
+    /* Barra de búsqueda (opcional) */
+    .search{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      backdrop-filter: blur(2px);
+    }
+    .search input{
+      height:36px;
+      padding:0 10px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.85);
+      color:#222;
+      outline:none;
+      width:220px;
+    }
+    .search button{
+      height:36px;
+      padding:0 12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:#ffffff;
+      color:#222;
+      cursor:pointer;
+    }
 
-.product-info .price {
-  color: #C62828; /* Rojo intenso (Deku/urgencia) */
-  font-weight: 700;
-  margin: 6px 0;
-}
+    /* =========================================================
+       Grid de productos: 4 columnas en PC, 2 en tablet, 1 en móvil
+    ==========================================================*/
+    .products{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:20px;
+    }
 
-.product-info .stock {
-  background: #F4A6C0; /* Rosado suave (Uraraka) */
-  color: #fff;
-  font-weight: 600;
-  padding: 6px;
-  border-radius: 6px;
-}
+    /* =========================================================
+       Tarjeta de producto (estilo Inumoon, bordes redondeados)
+    ==========================================================*/
+    .product-card{
+      background: var(--bg-card);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px var(--shadow);
+      overflow: hidden;
+      display:flex;
+      flex-direction:column;
+      cursor:pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      backdrop-filter: blur(2px);
+    }
+    .product-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    }
 
-    /* FIN CSS */
-  </style> 
+    .product-image{
+      width:100%;
+      height:240px; /* Más alto para ver mejor la portada */
+      overflow:hidden;
+      position:relative;
+    }
+    .product-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
 
-  <link rel="icon" type="image/png" href="images/favicon.png"> <!-- Favicon del sitio se muestra en la pestaña -->
+    .product-info{
+      padding:12px 14px 10px;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      flex-grow:1;
+    }
+    .product-info .brand{
+      font-size:0.88rem;
+      color:#666;
+    }
+    .product-info .name{
+      font-weight:700;
+      font-size:1.02rem;
+      color:#222;
+    }
+    .product-info .price{
+      color: var(--accent-red);
+      font-weight:800;
+      font-size:1.02rem;
+    }
+
+    /* Bloque inferior estilo “botón” pero para stock (rosado) */
+    .stock{
+      background: var(--accent-pink);
+      color:#fff;
+      text-align:center;
+      padding:10px 12px;
+      font-weight:700;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      border-bottom-left-radius:12px;
+      border-bottom-right-radius:12px;
+      font-size:0.98rem;
+    }
+    .stock.agotado{
+      background:#b2b2b2;
+      color:#fff;
+    }
+
+    /* =========================================================
+       Modal de detalle con carrusel
+    ==========================================================*/
+    .modal{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,0.82);
+      display:none;            /* se muestra en JS */
+      align-items:center;
+      justify-content:center;
+      z-index: 999;
+      padding: 24px;
+    }
+    .modal .sheet{
+      width: min(920px, 94vw);
+      max-height: 86vh;
+      background:#fff;
+      border-radius:14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      display:flex;
+      gap:0;
+      overflow:hidden;
+      position:relative;
+      flex-direction:column;
+    }
+
+    .modal .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-bottom:1px solid #eee;
+      background:#f7f7f7;
+      padding:10px 14px;
+    }
+    .modal .title{
+      font-weight:700;
+      font-size:1.06rem;
+      color:#222;
+    }
+    .modal .close{
+      border:none;
+      background:transparent;
+      font-size:1.6rem;
+      line-height:1;
+      cursor:pointer;
+      color:#777;
+    }
+
+    .modal .content{
+      display:flex;
+      flex-direction:row;
+      gap:0;
+      padding: 12px 12px 16px;
+    }
+
+    /* Carrusel */
+    .carousel{
+      flex: 1.15 1 0;
+      position:relative;
+      border-right:1px solid #eee;
+      min-height: 360px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: #fafafa;
+    }
+    .carousel img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+    .carousel .controls{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+    .carousel .btn{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      pointer-events:auto;
+      background: rgba(0,0,0,0.38);
+      color:#fff;
+      border:none;
+      font-size:2rem;
+      padding:0 12px;
+      line-height: 2.2rem;
+      cursor:pointer;
+    }
+    .carousel .btn.left{ left: 8px; }
+    .carousel .btn.right{ right: 8px; }
+
+    /* Paginación simple (dots) */
+    .dots{
+      position:absolute;
+      bottom:8px;
+      left:0; right:0;
+      display:flex;
+      justify-content:center;
+      gap:6px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:#cfcfcf;
+      cursor:pointer;
+      border:1px solid rgba(0,0,0,0.08);
+    }
+    .dot.active{ background:#666; }
+
+    /* Panel de detalles */
+    .detail{
+      flex: 0.85 1 0;
+      display:flex;
+      flex-direction:column;
+      padding: 10px 12px 12px;
+      gap: 10px;
+    }
+    .detail .brand{
+      font-size:0.88rem;
+      color:#666;
+    }
+    .detail .name{
+      font-weight:700;
+      font-size:1.08rem;
+      color:#222;
+    }
+    .detail .price{
+      color: var(--accent-red);
+      font-weight:800;
+      font-size:1.06rem;
+    }
+    .detail .desc{
+      font-size:0.96rem;
+      color:#2a2a2a;
+      white-space:pre-line;
+    }
+    .detail .stock{
+      align-self:flex-start;
+      background: var(--accent-pink);
+      color:#fff;
+      font-weight:700;
+      padding:8px 12px;
+      border-radius:8px;
+      border:1px solid rgba(0,0,0,0.05);
+    }
+    .detail .stock.agotado{
+      background:#b2b2b2;
+      color:#fff;
+    }
+
+    /* =========================================================
+       Responsividad
+    ==========================================================*/
+    @media (max-width: 1100px){
+      .products{ grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 900px){
+      .products{ grid-template-columns: repeat(2, 1fr); }
+      .modal .sheet{ max-height: 88vh; }
+      .modal .content{ flex-direction:column; }
+      .carousel{ min-height: 320px; border-right:none; border-bottom:1px solid #eee; }
+      .detail{ width:100%; max-width:none; }
+    }
+    @media (max-width: 600px){
+      .products{ grid-template-columns: 1fr; }
+      .product-image{ height: 220px; }
+      .search input{ width: 140px; }
+      .carousel{ min-height: 280px; }
+    }
+
+    /* Espacio al final para apreciar el fondo completo */
+    .bottom-space{
+      height: 520px;
+    }
+  </style>
 </head>
 
-
-
-
-  
-<body> <!-- Contiene el contenido visible y la estructura de la página: encabezado, navegación, secciones, modales y pie de página. -->
-  <header>
-    <div class="brand">Tienda-Apodo (nombre-de-la-tienda)</div> <!-- Nombre visible de la tienda -->
-    <nav style="display:flex;gap:10px;align-items:center"> <!-- Navegación simple: enlaces principales -->
-      <a href="#" id="ver-todos">Todos</a> <!-- Enlace para resetear filtro a 'Todos' -->
-      <a href="#contacto" style="color:white;background:rgba(255,255,255,0.12);padding:8px;border-radius:8px;text-decoration:none">Contacto</a> <!-- Ancla al footer de contacto -->
-    </nav>
-    <div class="search"> <!-- Contenedor del buscador -->
-      <input id="searchInput" placeholder="Buscar producto..." /> <!-- Campo de búsqueda por nombre/desc -->
-      <button id="btnSearch">Buscar</button> <!-- Botón que dispara el filtrado -->
-    </div>
-  </header>
-
-  <main class="container"> <!-- Área principal centrada -->
-    <div class="grid"> <!-- Layout de dos columnas -->
-      <aside class="card"> <!-- Sidebar con categorías -->
-        <div class="cats">
-          <h3>Categorías (por anime)</h3> <!-- Título del bloque de categorías -->
-          <ul id="categoriesList"> <!-- Aquí se insertan categorías por JS -->
-            <!-- categorías generadas por JS -->
-          </ul>
-        </div>
-        <hr style="margin:12px 0"> <!-- Separador visual -->
-        <div><strong>Filtros</strong></div> <!-- Subtítulo de filtros -->
-        <div style="font-size:0.9rem;color:var(--muted);margin-top:8px">Busca por nombre, filtra por anime, ordena manualmente desde products.json</div> <!-- Ayuda contextual -->
-      </aside>
-
-      <section> <!-- Columna de catálogo -->
-        <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"> <!-- Cabecera del catálogo -->
-          <h2 style="margin:0">Catálogo</h2> <!-- Título de la sección -->
-          <div style="color:var(--muted);font-size:0.95rem">Resultados: <span id="resultsCount">0</span></div> <!-- Contador de productos filtrados -->
-        </div>
-
-        <div class="products" id="productsGrid"> <!-- Grid donde se renderizan las tarjetas -->
-          <div class="product-card">
-  <div class="product-image">
-    <img src="images/mha_sticker1.jpg" alt="Sticker Deku Chibi">
+<body>
+  <!-- Banner superior (cuando lo agregues, reemplaza el placeholder) -->
+  <div class="banner">
+    <div class="placeholder">Banner superior (lo agregarás luego con tus 3 imágenes horizontales)</div>
   </div>
-  <div class="product-info">
-    <div class="brand">SEGA</div>
-    <div class="name">Sticker Deku Chibi</div>
-    <div class="price">$1.500 CLP</div>
-    <div class="stock">10 en Stock</div>
-  </div>
-</div>
+  <div class="separator"></div>
 
-          <!-- tarjetas generadas por JS -->
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <div class="modal" id="productModal" aria-hidden="true"> <!-- Modal oculto: se abre al seleccionar un producto -->
-    <div class="sheet"> <!-- Contenedor principal del modal -->
-      <div class="carousel"> <!-- Área izquierda: carrusel de imágenes -->
-        <div class="stage" id="carouselStage"></div> <!-- Escenario con imágenes grandes -->
-        <div class="thumbs" id="carouselThumbs"></div> <!-- Miniaturas para cambiar imagen -->
+  <!-- Contenido principal -->
+  <div class="container">
+    <div class="header">
+      <h1>Catálogo</h1>
+      <div class="search">
+        <input id="searchInput" type="text" placeholder="Buscar producto..." />
+        <button id="searchBtn" type="button">Buscar</button>
       </div>
-      <div class="detail"> <!-- Área derecha: información del producto -->
-        <div style="display:flex;align-items:center;gap:8px"> <!-- Fila de título y botón cerrar -->
-          <h2 id="modalTitle">Titulo</h2> <!-- Título dinámico del producto -->
-          <div class="closeBtn" id="modalClose">✕</div> <!-- Botón para cerrar el modal -->
+    </div>
+
+    <!-- Grid de productos (se renderiza con JS) -->
+    <div class="products" id="productsGrid"></div>
+  </div>
+
+  <!-- Espacio final para ver el fondo completo sin superposiciones -->
+  <div class="bottom-space"></div>
+
+  <!-- Modal de detalle -->
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="topbar">
+        <div class="title" id="modalTitle">Producto</div>
+        <button class="close" id="modalCloseBtn" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <div class="content">
+        <!-- Carrusel -->
+        <div class="carousel" id="carousel">
+          <img id="carouselImage" src="" alt="Imagen del producto" />
+          <div class="controls">
+            <button class="btn left" id="prevBtn" aria-label="Imagen anterior">&#10094;</button>
+            <button class="btn right" id="nextBtn" aria-label="Imagen siguiente">&#10095;</button>
+          </div>
+          <div class="dots" id="dots"></div>
         </div>
-        <div style="margin-top:6px"><strong class="price" id="modalPrice">$0</strong></div> <!-- Precio del producto -->
-        <p id="modalDesc">Descripción larga</p> <!-- Descripción detallada -->
-        <div class="meta">Cantidad disponible: <span id="modalStock">0</span></div> <!-- Stock disponible -->
-        <div style="margin-top:auto"> <!-- Bloque de contacto al final -->
-          <h4>Contacto</h4> <!-- Título de la sección de contacto -->
-          <p style="margin:6px 0"><a id="igLink" href="#" target="_blank">Instagram</a></p> <!-- Enlace a Instagram -->
-          <p style="margin:6px 0"><a id="fbLink" href="#" target="_blank">Facebook</a></p> <!-- Enlace a Facebook -->
+
+        <!-- Detalles -->
+        <div class="detail">
+          <div class="brand" id="modalBrand">Brand</div>
+          <div class="name" id="modalName">Nombre</div>
+          <div class="price" id="modalPrice">$0</div>
+          <div class="stock" id="modalStock">0 en Stock</div>
+          <div class="desc" id="modalDesc">Descripción</div>
         </div>
       </div>
     </div>
   </div>
 
-  <footer id="contacto">Instagram: <a id="igFooter" href="#" target="_blank">@mi_tienda</a> — Facebook: <a id="fbFooter" href="#" target="_blank">Mi Tienda</a></footer> <!-- Footer con enlaces de contacto -->
-
-  <script> //Implementa la lógica interactiva: lectura de datos, render dinámico, filtros, búsqueda, apertura/cierre de modales y carrusel.
-    
-     <script> // INICIO JS
-    const products = [ /* Array de productos: edítalo con tus datos reales */
+  <script>
+    /* =========================================================
+       Datos de productos (5 vasos, 3 imágenes cada uno .jpg)
+       Regla: 1.3 = portada + 1ra del carrusel, 2.3 = 2da, 3.3 = 3ra
+    ==========================================================*/
+    const products = [
       {
-        id: "ID Producto", /* Identificador único para referencia interna */
-        title: "Titulo", /* Nombre que se muestra en tarjeta y modal */
-        price: "Precio", /* Precio (puede ser número o texto formateado) */
-        anime: "Nombre Anime", /* Categoría por anime (ej: Naruto) */
-        type: "Tipo", /* Tipo de producto (Sticker, Vaso, etc.) */
-        stock: 2, /* Cantidad disponible para mostrar */
-        description: "Descripcion", /* Descripción larga mostrada en el modal */
-        images: ["images/favicon.png"] /* Rutas relativas a /images/, máximo 8 por producto */
+        id: "vaso-todoroki",
+        title: "Vaso Todoroki My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 1,
+        images: [
+          "images/VasoTodoroki1.3.jpg",
+          "images/VasoTodoroki2.3.jpg",
+          "images/VasoTodoroki3.3.jpg"
+        ],
+        description:
+"Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021.\nEntrega Portal Temuco, horario conversable.\n- Personaje: Shoto Todoroki.\n- Capacidad 350ml.\n- Altura: 12cm.\n- Diámetro superior: 8cm.\n- Plástico (polipropileno).\n- Traído de Japón en perfecto estado.\n- No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
+      },
+      {
+        id: "vaso-hawks",
+        title: "Vaso Hawks My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 2,
+        images: [
+          "images/VasoHawks1.3.jpg",
+          "images/VasoHawks2.3.jpg",
+          "images/VasoHawks3.3.jpg"
+        ],
+        description:
+"Vaso de colección con ilustración de Hawks.\n- Capacidad 350ml.\n- Material resistente.\n- Edición Bandai 2021.\n- Pieza temática MHA perfecta para fans y colección."
+      },
+      {
+        id: "vaso-bdt",
+        title: "Vaso BDT My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 0,
+        images: [
+          "images/VasoBDT1.3.jpg",
+          "images/VasoBDT2.3.jpg",
+          "images/VasoBDT3.3.jpg"
+        ],
+        description:
+"Vaso temático BDT.\n- Capacidad 350ml.\n- Material: polipropileno.\n- Edición Bandai 2021.\n- Ideal para exhibir o uso cotidiano."
+      },
+      {
+        id: "vaso-rody",
+        title: "Vaso Rody My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 3,
+        images: [
+          "images/VasoRody1.3.jpg",
+          "images/VasoRody2.3.jpg",
+          "images/VasoRody3.3.jpg"
+        ],
+        description:
+"Vaso con diseño de Rody.\n- Capacidad 350ml.\n- Material: polipropileno.\n- Edición Bandai 2021.\n- Pieza de colección inspirada en MHA THE MOVIE."
+      },
+      {
+        id: "vaso-bakugo",
+        title: "Vaso Bakugo My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 1,
+        images: [
+          "images/VasoBakugo1.3.jpg",
+          "images/VasoBakugo2.3.jpg",
+          "images/VasoBakugo3.3.jpg"
+        ],
+        description:
+"Vaso con arte de Bakugo.\n- Capacidad 350ml.\n- Material: polipropileno.\n- Edición Bandai 2021.\n- Ideal para coleccionistas."
       }
-      // Añade más objetos aquí. /* Inserta más productos siguiendo esta estructura */
     ];
 
-    const CONFIG = { /* Configuración global de la tienda: nombre y enlaces */
-      storeName: 'Izuocha Store', /* Aparece en el header (.brand) */
-      instagram: 'https://www.instagram.com/izuocha_store', /* Enlaces de contacto en modal y footer */
-      facebook: 'https://www.facebook.com/share/1EmFKH8sZk/' /* Enlace a Facebook */
-    };
-
-    /* Inserta nombre y enlaces en el DOM al cargar */
-    document.querySelector('.brand').textContent = CONFIG.storeName; /* Actualiza el nombre visible */
-    document.getElementById('igFooter').href = CONFIG.instagram; /* Footer Instagram */
-    document.getElementById('fbFooter').href = CONFIG.facebook; /* Footer Facebook */
-    document.getElementById('igLink').href = CONFIG.instagram; /* Modal Instagram */
-    document.getElementById('fbLink').href = CONFIG.facebook; /* Modal Facebook */
-
-    /* Referencias rápidas a contenedores clave */
-    const productsGrid = document.getElementById('productsGrid'); /* Contenedor de tarjetas */
-    const resultsCount = document.getElementById('resultsCount'); /* Span del contador de resultados */
-    const categoriesList = document.getElementById('categoriesList'); /* Lista de categorías en sidebar */
-    const searchInput = document.getElementById('searchInput'); /* Input de búsqueda */
-
-    /* Obtiene categorías únicas desde los productos y arma la lista completa */
-    const categories = Array.from(new Set(products.map(p=>p.anime))).sort(); /* Categorías únicas ordenadas */
-    const cats = ['Todos', ...categories, 'Otros']; /* Agrega 'Todos' y 'Otros' a la lista principal */
-    let activeCat = 'Todos'; /* Estado actual de la categoría seleccionada */
-
-    function renderCategories(){ /* Dibuja la lista de categorías y marca la activa */
-      categoriesList.innerHTML = ''; /* Limpia la lista antes de volver a crearla */
-      cats.forEach(c=>{
-        const li = document.createElement('li'); /* Crea un ítem de lista */
-        li.textContent = c; /* Texto visible de la categoría */
-        if(c===activeCat) li.classList.add('active'); /* Resalta si es la activa */
-        li.onclick = ()=>{ /* Al hacer clic: cambia la activa y re-renderiza */
-          activeCat=c; renderCategories(); renderProducts();
-        };
-        categoriesList.appendChild(li); /* Inserta el ítem en la lista */
-      });
-    }
-
-    function matchesFilter(p, q){ /* Valida si un producto coincide con la categoría y búsqueda */
-      if(activeCat!=='Todos' && activeCat!=='Otros'){ /* Caso: categoría específica (anime) */
-        if(p.anime!==activeCat) return false; /* Filtra productos que no sean del anime elegido */
-      }
-      if(activeCat==='Otros'){ /* Caso: categoría 'Otros' */
-        if(categories.includes(p.anime)) return false; /* Excluye los animes conocidos */
-      }
-      if(!q) return true; /* Si no hay búsqueda, ya pasó el filtro de categoría */
-      const s = q.toLowerCase(); /* Normaliza la búsqueda a minúsculas */
-      return (p.title+p.description+p.anime+p.type).toLowerCase().includes(s); /* Coincidencia por texto */
-    }
-
-    function renderProducts(){ /* Construye y muestra las tarjetas del catálogo */
-      const q = searchInput.value.trim(); /* Toma el texto de búsqueda actual */
-      const filtered = products.filter(p => matchesFilter(p, q)); /* Aplica filtros de categoría y texto */
-      productsGrid.innerHTML = ''; /* Limpia el grid antes de renderizar */
-      resultsCount.textContent = filtered.length; /* Actualiza el contador de resultados */
-      filtered.forEach(p=>{
-        const card = document.createElement('article'); /* Crea la tarjeta del producto */
-        card.className='card-prod'; /* Aplica estilos de tarjeta */
+    /* =========================================================
+       Render del grid de productos
+    ==========================================================*/
+    const productsGrid = document.getElementById("productsGrid");
+    function renderProducts(list){
+      productsGrid.innerHTML = "";
+      list.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "product-card";
         card.innerHTML = `
-          <div class="thumb"><img loading="lazy" src="${p.images[0]}" alt="${p.title}"/></div> <!-- Miniatura del producto -->
-          <div class="title">${p.title}</div> <!-- Título visible -->
-          <div class="meta">${p.anime} • ${p.type}</div> <!-- Anime y tipo -->
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"> <!-- Fila precio/stock -->
-            <div class="price">$${p.price}</div> <!-- Precio -->
-            <div class="stock">Stock: ${p.stock}</div> <!-- Stock disponible -->
+          <div class="product-image">
+            <img src="${p.images[0]}" alt="${p.title}">
+          </div>
+          <div class="product-info">
+            <div class="brand">${p.brand}</div>
+            <div class="name">${p.title}</div>
+            <div class="price">${p.price}</div>
+          </div>
+          <div class="stock ${p.stock > 0 ? "" : "agotado"}">
+            ${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}
           </div>
         `;
-        card.onclick = ()=> openModal(p); /* Abre el modal con detalles al hacer clic */
-        productsGrid.appendChild(card); /* Añade la tarjeta al grid */
+        card.addEventListener("click", () => openModal(p));
+        productsGrid.appendChild(card);
       });
     }
+    renderProducts(products);
 
-    renderCategories(); renderProducts(); /* Render inicial de categorías y catálogo */
-
-    document.getElementById('btnSearch').onclick = ()=> renderProducts(); /* Botón 'Buscar' dispara el filtrado */
-    document.getElementById('ver-todos').onclick = (e)=>{ /* Enlace 'Todos' resetea categoría */
-      e.preventDefault(); activeCat='Todos'; renderCategories(); renderProducts();
-    };
-
-    /* Referencias del modal y carrusel */
-    const modal = document.getElementById('productModal'); /* Contenedor del modal */
-    const modalClose = document.getElementById('modalClose'); /* Botón de cierre del modal */
-    const carouselStage = document.getElementById('carouselStage'); /* Escenario de imágenes grandes */
-    const carouselThumbs = document.getElementById('carouselThumbs'); /* Tiras de miniaturas */
-
-    let currentImages = []; /* Lista de imágenes del producto actual */
-    let currentIndex = 0; /* Índice de la imagen mostrada actualmente */
-
-    function openModal(product){ /* Abre el modal y carga la información del producto */
-      document.getElementById('modalTitle').textContent = product.title; /* Título */
-      document.getElementById('modalPrice').textContent = '$'+product.price; /* Precio formateado */
-      document.getElementById('modalDesc').textContent = product.description; /* Descripción */
-      document.getElementById('modalStock').textContent = product.stock; /* Stock */
-      document.getElementById('igLink').href = CONFIG.instagram; /* Enlace Instagram en modal */
-      document.getElementById('fbLink').href = CONFIG.facebook; /* Enlace Facebook en modal */
-
-      currentImages = product.images.slice(0,8); /* Limita a 8 imágenes para el carrusel */
-      carouselStage.innerHTML = ''; /* Limpia el escenario */
-      carouselThumbs.innerHTML = ''; /* Limpia miniaturas */
-
-      currentImages.forEach((src,i)=>{ /* Crea imágenes grandes y sus miniaturas */
-        const img = document.createElement('img'); /* Imagen grande */
-        img.src = src; img.alt = product.title+ ' - ' + (i+1); /* Alt accesible */
-        img.style.transform = `translateX(${i*100}%)`; /* Posiciona cada imagen en su slide */
-        carouselStage.appendChild(img); /* Inserta en el escenario */
-
-        const t = document.createElement('img'); t.src = src; t.alt='thumb'; /* Miniatura */
-        t.onclick = ()=> showIndex(i); /* Al hacer clic: muestra esa imagen */
-        carouselThumbs.appendChild(t); /* Inserta en la tira de miniaturas */
-      });
-
-      currentIndex = 0; showIndex(0); /* Muestra la primera imagen por defecto */
-      modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); /* Abre el modal */
+    /* =========================================================
+       Búsqueda simple (por nombre)
+    ==========================================================*/
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    function doSearch(){
+      const q = (searchInput.value || "").toLowerCase();
+      if(!q){ renderProducts(products); return; }
+      const filtered = products.filter(p => p.title.toLowerCase().includes(q));
+      renderProducts(filtered);
     }
-
-    function showIndex(i){ /* Cambia la imagen mostrada en el carrusel */
-      const imgs = carouselStage.querySelectorAll('img'); /* Todas las imágenes del escenario */
-      currentIndex = (i+imgs.length)%imgs.length; /* Ajusta índice con wrap-around */
-      imgs.forEach((img,idx)=> { /* Desliza todas las imágenes para centrar la seleccionada */
-        img.style.transform = `translateX(${(idx-currentIndex)*100}%)`;
-      });
-    }
-
-    modalClose.onclick = ()=>{ /* Cierra el modal al pulsar ✕ */
-      modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
-    };
-
-    modal.onclick = (e)=>{ /* Cierra el modal al hacer clic fuera de la hoja */
-      if(e.target===modal) modal.classList.remove('open');
-    };
-
-    let startX=null; /* Coordenada inicial del toque para swipe */
-    carouselStage.addEventListener('touchstart',e=>{ /* Inicia gesto táctil en carrusel */
-      startX = e.touches[0].clientX;
+    searchBtn.addEventListener("click", doSearch);
+    searchInput.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter"){ doSearch(); }
     });
-    carouselStage.addEventListener('touchend',e=>{ /* Finaliza gesto táctil y calcula desplazamiento */
-      if(startX===null) return;
-      const endX = e.changedTouches[0].clientX; const dx = endX-startX; /* Distancia horizontal */
-      if(Math.abs(dx)>40){ /* Umbral mínimo para considerar swipe */
-        if(dx<0) showIndex(currentIndex+1); else showIndex(currentIndex-1); /* Navega izquierda/derecha */
+
+    /* =========================================================
+       Modal + Carrusel (teclas, flechas, swipe)
+    ==========================================================*/
+    const modal = document.getElementById("productModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+    const modalBrand = document.getElementById("modalBrand");
+    const modalName = document.getElementById("modalName");
+    const modalPrice = document.getElementById("modalPrice");
+    const modalStock = document.getElementById("modalStock");
+    const modalDesc = document.getElementById("modalDesc");
+
+    const carouselImg = document.getElementById("carouselImage");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const dotsEl = document.getElementById("dots");
+    const carouselEl = document.getElementById("carousel");
+
+    let currentImages = [];
+    let currentIndex = 0;
+
+    function updateDots(){
+      dotsEl.innerHTML = "";
+      currentImages.forEach((_, i) => {
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === currentIndex ? " active" : "");
+        dot.addEventListener("click", () => {
+          currentIndex = i;
+          carouselImg.src = currentImages[currentIndex];
+          updateDots();
+        });
+        dotsEl.appendChild(dot);
+      });
+    }
+
+    function openModal(product){
+      modal.style.display = "flex";
+      modal.setAttribute("aria-hidden", "false");
+
+      modalTitle.textContent = product.title;
+      modalBrand.textContent = product.brand;
+      modalName.textContent = product.title;
+      modalPrice.textContent = product.price;
+      modalStock.textContent = product.stock > 0 ? product.stock + " en Stock" : "Agotado";
+      if(product.stock <= 0){ modalStock.classList.add("agotado"); } else { modalStock.classList.remove("agotado"); }
+      modalDesc.textContent = product.description;
+
+      currentImages = product.images.slice(0, 8); /* hasta 8 */
+      currentIndex = 0;
+      carouselImg.src = currentImages[currentIndex];
+      updateDots();
+    }
+
+    function closeModal(){
+      modal.style.display = "none";
+      modal.setAttribute("aria-hidden", "true");
+    }
+    modalCloseBtn.addEventListener("click", closeModal);
+
+    /* Flechas */
+    function nextImage(){
+      currentIndex = (currentIndex + 1) % currentImages.length;
+      carouselImg.src = currentImages[currentIndex];
+      updateDots();
+    }
+    function prevImage(){
+      currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+      carouselImg.src = currentImages[currentIndex];
+      updateDots();
+    }
+    nextBtn.addEventListener("click", nextImage);
+    prevBtn.addEventListener("click", prevImage);
+
+    /* Teclado dentro de modal */
+    document.addEventListener("keydown", (e)=>{
+      if(modal.style.display === "flex"){
+        if(e.key === "ArrowRight"){ nextImage(); }
+        else if(e.key === "ArrowLeft"){ prevImage(); }
+        else if(e.key === "Escape"){ closeModal(); }
       }
-      startX=null; /* Resetea el estado del gesto */
     });
-    
-// FIN JS    
+
+    /* Cerrar al click fuera del sheet */
+    modal.addEventListener("click", (e)=>{
+      const sheet = e.target.closest(".sheet");
+      if(!sheet){ closeModal(); }
+    });
+
+    /* Swipe en móvil (touch) */
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const threshold = 50;
+    carouselEl.addEventListener("touchstart", (e)=>{
+      touchStartX = e.changedTouches[0].screenX;
+    }, {passive:true});
+    carouselEl.addEventListener("touchend", (e)=>{
+      touchEndX = e.changedTouches[0].screenX;
+      const delta = touchEndX - touchStartX;
+      if(Math.abs(delta) > threshold){
+        if(delta < 0){ nextImage(); } else { prevImage(); }
+      }
+    }, {passive:true});
+
+    /* =========================================================
+       Nota de accesibilidad básica:
+       - alt en imágenes de producto: significativo para SEO/lectores
+       - modal aria-hidden alterna al abrir/cerrar
+    ==========================================================*/
   </script>
-  
 </body>
-  
 </html>
