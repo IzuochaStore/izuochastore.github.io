@@ -377,19 +377,22 @@
 
 /* Fondo con recorrido vertical en 16:9 empezando desde arriba */
 .scroll-image {
-  height: 120vh; /* 100–200vh según cuánto quieras recorrer */
+  margin-top: 200px; /* igual a la altura del banner */
+  height: 100vh;
   background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
-  background-size: cover;       /* llena ancho, mantiene 16:9, sin franjas */
-  background-attachment: fixed; /* fijo para efecto de recorrido */
+  background-size: cover;
+  background-attachment: fixed;
 }
+
 
 /* Neutraliza el separador final si empuja o tapa la obra */
 .bottom-space {
-  height: 0;       /* evita empuje excesivo */
+  height: 0;
   min-height: 0;
   margin: 0;
   padding: 0;
 }
+
 
 /* Evita que el grid quede flotando a mitad del scroll */
 .products, #productsGrid {
