@@ -26,13 +26,15 @@
     /* =========================================================
        Fondo general (cuadrado estático)
     ==========================================================*/
-    body{
-      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: url("images/FondoIzuochaStore.jpg") no-repeat center center fixed;
-      background-size: cover;
-      line-height: 1.45;
-    }
+    body {
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: url("images/FondoIzuochaStore.jpg") no-repeat center center fixed;
+  background-size: contain;   /* ahora se ve completa */
+  background-color: #000;     /* relleno negro si sobran espacios */
+  line-height: 1.45;
+}
+
 
     /* =========================================================
        Banner superior (placeholder para cuando lo agregues)
@@ -366,9 +368,10 @@
     }
 
     /* Espacio al final para apreciar el fondo completo */
-    .bottom-space{
-      height: 520px;
-    }
+    .bottom-space {
+  min-height: 40vh; /* 40% de la altura de la ventana */
+}
+
   </style>
 </head>
 
