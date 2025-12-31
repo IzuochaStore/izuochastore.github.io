@@ -25,6 +25,11 @@
               url('images/pattern.png'); /* Patrón temático */
   background-blend-mode: overlay;
 }
+    body {
+  background: url("images/FondoIzuochaStore.jpg") no-repeat center center fixed; 
+  background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
+}
+
 
  /* Barra superior con degradado y layout flex */
     .brand{font-weight:700;font-size:1.1rem} /* Marca con énfasis tipográfico */
@@ -211,14 +216,26 @@
      <script> // INICIO JS
     const products = [ /* Array de productos: edítalo con tus datos reales */
       {
-        id: "ID Producto", /* Identificador único para referencia interna */
-        title: "Titulo", /* Nombre que se muestra en tarjeta y modal */
-        price: "Precio", /* Precio (puede ser número o texto formateado) */
-        anime: "Nombre Anime", /* Categoría por anime (ej: Naruto) */
-        type: "Tipo", /* Tipo de producto (Sticker, Vaso, etc.) */
-        stock: 2, /* Cantidad disponible para mostrar */
-        description: "Descripcion", /* Descripción larga mostrada en el modal */
-        images: ["images/favicon.png"] /* Rutas relativas a /images/, máximo 8 por producto */
+        id: "VasoTodoroki", /* Identificador único para referencia interna */
+        title: "Vaso Todoroki", /* Nombre que se muestra en tarjeta y modal */
+        price: "$5.000", /* Precio (puede ser número o texto formateado) */
+        anime: "My Hero Academia", /* Categoría por anime (ej: Naruto) */
+        type: "Vaso", /* Tipo de producto (Sticker, Vaso, etc.) */
+        stock: 1, /* Cantidad disponible para mostrar */
+        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021.
+Entrega Portal Temuco, horario conversable.
+- Personaje: Shoto Todoroki.
+- Capacidad 350ml.
+- Altura: 12cm.
+- Diámetro superior: 8cm.
+- Plástico (polipropileno).
+- Traído de Japón en perfecto estado.
+- No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes.", /* Descripción larga mostrada en el modal */
+        images: [
+  "images/VasoTodoroki1.3.png",
+  "images/VasoTodoroki2.3.png",
+  "images/VasoTodoroki3.3.png"
+                ] /* Rutas relativas a /images/, máximo 8 por producto */
       }
       // Añade más objetos aquí. /* Inserta más productos siguiendo esta estructura */
     ];
