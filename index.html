@@ -61,51 +61,49 @@ body {
   align-items: center;
   background: rgba(255,255,255,0.9);
   border-radius: 30px;
-  padding: 6px 12px;
-  width: 50%;          /* 👈 más corto en general */
-  max-width: 600px;    /* 👈 límite máximo */
+  padding: 0;
+  width: 50%;          /* 👈 más corto */
+  max-width: 600px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  margin: 0 auto;      /* 👈 centrado */
+  margin: 0 auto;
+  overflow: hidden;     /* 👈 asegura que los bordes se integren */
 }
 
-/* Selector "Animes" */
 .search-bar select {
-  flex: 0 0 120px;     /* ancho fijo */
+  flex: 0 0 120px;
   border: none;
   background: transparent;
   font-weight: 600;
   font-size: 0.95rem;
   outline: none;
+  padding: 10px;
 }
 
-/* Campo de texto más corto */
 .search-bar input {
   flex: 1;
-  max-width: 220px;    /* 👈 más corto para no tapar personajes */
+  max-width: 220px;
   border: none;
-  padding: 8px;
+  padding: 10px;
   font-size: 0.95rem;
   outline: none;
 }
 
-/* Botón de lupa verde Deku */
+/* Botón de lupa como parte del rectángulo */
 .search-bar button {
-  flex: 0 0 55px;       /* ancho fijo */
-  height: 55px;         /* 👈 más alto */
+  flex: 0 0 60px;
   border: none;
-  background: #28a745;  /* 👈 verde Deku */
-  border-radius: 50%;
+  background: #28a745;   /* 👈 verde Deku */
+  border-radius: 0 30px 30px 0; /* 👈 bordes derechos semi redondos */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Ícono de lupa blanco */
 .search-bar button img {
-  width: 24px;
-  height: 24px;
-  filter: brightness(0) invert(1); /* 👈 asegura que se vea blanco */
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1); /* 👈 lupa blanca */
 }
 
 
@@ -114,22 +112,21 @@ body {
 /* Íconos sociales debajo */
 .social-icons {
   display: flex;
-  gap: 48px;        /* 👈 más separados */
-  justify-content: center;
-  margin-top: 32px; /* 👈 más abajo */
+  justify-content: space-between; /* 👈 separa extremos */
+  align-items: center;
+  width: 60%;          /* 👈 controla el ancho del bloque */
+  margin-top: 40px;    /* 👈 más abajo respecto a la barra */
 }
-
 .social-icons img {
-  width: 48px;      /* 👈 más grandes */
+  width: 48px;
   height: 48px;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-
-
 .social-icons img:hover {
   transform: scale(1.1);
 }
+
 
 
 /* Fondo mural 16:12 */
