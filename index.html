@@ -54,19 +54,20 @@ body {
   gap: 16px;
 }
 
-/* Barra de búsqueda tipo Google */
+/* Barra de búsqueda */
+/* Rectángulo de búsqueda */
 .search-bar {
   display: flex;
   align-items: center;
   background: rgba(255,255,255,0.9);
   border-radius: 30px;
   padding: 6px 12px;
-  width: 65%;   /* 👈 más corta */
-  max-width: 700px; /* 👈 límite */
+  width: 60%;          /* 👈 más corto en general */
+  max-width: 700px;    /* 👈 límite máximo */
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
-
+/* Selector "Animes" */
 .search-bar select {
   flex: 0 0 140px;
   border: none;
@@ -76,21 +77,22 @@ body {
   outline: none;
 }
 
+/* Campo de texto más corto */
 .search-bar input {
-  flex: 0 0 300px;   /* 👈 ancho fijo más corto */
-  max-width: 300px;  /* 👈 límite máximo */
+  flex: 1;
+  max-width: 300px;    /* 👈 evita que se extienda demasiado */
   border: none;
   padding: 8px;
   font-size: 0.95rem;
   outline: none;
 }
 
-
+/* Botón de lupa al final */
 .search-bar button {
-  flex: 0 0 50px;        /* 👈 un poco más ancho */
-  height: 50px;          /* 👈 más alto */
+  flex: 0 0 50px;       /* ancho fijo */
+  height: 50px;         /* 👈 más alto, no comprimido */
   border: none;
-  background: #28a745;   /* 👈 verde */
+  background: #28a745;  /* 👈 verde Deku */
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -98,11 +100,13 @@ body {
   justify-content: center;
 }
 
+/* Ícono de lupa blanco */
 .search-bar button img {
   width: 22px;
   height: 22px;
-  filter: brightness(0) invert(1); /* 👈 asegura que la lupa se vea blanca */
+  filter: brightness(0) invert(1); /* 👈 asegura que se vea blanco */
 }
+
 
 
 
@@ -421,14 +425,15 @@ body {
 <div class="banner">
   <!-- Bloque de búsqueda -->
   <div class="search-bar">
-    <select id="categorySelect">
-      <option value="all">Animes</option>
-    </select>
-    <input id="searchInput" type="text" placeholder="Buscar producto..." />
-    <button id="searchBtn" type="button">
-      <img src="images/iconLupa.png" alt="Buscar" />
-    </button>
-  </div>
+  <select id="categorySelect">
+    <option value="all">Animes</option>
+  </select>
+  <input id="searchInput" type="text" placeholder="Buscar producto..." />
+  <button id="searchBtn" type="button">
+    <img src="images/iconLupa.png" alt="Buscar" />
+  </button>
+</div>
+
 
   <!-- Íconos de redes sociales -->
   <div class="social-icons">
