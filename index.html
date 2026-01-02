@@ -369,15 +369,12 @@
 
     /* Banner superior: altura estable */
 .banner {
-  height: 200px; /* ajusta según tu diseño */
+  height: 960px; /* igual a la altura real de la imagen */
   background: url("images/bannerIzuochaStore.jpg") no-repeat center center;
-  background-size: cover; /* la imagen llena el espacio */
-  display: flex;
-  flex-direction: column; /* apila buscador y redes */
-  align-items: center;
-  justify-content: center;
-  gap: 12px; /* separación entre buscador y redes */
+  background-size: contain; /* muestra la imagen completa */
+  background-color: #fff;   /* relleno si sobran espacios */
 }
+
 
 
 .search-bar {
