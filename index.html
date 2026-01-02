@@ -39,14 +39,18 @@ body {
 
 .banner {
   width: 100%;
-  aspect-ratio: 4 / 1; /* mantiene proporción del banner */
+  /* Cambiamos de 4/1 a 6/1 para que sea más rectangular y bajo */
+  aspect-ratio: 6 / 1; 
+  /* 'contain' asegura que los 4 personajes se vean completos sin cortarse */
   background: url("images/bannerIzuochaStore.jpg") no-repeat center center;
-  background-size: cover;
+  background-size: contain; 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 16px;
+  /* Añadimos un color de fondo por si la imagen es más corta que el ancho total */
+  background-color: #ffffff; 
 }
 
 
