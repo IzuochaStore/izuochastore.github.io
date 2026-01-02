@@ -56,25 +56,19 @@ body {
 
 
 /* Rectángulo de búsqueda */
-.search-bar { display: flex; 
-             align-items: center; 
-             background: rgba(255,255,255,0.9); 
-             border-radius: 30px; 
-             padding: 6px 12px; 
-             width: 50%; 
-             max-width: 600px; 
-             box-shadow: 0 2px 6px rgba(0,0,0,0.25); 
-             margin: -8px auto 0 auto; /* 👈 sube ligeramente la barra */ }
+.search-bar { display: flex; align-items: center; background: rgba(255,255,255,0.9); border-radius: 30px; width: 50%; max-width: 600px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); margin: -8px auto 0 auto; overflow: hidden; /* 👈 asegura que el botón se integre al rectángulo */ }
 
 .search-bar select {
-  flex: 0 0 120px;
+  flex: 0 0 120px;       /* ancho fijo */
   border: none;
   background: transparent;
   font-weight: 600;
   font-size: 0.95rem;
   outline: none;
-  padding: 10px;
+  text-align: center;    /* 👈 centra el texto horizontalmente */
+  padding: 0;            /* 👈 elimina padding extra */
 }
+
 
 .search-bar input {
   flex: 1;
@@ -85,23 +79,20 @@ body {
   outline: none;
 }
 
-/* Botón de lupa como parte del rectángulo */
-.search-bar button {
-  flex: 0 0 60px;
-  border: none;
-  background: #28a745;   /* 👈 verde Deku */
-  border-radius: 0 30px 30px 0; /* 👈 bordes derechos semi redondos */
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.search-bar button img {
-  width: 22px;
-  height: 22px;
-  filter: brightness(0) invert(1); /* 👈 lupa blanca */
-}
+/* Botón verde al final */ .search-bar button {
+  flex: 0 0 70px; /* 👈 ancho fijo más grande */ 
+  height: 100%; /* 👈 ocupa toda la altura del rectángulo */ 
+  border: none; background: #28a745; /* 👈 verde Deku */ 
+  border-radius: 0 30px 30px 0; /* 👈 bordes derechos semi redondos */ 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+} 
+    .search-bar button img {
+      width: 22px; 
+      height: 22px; 
+      filter: brightness(0) invert(1); /* 👈 lupa blanca */
 
 
 
