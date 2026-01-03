@@ -102,7 +102,7 @@
 
     /* REDES SOCIALES */
     .social-icons {
-      display: flex;
+      display: flex; /*Define que los iconos se vean en fila*/
       justify-content: space-between;
       align-items: center;
       width: 50%;
@@ -232,28 +232,42 @@
     /* =========================================================
        Responsividad General
     ==========================================================*/
-    @media (max-width: 1100px){ .products{ grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 1100px){ 
+      .products{ grid-template-columns: repeat(3, 1fr); } }
+    
     @media (max-width: 900px){
       .products{ grid-template-columns: repeat(2, 1fr); }
       .modal .content{ flex-direction:column; }
       .carousel{ min-height: 320px; }
     }
+
     @media (max-width: 600px){
       .products{ grid-template-columns: 1fr; }
       .search-bar { width: 90%; }
     }
-
-    /* --- CAMBIOS ESPECÍFICOS PARA NOTEBOOK (AL FINAL) --- */
+    
+    /* --- CAMBIOS ESPECÍFICOS PARA NOTEBOOK --- */
     @media (min-width: 900px) {
       .banner {
         aspect-ratio: 6 / 1; 
         background-image: url("images/BannerNotebook.jpg");
         gap: 16px;
       }
+      /* Esta es la vista minimizada de Notebook */
       .social-icons {
         margin-top: 5px; 
       }
     }
+
+    /* NUEVO: Ajuste exclusivo para Pantalla Completa (Notebook Maximizada) */
+    @media (min-width: 1300px) {
+      .social-icons {
+        /* Aumentamos este número para que los botones bajen en el eje Y */
+        margin-top: 35px; 
+      }
+    }
+
+    
   </style>
 </head>
 
