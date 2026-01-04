@@ -125,25 +125,29 @@
     box-shadow: none;
 }
 
-   /* BOTÓN DE LUPA (Derecha) */
+/* BOTÓN DE LUPA - Restaurando el entorno verde redondeado */
 .search-bar button {
-    background: #28a745;
+    flex: 0 0 65px; /* Ajustamos un poco el ancho */
+    height: 100%;
     border: none;
-    outline: none;
+    background: #28a745; /* Verde Deku */
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    margin: 0;
+    
+    /* Esto crea el efecto de cápsula solo en el lado derecho */
+    border-radius: 0 25px 25px 0; 
+    
+    /* Sombra interna opcional para que resalte como en la imagen */
+    box-shadow: -2px 0 5px rgba(0,0,0,0.05);
 }
 
-/* CORRECCIÓN DEL BORDE BLANCO EN LA IMAGEN DE LUPA */
+/* Asegurar que la imagen de la lupa no tenga bordes raros */
 .search-bar button img {
     width: 22px;
     height: 22px;
     filter: brightness(0) invert(1);
-    /* Quitamos cualquier borde que la imagen pueda heredar */
-    border: none; 
     display: block;
 }
 
