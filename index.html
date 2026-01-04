@@ -362,50 +362,58 @@
     }
 
 /* AJUSTES ESPECÍFICOS PARA PANTALLA MINIMIZADA (Notebook ventana pequeña) */
+/* AJUSTE PARA VISTA MINIMIZADA (Notebook ventana pequeña) */
 @media (min-width: 601px) and (max-width: 1024px) {
     
-    /* 1. Ajuste de la imagen IzuochaAdult para tapar la de abajo */
+    /* 1. Asegurar que nada se salga del banner */
+    .banner {
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    /* 2. Ajuste manual de IzuochaAdult para tapar el fondo */
     .img-overlay {
         left: 0 !important;
         transform: none !important;
-        margin-left: -5% !important; /* Ajusta este % si ves que no tapa totalmente */
-        height: 110% !important;
-        bottom: -5% !important;
+        height: 100% !important; /* Mismo alto que el banner */
+        width: auto !important;
+        margin-left: 0 !important; /* Ajusta a -1% o -2% si ves que queda un borde de la imagen de abajo */
+        object-fit: contain !important;
+        z-index: 1 !important;
     }
 
-    /* 2. Barra de búsqueda: Asegurar que se vea la lupa y no sea gigante */
+    /* 3. Barra de búsqueda: Reducir ancho para que no empuje iconos */
     .search-bar {
-        width: 80% !important; /* Reduce el ancho para que quepa la lupa */
-        max-width: 500px !important;
-        margin-top: 20px !important;
+        width: 70% !important; 
+        margin-top: 15px !important;
     }
 
-    /* 3. Redes Sociales: Alineadas con la longitud de la barra */
+    /* 4. Redes Sociales: Recuperar Facebook y alinear */
     .social-icons {
-        width: 80% !important; /* Misma anchura que la barra */
-        max-width: 500px !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: flex-end !important;
-        margin: 10px auto 0 auto !important;
+        width: 75% !important; /* Un poco más ancha que la barra para que Facebook respire */
+        max-width: 550px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding: 0 10px !important; /* Espacio interno para que Facebook no toque el borde */
+        box-sizing: border-box !important;
     }
 
-    /* Subir iconos de redes para dar espacio a los personajes */
-    .social-icons a img {
-        margin-bottom: 35px !important;
+    /* Forzar visibilidad de Facebook */
+    .social-icons a:first-child {
+        display: block !important;
+        visibility: visible !important;
     }
 
-    /* 4. Nivelar Deku Oveja y Uraraka Gata */
+    /* 5. Nivelar personajes en el límite inferior */
     .personaje-social {
-        height: 60px !important; /* Tamaño más contenido para esta vista */
+        height: 55px !important; /* Tamaño ajustado para no tapar la barra */
         margin-bottom: 0 !important;
-        position: relative !important;
-        bottom: 0 !important;
+        vertical-align: bottom !important;
     }
 
-    /* Alineación exacta de los pies de Deku con Uraraka */
+    /* Sincronizar pies de Deku con Uraraka */
     img[alt="Deku"].personaje-social {
-        transform: translateY(2px) !important; /* Ajuste fino para nivelar pies */
+        margin-bottom: -2px !important; /* Ajuste milimétrico hacia abajo */
     }
 }
     
