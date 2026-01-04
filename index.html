@@ -360,6 +360,54 @@
         height: 110px;    /* Los hace más grandes */
       }
     }
+
+/* AJUSTES ESPECÍFICOS PARA PANTALLA MINIMIZADA (Notebook ventana pequeña) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    
+    /* 1. Ajuste de la imagen IzuochaAdult para tapar la de abajo */
+    .img-overlay {
+        left: 0 !important;
+        transform: none !important;
+        margin-left: -5% !important; /* Ajusta este % si ves que no tapa totalmente */
+        height: 110% !important;
+        bottom: -5% !important;
+    }
+
+    /* 2. Barra de búsqueda: Asegurar que se vea la lupa y no sea gigante */
+    .search-bar {
+        width: 80% !important; /* Reduce el ancho para que quepa la lupa */
+        max-width: 500px !important;
+        margin-top: 20px !important;
+    }
+
+    /* 3. Redes Sociales: Alineadas con la longitud de la barra */
+    .social-icons {
+        width: 80% !important; /* Misma anchura que la barra */
+        max-width: 500px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-end !important;
+        margin: 10px auto 0 auto !important;
+    }
+
+    /* Subir iconos de redes para dar espacio a los personajes */
+    .social-icons a img {
+        margin-bottom: 35px !important;
+    }
+
+    /* 4. Nivelar Deku Oveja y Uraraka Gata */
+    .personaje-social {
+        height: 60px !important; /* Tamaño más contenido para esta vista */
+        margin-bottom: 0 !important;
+        position: relative !important;
+        bottom: 0 !important;
+    }
+
+    /* Alineación exacta de los pies de Deku con Uraraka */
+    img[alt="Deku"].personaje-social {
+        transform: translateY(2px) !important; /* Ajuste fino para nivelar pies */
+    }
+}
     
   </style>
 </head>
