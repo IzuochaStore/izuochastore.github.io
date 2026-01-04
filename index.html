@@ -436,7 +436,7 @@
 }
 
 
-/* AJUSTES EXCLUSIVOS PARA MÓVILES (Android/iPhone) */
+    /* AJUSTES EXCLUSIVOS PARA MÓVILES (Android/iPhone) */
 @media (max-width: 600px) {
     
     .banner {
@@ -452,7 +452,7 @@
         position: relative !important;
     }
 
-    /* 1. Izuocha Adulto: Movido más a la izquierda */
+    /* 1. Izuocha Adulto: Pegado al borde izquierdo */
     .img-overlay {
         position: absolute !important;
         bottom: 0 !important;
@@ -465,7 +465,7 @@
     }
 
     .izuocha-left { 
-        left: -5% !important; /* Valor negativo para pegarlo bien al borde izquierdo */
+        left: -8% !important; /* Forzamos el pegado al borde izquierdo */
     }
 
     .izuocha-right { 
@@ -473,7 +473,7 @@
         left: auto !important; 
     }
 
-    /* 2. Barra de Búsqueda: Limpia y sin bordes blancos */
+    /* 2. Barra de Búsqueda: Restauramos Botón Lupa Verde y distribución */
     .search-bar {
         width: 65% !important; 
         height: 38px !important;
@@ -483,15 +483,18 @@
         display: flex !important;
         overflow: hidden !important;
         border: none !important;
+        background: white !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
     }
 
     .search-bar select {
         flex: 0 0 85px !important;
         width: 85px !important;
+        background-color: #28a745 !important; /* Verde original */
+        color: white !important;
         font-size: 0.75rem !important;
-        padding: 0 20px 0 8px !important;
-        background-position: right 8px center !important;
+        padding: 0 15px 0 8px !important;
+        background-position: right 5px center !important;
         background-size: 10px !important;
         border: none !important;
     }
@@ -501,49 +504,62 @@
         font-size: 0.85rem !important;
         border: none !important;
         padding: 0 10px !important;
-        outline: none !important;
+        background: white !important;
     }
 
+    /* Restauración del botón de la Lupa */
     .search-bar button {
-        flex: 0 0 40px !important;
+        flex: 0 0 42px !important;
+        width: 42px !important;
+        background-color: #28a745 !important; /* Verde original */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         border: none !important;
+        cursor: pointer !important;
     }
 
-    /* 3. Redes y Posicionamiento de Gata/Oveja */
+    .search-bar button img {
+        width: 18px !important;
+        height: 18px !important;
+        filter: brightness(0) invert(1) !important; /* Lupa en blanco */
+    }
+
+    /* 3. Iconos y Mascotas Sociales */
     .social-icons {
         width: 60% !important; 
         margin: 5px auto 0 auto !important;
         z-index: 10 !important;
-        position: relative !important; /* Necesario para posicionar a los pequeños */
+        position: relative !important;
         display: flex !important;
         justify-content: space-around !important;
-        align-items: center !important;
+        height: 45px !important; /* Espacio fijo para las mascotas */
     }
 
     .social-icons a img {
         width: 24px !important;
         height: 24px !important;
-        margin-bottom: 15px !important;
     }
 
-    /* Ajuste Individual de Personajes Sociales */
     .personaje-social {
-        height: 35px !important;
-        bottom: -5px !important; /* Los bajamos para que "pisen" el fondo del banner */
+        height: 35px !important; /* Tamaño original de las mascotas */
+        bottom: 0 !important;
         position: absolute !important;
     }
 
     /* Deku Oveja: Entre Facebook e Instagram */
     img[alt="Deku"].personaje-social {
-        left: 20% !important; 
+        left: 18% !important; 
     }
 
-    /* Uraraka Gata: Entre Instagram y Tiktok */
+    /* Uraraka Gata: Corregida entre Instagram y Tiktok */
     img[alt="Uraraka"].personaje-social {
-        left: 65% !important; /* Movida a la derecha de Instagram */
+        left: 64% !important;
         right: auto !important;
     }
 }
+
+
     
   </style>
 </head>
