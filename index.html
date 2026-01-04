@@ -1,507 +1,768 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Izuocha Store — Catálogo</title>
-  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Izuocha Store — Catálogo</title>
+  <link rel="icon" type="image/png" href="images/favicon.png" />
 
-  <style>
-    /* =========================================================
-        Reset y variables
-    ==========================================================*/
-    :root{
-      --text:#1a1a1a;
-      --muted:#6b6b6b;
-      --bg-card:#ffffff;
-      --shadow:rgba(0,0,0,0.1);
-      --accent-red:#C62828;      /* Precio (Deku/urgencia) */
-      --accent-pink:#F4A6C0;     /* Stock (Uraraka) */
-      --accent-pink-text:#5a2440;/* Texto sobre rosa suave */
-      --separator:#ffffff;       /* Línea blanca */
-    }
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%}
-    
-    body {
-      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
-      background-size: 100% auto;
-      background-attachment: scroll;
-      line-height: 1.45;
-    }
+  <style>
+    /* =========================================================
+       Reset y variables
+    ==========================================================*/
+    :root{
+      --text:#1a1a1a;
+      --muted:#6b6b6b;
+      --bg-card:#ffffff;
+      --shadow:rgba(0,0,0,0.1);
+      --accent-red:#C62828;      /* Precio (Deku/urgencia) */
+      --accent-pink:#F4A6C0;     /* Stock (Uraraka) */
+      --accent-pink-text:#5a2440;/* Texto sobre rosa suave */
+      --separator:#ffffff;       /* Línea blanca */
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
+      background-size: 100% auto;   /* ocupa todo el ancho, altura proporcional */
+      background-attachment: scroll; /* 👈 se mueve con el scroll */
+      line-height: 1.45;
+    }
 
-    /* =========================================================
-        BANNER Y BUSCADOR (ESTILO BASE)
-    ==========================================================*/
-    .banner {
-      width: 100%;
-      aspect-ratio: 4 / 1; 
-      background: url("images/BannerAndroid.jpg") no-repeat center center;
-      background-size: contain; 
-      background-color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      position: relative;
-    }
+  /* =========================================================
+       BANNER Y BUSCADOR
+    ==========================================================*/
+    .banner {
+      width: 100%;
+      aspect-ratio: 4 / 1; 
+      background: url("images/BannerAndroid.jpg") no-repeat center center;
+      background-size: contain; 
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      position: relative;
+    }
 
-    .img-overlay {
-      position: absolute;
-      bottom: 0;
-      height: 100%;
-      width: auto;
-      z-index: 1;
-      pointer-events: none;
-    }
+    .img-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;              /* La pegamos al inicio izquierdo */
+  height: 100%;         /* Que mida lo mismo que el banner de alto */
+  width: auto;          /* Que mantenga su proporción */
+  z-index: 1;           /* Por debajo de los botones */
+  pointer-events: none; /* Para que puedas hacer clic en lo que haya debajo */
+  /* AJUSTE FINO: Si no queda exactamente encima, cambia este % */
+  margin-left: 2%;      
+}
 
-    .izuocha-left {
-      left: 0;
-      margin-left: 2%;
-    }
+    /* BARRA DE BÚSQUEDA ACTUALIZADA */
+/* BARRA DE BÚSQUEDA - ESTRUCTURA GENERAL */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    /* Un radio de 10px a 12px da ese efecto entre cuadrado y redondo */
+    border-radius: 12px; 
+    width: 50%;
+    max-width: 600px;
+    height: 48px;
+    margin: 30px auto 0 auto;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    /* Importante: oculta lo que sobresalga de las esquinas */
+    overflow: hidden; 
+    border: none;
+}
 
-    /* BARRA DE BÚSQUEDA - ESTRUCTURA GENERAL */
-    .search-bar {
-      display: flex;
-      align-items: center;
-      background: #ffffff;
-      border-radius: 12px; 
-      width: 50%;
-      max-width: 600px;
-      height: 48px;
-      margin: 30px auto 0 auto;
-      position: relative;
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      overflow: hidden; 
-      border: none;
-    }
+/* LADO IZQUIERDO: Selector Animes */
+.search-bar select {
+    flex: 0 0 140px;
+    height: 100%;
+    border: none;
+    background: #28a745;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem; /* Tamaño de letra */
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    
+    /* Bordes semi-redondeados (12px) */
+    border-radius: 12px 0 0 12px;
 
-    .search-bar select {
-      flex: 0 0 140px;
-      height: 100%;
-      border: none;
-      background: #28a745;
-      color: white;
-      font-weight: 700;
-      font-size: 1rem;
-      outline: none;
-      cursor: pointer;
-      text-align: center;
-      border-radius: 12px 0 0 12px;
-      appearance: none;
-      -webkit-appearance: none;
-      padding: 0 30px 0 10px;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center; 
-      background-size: 20px; 
-    }
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 
-    .search-bar input {
-      flex: 1;
-      border: none;
-      padding: 0 15px;
-      font-size: 0.95rem;
-      outline: none;
-    }
+    /* Ajuste de espacio para centrar texto y flecha */
+    padding: 0 30px 0 10px;
 
-    .search-bar button {
-      flex: 0 0 65px;
-      height: 100%;
-      border: none;
-      background: #28a745;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: -1px; 
-      border-radius: 0 12px 12px 0;
-      outline: none;
-    }
+    /* FLECHA BLANCA ACTUALIZADA */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    
+    /* Posición de la flecha */
+    background-position: right 12px center; 
+    
+    /* TAMAÑO AJUSTADO: 
+       Cambiamos a 20px o 22px para que iguale visualmente a la letra */
+    background-size: 20px; 
+}
 
-    .search-bar button img {
-      width: 22px;
-      height: 22px;
-      filter: brightness(0) invert(1);
-    }
+/* Para que la letra siga siendo blanca al hacer click y dentro de las opciones */
+.search-bar select option {
+    background: white;
+    color: #222; /* Las opciones por dentro se leen mejor en negro */
+}
 
-    .social-icons {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      width: 65%;           
-      max-width: 750px;
-      margin: 15px auto 0 auto;
-    }
+/* Quitar el contorno celeste y poner el verde al hacer click */
+.search-bar input:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px #28a745; /* Contorno verde interno al escribir */
+}
 
-    .social-icons a img {
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      margin-bottom: 45px; 
-    }
+/* Asegurar que el select no cambie a celeste */
+.search-bar select:focus {
+    outline: none;
+    box-shadow: none;
+}
 
-    .personaje-social {
-      height: 85px; 
-      width: auto;
-      object-fit: contain;
-      pointer-events: none;
-      margin-bottom: 0;
-    }
+/* BOTÓN DE LUPA - Restaurando el entorno verde redondeado */
+/* INPUT CENTRAL */
+.search-bar input {
+    flex: 1;
+    border: none;
+    padding: 0 15px;
+    font-size: 0.95rem;
+    outline: none;
+}
 
-    /* =========================================================
-        RESPONSIVIDAD (ESCRITORIO / NOTEBOOK)
-    ==========================================================*/
-    @media (max-width: 1100px) { .products { grid-template-columns: repeat(3, 1fr); } }
+/* LADO DERECHO: Botón Lupa */
+.search-bar button {
+    flex: 0 0 65px;
+    height: 100%;
+    border: none;
+    background: #28a745;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* El truco: un margen negativo a la derecha para que el verde 
+       se pegue al borde final y no deje ver el fondo blanco */
+    margin-right: -1px; 
+    border-radius: 0 12px 12px 0;
+    outline: none;
+}
 
-    @media (max-width: 900px) {
-      .products { grid-template-columns: repeat(2, 1fr); }
-      .modal .content { flex-direction: column; }
-      .carousel { min-height: 320px; }
-      .social-icons { width: 90%; }
-      .personaje-social { height: 60px; }
-    }
+.search-bar button img {
+    width: 22px;
+    height: 22px;
+    filter: brightness(0) invert(1);
+    display: block;
+    /* Eliminamos cualquier sombra o borde propio de la imagen */
+    border: none;
+}
 
-    @media (min-width: 900px) {
-      .banner {
-        aspect-ratio: 6 / 1; 
-        background-image: url("images/BannerNotebook.jpg");
-        gap: 16px;
-      }
-      .social-icons { margin-top: 5px; }
-      .personaje-social { height: 75px; }
-    }
+    /* REDES SOCIALES Y PERSONAJES INTERCALADOS */
+    .social-icons {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end; /* Alinea los pies a la base */
+      width: 65%;           
+      max-width: 750px;
+      margin: 15px auto 0 auto;
+    }
 
-    @media (min-width: 1300px) {
-      .social-icons { margin-top: 35px; }
-      .personaje-social { height: 110px; }
-    }
+    .social-icons a img {
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    /* SUBIR SOLO LOS ICONOS: Ajusta este margen negativo si los quieres más arriba */
+    margin-bottom: 45px; 
+}
 
-    /* AJUSTE PARA VISTA MINIMIZADA (Notebook ventana pequeña) */
-    @media (min-width: 601px) and (max-width: 1024px) {
-        .banner { overflow: hidden !important; display: flex !important; flex-direction: column !important; }
-        .search-bar { width: 85% !important; max-width: 550px !important; margin-top: 15px !important; display: flex !important; }
-        .social-icons { width: 85% !important; max-width: 550px !important; display: flex !important; justify-content: space-between !important; margin: 15px auto 0 auto !important; }
-        .social-icons a img { width: 32px !important; height: 32px !important; margin-bottom: 35px !important; }
-        .personaje-social { height: 50px !important; position: relative !important; bottom: 0 !important; }
-        img[alt="Deku"].personaje-social { transform: translateY(3px) !important; }
-        
-        /* Corrección Izuocha en vista minimizada notebook */
-        .izuocha-left { position: absolute !important; left: 0 !important; bottom: 0 !important; height: 100% !important; display: block !important; }
-        .izuocha-right { position: absolute !important; right: 0 !important; bottom: 0 !important; height: 100% !important; display: block !important; }
-    }
+    .social-icons a img:hover {
+      transform: scale(1.2);
+    }
 
-    /* =========================================================
-        AJUSTES EXCLUSIVOS PARA MÓVILES (Android/iPhone)
-    ==========================================================*/
-    @media (max-width: 600px) {
-        .banner {
-            height: auto !important;
-            aspect-ratio: 12 / 4 !important; 
-            background: #ffffff !important; 
-            background-image: url("images/BannerBlancoAndroid124.jpg") !important;
-            background-size: cover !important;
-            justify-content: flex-start !important;
-            position: relative !important;
-        }
+    .personaje-social {
+    height: 85px; 
+    width: auto;
+    object-fit: contain;
+    pointer-events: none;
+    margin-bottom: 0; /* Se quedan abajo */
+}
 
-        .img-overlay { height: 85% !important; bottom: 0 !important; }
-        .izuocha-left { left: 0 !important; margin-left: 0 !important; }
-        .izuocha-right { right: 0 !important; left: auto !important; }
+    /* =========================================================
+       RESTO DE ESTILOS (PRODUCTOS Y MODAL)
+    ==========================================================*/
+    .background {
+      background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
+      background-size: 100% auto;
+      background-attachment: scroll;
+      width: 100%;
+    }
 
-        .search-bar {
-            width: 70% !important; 
-            height: 40px !important;
-            margin: 15px auto 0 auto !important;
-            border-radius: 10px !important;
-            display: flex !important;
-            overflow: hidden !important;
-        }
+    .container { padding: 20px; background: transparent; }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .header h1 {
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
 
-        .search-bar select {
-            flex: 0 0 85px !important;
-            width: 85px !important;
-            font-size: 0.75rem !important;
-            padding: 0 18px 0 6px !important;
-            background-position: right 6px center !important;
-            background-size: 12px !important;
-        }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
 
-        .search-bar input { flex: 1 !important; font-size: 0.85rem !important; }
-        
-        .search-bar button {
-            flex: 0 0 45px !important;
-            width: 45px !important;
-            background-color: #28a745 !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
+    .product-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        .search-bar button img {
-            width: 18px !important;
-            height: 18px !important;
-            filter: brightness(0) invert(1) !important;
-            opacity: 1 !important;
-            display: block !important;
-        }
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    }
 
-        .social-icons {
-            width: 65% !important; 
-            margin: 10px auto 0 auto !important;
-            height: 40px !important;
-            align-items: flex-end !important;
-            justify-content: space-around !important;
-        }
+    .product-image { width: 100%; height: 240px; overflow: hidden; position: relative; }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .social-icons a img { width: 22px !important; height: 22px !important; margin-bottom: 12px !important; }
-        
-        .personaje-social {
-            height: 35px !important;
-            bottom: 0 !important;
-            position: absolute !important;
-        }
+    .product-info {
+      padding: 12px 14px 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-grow: 1;
+    }
 
-        img[alt="Deku"].personaje-social { left: 18% !important; }
-        img[alt="Uraraka"].personaje-social { left: 63% !important; right: auto !important; }
+    .product-info .brand { font-size: 0.88rem; color: #666; }
+    .product-info .name { font-weight: 700; font-size: 1.02rem; color: #222; }
+    .product-info .price { color: var(--accent-red); font-weight: 800; font-size: 1.02rem; }
 
-        .products { grid-template-columns: 1fr !important; }
-    }
+    .stock {
+      background: var(--accent-pink);
+      color: #fff;
+      text-align: center;
+      padding: 10px 12px;
+      font-weight: 700;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
 
-    /* RESTO DE ESTILOS MODAL Y PRODUCTOS (RESTRICTOS) */
-    .background { background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center; background-size: 100% auto; background-attachment: scroll; width: 100%; }
-    .container { padding: 20px; background: transparent; }
-    .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
-    .header h1 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.35); font-size: 1.6rem; font-weight: 700; }
-    .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    .product-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s ease; }
-    .product-card:hover { transform: translateY(-2px); }
-    .product-image { width: 100%; height: 240px; overflow: hidden; position: relative; }
-    .product-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .product-info { padding: 12px 14px 10px; text-align: center; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
-    .product-info .brand { font-size: 0.88rem; color: #666; }
-    .product-info .name { font-weight: 700; font-size: 1.02rem; color: #222; }
-    .product-info .price { color: var(--accent-red); font-weight: 800; font-size: 1.02rem; }
-    .stock { background: var(--accent-pink); color: #fff; text-align: center; padding: 10px 12px; font-weight: 700; border-top: 1px solid rgba(0,0,0,0.06); }
-    .stock.agotado { background: #b2b2b2; color: #fff; }
+    .stock.agotado { background: #b2b2b2; color: #fff; }
 
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.82); display: none; align-items: center; justify-content: center; z-index: 999; padding: 24px; }
-    .modal .sheet { width: min(920px, 94vw); max-height: 86vh; background: #fff; border-radius: 14px; display: flex; overflow: hidden; flex-direction: column; }
-    .modal .topbar { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; background: #f7f7f7; padding: 10px 14px; }
-    .modal .content { display: flex; flex-direction: row; padding: 12px; }
-    .carousel { flex: 1.15; position: relative; background: #fafafa; min-height: 360px; display: flex; align-items: center; justify-content: center; }
-    .carousel img { width: 100%; height: 100%; object-fit: contain; }
-    .carousel .btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.38); color: #fff; border: none; font-size: 2rem; padding: 0 12px; cursor: pointer; z-index: 10; }
-    .carousel .btn.left { left: 8px; }
-    .carousel .btn.right { right: 8px; }
-    .dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: #cfcfcf; cursor: pointer; }
-    .dot.active { background: #666; }
-    .detail { flex: 0.85; display: flex; flex-direction: column; padding: 10px 12px; gap: 10px; overflow-y: auto; }
-  </style>
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 24px;
+    }
+
+    .modal .sheet {
+      width: min(920px, 94vw);
+      max-height: 86vh;
+      background: #fff;
+      border-radius: 14px;
+      display: flex;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .modal .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      background: #f7f7f7;
+      padding: 10px 14px;
+    }
+
+    .modal .content { display: flex; flex-direction: row; padding: 12px; }
+    
+    .carousel { flex: 1.15; position: relative; background: #fafafa; min-height: 360px; display: flex; align-items: center; justify-content: center; }
+    .carousel img { width: 100%; height: 100%; object-fit: contain; }
+    .carousel .btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.38); color: #fff; border: none; font-size: 2rem; padding: 0 12px; cursor: pointer; }
+    .carousel .btn.left { left: 8px; }
+    .carousel .btn.right { right: 8px; }
+    
+    .dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #cfcfcf; cursor: pointer; }
+    .dot.active { background: #666; }
+    
+    .detail { flex: 0.85; display: flex; flex-direction: column; padding: 10px 12px; gap: 10px; }
+
+    /* =========================================================
+       RESPONSIVIDAD
+    ==========================================================*/
+    @media (max-width: 1100px) { .products { grid-template-columns: repeat(3, 1fr); } }
+
+    @media (max-width: 900px) {
+      .products { grid-template-columns: repeat(2, 1fr); }
+      .modal .content { flex-direction: column; }
+      .carousel { min-height: 320px; }
+      .social-icons { width: 90%; }
+      .personaje-social { height: 60px; }
+    }
+
+    @media (max-width: 600px) {
+      .products { grid-template-columns: 1fr; }
+      .search-bar { width: 90%; }
+    }
+
+    /* NOTEBOOK VENTANA CHICA */
+    @media (min-width: 900px) {
+      .banner {
+        aspect-ratio: 6 / 1; 
+        background-image: url("images/BannerNotebook.jpg");
+        gap: 16px;
+      }
+      .social-icons { margin-top: 5px; }
+      .personaje-social { height: 75px; }
+    }
+
+    /* NOTEBOOK PANTALLA COMPLETA */
+    @media (min-width: 1300px) {
+      .social-icons {
+        margin-top: 35px; /* Los baja en el eje Y */
+      }
+      .personaje-social { 
+        height: 110px;    /* Los hace más grandes */
+      }
+    }
+
+/* AJUSTE PARA VISTA MINIMIZADA (Notebook ventana pequeña) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    
+    /* 1. Contenedor Banner: Forzar que nada se escape */
+    .banner {
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    /* 2. Barra de búsqueda: Ajuste de ancho y visibilidad de lupa */
+    .search-bar {
+        width: 85% !important; 
+        max-width: 550px !important;
+        margin-top: 15px !important;
+        display: flex !important; /* Garantiza que select, input y button coexistan */
+    }
+
+    /* 3. Redes Sociales y Personajes: Alineación Total */
+    .social-icons {
+        width: 85% !important; /* Mismo ancho que la barra para alineación vertical */
+        max-width: 550px !important;
+        display: flex !important;
+        justify-content: space-between !important; /* Reparte: Facebook inicio, Instagram centro, TikTok final */
+        align-items: flex-end !important;
+        margin: 15px auto 0 auto !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Forzar que Facebook y todos los enlaces sean visibles */
+    .social-icons a {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        z-index: 20 !important;
+    }
+
+    .social-icons a img {
+        width: 32px !important; /* Un poco más pequeños para asegurar espacio */
+        height: 32px !important;
+        margin-bottom: 35px !important; /* Espacio para que los personajes quepan debajo */
+    }
+
+    /* 4. Personajes: Deku Oveja y Uraraka Gata nivelados */
+    .personaje-social {
+        height: 50px !important; /* Ajuste para que no choquen con los iconos */
+        width: auto !important;
+        margin-bottom: 0 !important;
+        position: relative !important;
+        bottom: 0 !important;
+        z-index: 15 !important;
+    }
+
+    /* Sincronización exacta de pies (Deku con Uraraka) */
+    img[alt="Deku"].personaje-social {
+        transform: translateY(3px) !important; /* Bajamos a Deku para igualar a Uraraka */
+    }
+
+    /* 5. Izuocha Adulto: Cubrimiento total a la izquierda */
+    .img-overlay {
+        position: absolute !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        height: 100% !important;
+        width: auto !important;
+        transform: none !important;
+        z-index: 1 !important;
+        object-fit: contain !important;
+        margin-left: -2px !important; /* Tapa cualquier filo de la imagen base */
+    }
+}
+
+
+    /* AJUSTES EXCLUSIVOS PARA MÓVILES (Android/iPhone) */
+@media (max-width: 600px) {
+    
+    .banner {
+        height: auto !important;
+        aspect-ratio: 12 / 4 !important; 
+        background: #ffffff !important; 
+        background-image: url("images/BannerBlancoAndroid124.jpg") !important;
+        background-size: cover !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        position: relative !important;
+    }
+
+    /* 1. Izuocha Adulto: Pegado al borde izquierdo */
+    .img-overlay {
+        position: absolute !important;
+        bottom: 0 !important;
+        height: 80% !important;
+        width: auto !important;
+        z-index: 1 !important;
+        filter: grayscale(100%) contrast(1.1); 
+        pointer-events: none;
+        object-fit: contain !important;
+    }
+
+    .izuocha-left { 
+        left: -8% !important; /* Forzamos el pegado al borde izquierdo */
+    }
+
+    .izuocha-right { 
+        right: 0 !important; 
+        left: auto !important; 
+    }
+
+    /* 2. Barra de Búsqueda: Restauramos Botón Lupa Verde y distribución */
+    .search-bar {
+        width: 65% !important; 
+        height: 38px !important;
+        margin: 12px auto 0 auto !important;
+        z-index: 10 !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        overflow: hidden !important;
+        border: none !important;
+        background: white !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    }
+
+    .search-bar select {
+        flex: 0 0 85px !important;
+        width: 85px !important;
+        background-color: #28a745 !important; /* Verde original */
+        color: white !important;
+        font-size: 0.75rem !important;
+        padding: 0 15px 0 8px !important;
+        background-position: right 5px center !important;
+        background-size: 10px !important;
+        border: none !important;
+    }
+
+    .search-bar input {
+        flex: 1 !important;
+        font-size: 0.85rem !important;
+        border: none !important;
+        padding: 0 10px !important;
+        background: white !important;
+    }
+
+    /* Restauración del botón de la Lupa */
+    .search-bar button {
+        flex: 0 0 42px !important;
+        width: 42px !important;
+        background-color: #28a745 !important; /* Verde original */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: none !important;
+        cursor: pointer !important;
+    }
+
+    .search-bar button img {
+        width: 18px !important;
+        height: 18px !important;
+        filter: brightness(0) invert(1) !important; /* Lupa en blanco */
+    }
+
+    /* 3. Iconos y Mascotas Sociales */
+    .social-icons {
+        width: 60% !important; 
+        margin: 5px auto 0 auto !important;
+        z-index: 10 !important;
+        position: relative !important;
+        display: flex !important;
+        justify-content: space-around !important;
+        height: 45px !important; /* Espacio fijo para las mascotas */
+    }
+
+    .social-icons a img {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .personaje-social {
+        height: 35px !important; /* Tamaño original de las mascotas */
+        bottom: 0 !important;
+        position: absolute !important;
+    }
+
+    /* Deku Oveja: Entre Facebook e Instagram */
+    img[alt="Deku"].personaje-social {
+        left: 18% !important; 
+    }
+
+    /* Uraraka Gata: Corregida entre Instagram y Tiktok */
+    img[alt="Uraraka"].personaje-social {
+        left: 64% !important;
+        right: auto !important;
+    }
+}
+
+
+    
+  </style>
 </head>
 
 <body>
+ 
 <div class="banner">
-  <img src="images/IzuochaAdult.jpg" class="img-overlay izuocha-left" alt="Izuocha Adulto" />
-  <img src="images/IzuochaJoven.jpg" class="img-overlay izuocha-right" alt="Izuocha Joven" />
-  
-  <div class="search-bar">
-    <select id="categorySelect">
-      <option value="all">Animes</option>
-    </select>
-    <input id="searchInput" type="text" placeholder="Buscar producto..." />
-    <button id="searchBtn" type="button">
-      <img src="images/iconLupa.png" alt="Buscar" />
-    </button>
-  </div>
+  <img src="images/IzuochaAdult.jpg" class="img-overlay izuocha-left" alt="Izuocha Adulto" />
+  
+  <img src="images/IzuochaJoven.jpg" class="img-overlay izuocha-right" alt="Izuocha Joven" />
+  
+  <div class="search-bar">
+    <select id="categorySelect">
+      <option value="all">Animes</option>
+    </select>
+    <input id="searchInput" type="text" placeholder="Buscar producto..." />
+    <button id="searchBtn" type="button">
+      <img src="images/iconLupa.png" alt="Buscar" />
+    </button>
+  </div>
 
-  <div class="social-icons">
-    <a href="#"><img src="images/iconFacebook.png" alt="Facebook"></a>
-    <img src="images/DekuSheep.png" class="personaje-social" alt="Deku">
-    <a href="#"><img src="images/iconInstagram.png" alt="Instagram"></a>
-    <img src="images/UrarakaCat.jpg" class="personaje-social" alt="Uraraka">
-    <a href="#"><img src="images/iconTiktok.png" alt="TikTok"></a>
-  </div>
+  <div class="social-icons">
+    <a href="#"><img src="images/iconFacebook.png" alt="Facebook"></a>
+    <img src="images/DekuSheep.png" class="personaje-social" alt="Deku">
+    <a href="#"><img src="images/iconInstagram.png" alt="Instagram"></a>
+    <img src="images/UrarakaCat.jpg" class="personaje-social" alt="Uraraka">
+    <a href="#"><img src="images/iconTiktok.png" alt="TikTok"></a>
+  </div>
 </div>
 
 <div class="background">
-  <div class="container">
-    <div class="header"><h1>Catálogo</h1></div>
-    <div class="products" id="productsGrid"></div>
-  </div>
+  <div class="container">
+    <div class="header"><h1>Catálogo</h1></div>
+    <div class="products" id="productsGrid"></div>
+  </div>
 </div>
 
 <div class="modal" id="productModal" aria-hidden="true">
-  <div class="sheet" role="dialog" aria-modal="true">
-    <div class="topbar">
-      <div class="title" id="modalTitle">Producto</div>
-      <button style="background:none; border:none; font-size:2rem; cursor:pointer;" id="modalCloseBtn">&times;</button>
-    </div>
-    <div class="content">
-      <div class="carousel" id="carousel">
-        <img id="carouselImage" src="" alt="Imagen del producto" />
-        <button class="btn left" id="prevBtn">&#10094;</button>
-        <button class="btn right" id="nextBtn">&#10095;</button>
-        <div class="dots" id="dots"></div>
-      </div>
-      <div class="detail">
-        <div class="brand" id="modalBrand">Brand</div>
-        <div class="name" id="modalName" style="font-size:1.4rem; font-weight:800;">Nombre</div>
-        <div class="price" id="modalPrice">$0</div>
-        <div class="stock" id="modalStock">0 en Stock</div>
-        <div class="desc" id="modalDesc" style="white-space: pre-wrap;">Descripción</div>
-      </div>
-    </div>
-  </div>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="topbar">
+      <div class="title" id="modalTitle">Producto</div>
+      <button class="close" id="modalCloseBtn">&times;</button>
+    </div>
+    <div class="content">
+      <div class="carousel" id="carousel">
+        <img id="carouselImage" src="" alt="Imagen del producto" />
+        <div class="controls">
+          <button class="btn left" id="prevBtn">&#10094;</button>
+          <button class="btn right" id="nextBtn">&#10095;</button>
+        </div>
+        <div class="dots" id="dots"></div>
+      </div>
+      <div class="detail">
+        <div class="brand" id="modalBrand">Brand</div>
+        <div class="name" id="modalName">Nombre</div>
+        <div class="price" id="modalPrice">$0</div>
+        <div class="stock" id="modalStock">0 en Stock</div>
+        <div class="desc" id="modalDesc">Descripción</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-    /* TODA LA LÓGICA DE PRODUCTOS RESTAURADA */
-    const products = [
-      {
-        id: "vaso-todoroki",
-        title: "Vaso Todoroki My Hero Academia",
-        brand: "Bandai 2021",
-        price: "$5.000 CLP",
-        stock: 1,
-        anime: "My Hero Academia",
-        images: ["images/VasoTodoroki1.3.jpg", "images/VasoTodoroki2.3.jpg", "images/VasoTodoroki3.3.jpg"],
-        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personaje: Shoto Todoroki. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
-      },
-      {
-        id: "vaso-hawks",
-        title: "Vaso Hawks My Hero Academia",
-        brand: "Bandai 2021",
-        price: "$5.000 CLP",
-        stock: 0,
-        anime: "My Hero Academia",
-        images: ["images/VasoHawks1.3.jpg", "images/VasoHawks2.3.jpg", "images/VasoHawks3.3.jpg"],
-        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personaje: Hawks. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
-      },
-      {
-        id: "vaso-bdt",
-        title: "Vaso BDT My Hero Academia",
-        brand: "Bandai 2021",
-        price: "$5.000 CLP",
-        stock: 1,
-        anime: "My Hero Academia",
-        images: ["images/VasoBDT1.3.jpg", "images/VasoBDT2.3.jpg", "images/VasoBDT3.3.jpg"],
-        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personajes: Bakugo, Deku y Todoroki. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
-      },
-      {
-        id: "vaso-rody",
-        title: "Vaso Rody My Hero Academia",
-        brand: "Bandai 2021",
-        price: "$5.000 CLP",
-        stock: 1,
-        anime: "My Hero Academia",
-        images: ["images/VasoRody1.3.jpg", "images/VasoRody2.3.jpg", "images/VasoRody3.3.jpg"],
-        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personaje: Rody. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
-      },
-      {
-        id: "vaso-bakugo",
-        title: "Vaso Bakugo My Hero Academia",
-        brand: "Bandai 2021",
-        price: "$5.000 CLP",
-        stock: 1,
-        anime: "My Hero Academia",
-        images: ["images/VasoBakugo1.3.jpg", "images/VasoBakugo2.3.jpg", "images/VasoBakugo3.3.jpg"],
-        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personaje: Katsuki Bakugo. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
-      }
-    ];
+    const products = [
+      {
+        id: "vaso-todoroki",
+        title: "Vaso Todoroki My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 1,
+        anime: "My Hero Academia",
+        images: ["images/VasoTodoroki1.3.jpg", "images/VasoTodoroki2.3.jpg", "images/VasoTodoroki3.3.jpg"],
+        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personaje: Shoto Todoroki. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
+      },
+      {
+        id: "vaso-hawks",
+        title: "Vaso Hawks My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 0,
+        anime: "My Hero Academia",
+        images: ["images/VasoHawks1.3.jpg", "images/VasoHawks2.3.jpg", "images/VasoHawks3.3.jpg"],
+        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personaje: Hawks. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
+      },
+      {
+        id: "vaso-bdt",
+        title: "Vaso BDT My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 1,
+        anime: "My Hero Academia",
+        images: ["images/VasoBDT1.3.jpg", "images/VasoBDT2.3.jpg", "images/VasoBDT3.3.jpg"],
+        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personajes: Bakugo, Deku y Todoroki. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
+      },
+      {
+        id: "vaso-rody",
+        title: "Vaso Rody My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 1,
+        anime: "My Hero Academia",
+        images: ["images/VasoRody1.3.jpg", "images/VasoRody2.3.jpg", "images/VasoRody3.3.jpg"],
+        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personaje: Rody. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
+      },
+      {
+        id: "vaso-bakugo",
+        title: "Vaso Bakugo My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 1,
+        anime: "My Hero Academia",
+        images: ["images/VasoBakugo1.3.jpg", "images/VasoBakugo2.3.jpg", "images/VasoBakugo3.3.jpg"],
+        description: "Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable. Personaje: Katsuki Bakugo. Capacidad 350ml. Altura: 12cm. Diámetro superior: 8cm. Plástico (polipropileno). Traído de Japón en perfecto estado. No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes."
+      }
+    ];
 
-    const productsGrid = document.getElementById("productsGrid");
-    function renderProducts(list){
-      productsGrid.innerHTML = "";
-      list.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.innerHTML = `
-          <div class="product-image"><img src="${p.images[0]}" alt="${p.title}"></div>
-          <div class="product-info">
-            <div class="brand">${p.brand}</div>
-            <div class="name">${p.title}</div>
-            <div class="price">${p.price}</div>
-          </div>
-          <div class="stock ${p.stock > 0 ? "" : "agotado"}">${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}</div>
-        `;
-        card.addEventListener("click", () => openModal(p));
-        productsGrid.appendChild(card);
-      });
-    }
-    renderProducts(products);
+    const productsGrid = document.getElementById("productsGrid");
+    function renderProducts(list){
+      productsGrid.innerHTML = "";
+      list.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+          <div class="product-image"><img src="${p.images[0]}" alt="${p.title}"></div>
+          <div class="product-info">
+            <div class="brand">${p.brand}</div>
+            <div class="name">${p.title}</div>
+            <div class="price">${p.price}</div>
+          </div>
+          <div class="stock ${p.stock > 0 ? "" : "agotado"}">${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}</div>
+        `;
+        card.addEventListener("click", () => openModal(p));
+        productsGrid.appendChild(card);
+      });
+    }
+    renderProducts(products);
 
-    const searchInput = document.getElementById("searchInput");
-    const searchBtn = document.getElementById("searchBtn");
-    const categorySelect = document.getElementById("categorySelect");
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const categorySelect = document.getElementById("categorySelect");
 
-    function updateCategories() {
-      const categories = new Set(products.map(p => p.anime).filter(Boolean));
-      categorySelect.innerHTML = '<option value="all">Animes</option>';
-      categories.forEach(cat => {
-        const opt = document.createElement("option");
-        opt.value = cat; opt.textContent = cat;
-        categorySelect.appendChild(opt);
-      });
-    }
+    function updateCategories() {
+      const categories = new Set(products.map(p => p.anime).filter(Boolean));
+      categorySelect.innerHTML = '<option value="all">Animes</option>';
+      categories.forEach(cat => {
+        const opt = document.createElement("option");
+        opt.value = cat; opt.textContent = cat;
+        categorySelect.appendChild(opt);
+      });
+    }
 
-    function doSearch(){
-      const q = (searchInput.value || "").toLowerCase().trim();
-      const selectedCat = categorySelect.value;
-      let filtered = products;
-      if (selectedCat !== "all") filtered = filtered.filter(p => p.anime === selectedCat);
-      if (q) filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || (p.anime && p.anime.toLowerCase().includes(q)));
-      renderProducts(filtered);
-    }
+    function doSearch(){
+      const q = (searchInput.value || "").toLowerCase().trim();
+      const selectedCat = categorySelect.value;
+      let filtered = products;
+      if (selectedCat !== "all") filtered = filtered.filter(p => p.anime === selectedCat);
+      if (q) filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || p.anime.toLowerCase().includes(q));
+      renderProducts(filtered);
+    }
 
-    searchBtn.addEventListener("click", doSearch);
-    searchInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") doSearch(); });
-    categorySelect.addEventListener("change", doSearch);
-    updateCategories();
+    searchBtn.addEventListener("click", doSearch);
+    searchInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") doSearch(); });
+    categorySelect.addEventListener("change", doSearch);
+    updateCategories();
 
-    const modal = document.getElementById("productModal");
-    const carouselImg = document.getElementById("carouselImage");
-    const dotsEl = document.getElementById("dots");
-    let currentImages = [];
-    let currentIndex = 0;
+    const modal = document.getElementById("productModal");
+    const carouselImg = document.getElementById("carouselImage");
+    const dotsEl = document.getElementById("dots");
+    let currentImages = [];
+    let currentIndex = 0;
 
-    function updateDots(){
-      dotsEl.innerHTML = "";
-      currentImages.forEach((_, i) => {
-        const dot = document.createElement("div");
-        dot.className = "dot" + (i === currentIndex ? " active" : "");
-        dot.onclick = () => { currentIndex = i; carouselImg.src = currentImages[currentIndex]; updateDots(); };
-        dotsEl.appendChild(dot);
-      });
-    }
+    function updateDots(){
+      dotsEl.innerHTML = "";
+      currentImages.forEach((_, i) => {
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === currentIndex ? " active" : "");
+        dot.onclick = () => { currentIndex = i; carouselImg.src = currentImages[currentIndex]; updateDots(); };
+        dotsEl.appendChild(dot);
+      });
+    }
 
-    function openModal(p){
-      modal.style.display = "flex";
-      document.getElementById("modalTitle").textContent = p.title;
-      document.getElementById("modalBrand").textContent = p.brand;
-      document.getElementById("modalName").textContent = p.title;
-      document.getElementById("modalPrice").textContent = p.price;
-      const ms = document.getElementById("modalStock");
-      ms.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
-      if(p.stock <= 0) ms.classList.add("agotado"); else ms.classList.remove("agotado");
-      document.getElementById("modalDesc").textContent = p.description;
-      currentImages = p.images;
-      currentIndex = 0;
-      carouselImg.src = currentImages[0];
-      updateDots();
-    }
+    function openModal(p){
+      modal.style.display = "flex";
+      document.getElementById("modalTitle").textContent = p.title;
+      document.getElementById("modalBrand").textContent = p.brand;
+      document.getElementById("modalName").textContent = p.title;
+      document.getElementById("modalPrice").textContent = p.price;
+      const ms = document.getElementById("modalStock");
+      ms.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
+      if(p.stock <= 0) ms.classList.add("agotado"); else ms.classList.remove("agotado");
+      document.getElementById("modalDesc").textContent = p.description;
+      currentImages = p.images;
+      currentIndex = 0;
+      carouselImg.src = currentImages[0];
+      updateDots();
+    }
 
-    document.getElementById("modalCloseBtn").onclick = () => modal.style.display = "none";
-    document.getElementById("nextBtn").onclick = () => { currentIndex = (currentIndex + 1) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
-    document.getElementById("prevBtn").onclick = () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
+    document.getElementById("modalCloseBtn").onclick = () => modal.style.display = "none";
+    document.getElementById("nextBtn").onclick = () => { currentIndex = (currentIndex + 1) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
+    document.getElementById("prevBtn").onclick = () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
 
-    window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
+    window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
 </script>
 </body>
 </html>
