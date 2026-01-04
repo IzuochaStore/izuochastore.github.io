@@ -81,7 +81,7 @@
 
 /* SELECTOR IZQUIERDO (Animes) */
 .search-bar select {
-    flex: 0 0 140px; /* Un poco más ancho para dar espacio */
+    flex: 0 0 140px;
     height: 100%;
     border: none;
     background: #28a745; 
@@ -91,21 +91,20 @@
     outline: none;
     cursor: pointer;
     
-    /* CENTRADO DE LA FLECHA: */
-    /* Aumentamos el espacio a la derecha para que la flecha se mueva a la izquierda */
-    padding-left: 15px;
-    padding-right: 25px; 
-    
-    /* Reset nativo para asegurar que el centrado funcione en todos los navegadores */
+    /* RESET DE APARIENCIA */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    
-    /* Re-insertamos una flecha personalizada para control total de su posición */
+
+    /* CENTRADO REAL: Quitamos el padding asimétrico */
+    padding: 0 35px 0 15px; /* Ajustamos para compensar el espacio de la flecha */
+    text-align: center;
+
+    /* FLECHA PERSONALIZADA */
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 12px center; /* Ajusta este '12px' para mover la flecha */
-    background-size: 18px;
+    background-position: right 20px center; /* La movemos más a la izquierda para no pisar el borde */
+    background-size: 16px;
 }
 
 /* Para que la letra siga siendo blanca al hacer click y dentro de las opciones */
@@ -128,17 +127,14 @@
 
    /* BOTÓN DE LUPA (Derecha) */
 .search-bar button {
-    flex: 0 0 60px;
-    height: 100%;
-    border: none;
     background: #28a745;
-    cursor: pointer;
+    border: none;
+    outline: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0; /* Evita espacios residuales */
     padding: 0;
-    outline: none;
+    margin: 0;
 }
 
 /* CORRECCIÓN DEL BORDE BLANCO EN LA IMAGEN DE LUPA */
@@ -172,23 +168,25 @@
     }
 
     .social-icons a img {
-      width: 36px;
-      height: 36px;
-      margin-bottom: 12px; /* Sube los iconos para que no queden en el suelo */
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    /* SUBIR SOLO LOS ICONOS: Ajusta este margen negativo si los quieres más arriba */
+    margin-bottom: 45px; 
+}
 
     .social-icons a img:hover {
       transform: scale(1.2);
     }
 
     .personaje-social {
-      height: 85px;         
-      width: auto;
-      object-fit: contain;
-      pointer-events: none; 
-    }
+    height: 85px; 
+    width: auto;
+    object-fit: contain;
+    pointer-events: none;
+    margin-bottom: 0; /* Se quedan abajo */
+}
 
     /* =========================================================
        RESTO DE ESTILOS (PRODUCTOS Y MODAL)
@@ -368,16 +366,16 @@
     </button>
   </div>
 
-  <div class="social-icons">
-  <a href="https://facebook.com" target="_blank"><img src="images/iconFacebook.png" alt="Facebook" /></a>
-  
-  <img src="images/DekuSheep.png" class="personaje-social" alt="Deku" />
+ <div class="social-icons">
+    <a href="#"><img src="images/iconFacebook.png" alt="Facebook"></a>
+    
+    <img src="images/DekuSheep.png" class="personaje-social" alt="Deku">
 
-  <a href="https://instagram.com" target="_blank"><img src="images/iconInstagram.png" alt="Instagram" /></a>
+    <a href="#"><img src="images/iconInstagram.png" alt="Instagram"></a>
 
-  <img src="images/UrarakaCat.jpg" class="personaje-social" alt="Uraraka" />
+    <img src="images/UrarakaCat.jpg" class="personaje-social" alt="Uraraka">
 
-  <a href="https://tiktok.com" target="_blank"><img src="images/iconTiktok.png" alt="TikTok" /></a>
+    <a href="#"><img src="images/iconTiktok.png" alt="TikTok"></a>
 </div>
   
 </div>
