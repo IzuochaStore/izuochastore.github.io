@@ -61,29 +61,56 @@
   margin-left: 2%;      
 }
 
-    .search-bar {
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,0.9);
-      border-radius: 18px;
-      width: 50%;
-      max-width: 600px;
-      height: 48px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-      margin: -8px auto 0 auto;
-      overflow: hidden;
-    }
+    /* BARRA DE BÚSQUEDA ACTUALIZADA */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 18px;
+    width: 50%;
+    max-width: 600px;
+    height: 48px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    /* Ajusta este margen para bajar la barra a tu gusto */
+    margin: 20px auto 0 auto; 
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    border: 2px solid #28a745; /* Contorno verde igual a la lupa */
+}
 
-    .search-bar select {
-      flex: 0 0 120px;
-      border: none;
-      background: transparent;
-      font-weight: 600;
-      font-size: 0.95rem;
-      outline: none;
-      text-align-last: center;
-      padding: 8px 0;
-    }
+/* Estilo del cuadro de Animes (Lado izquierdo) */
+.search-bar select {
+    flex: 0 0 130px;
+    height: 100%;
+    border: none;
+    background: #28a745; /* Verde Deku igual a la lupa */
+    color: white;        /* Letra blanca a primera vista */
+    font-weight: 600;
+    font-size: 0.95rem;
+    outline: none;
+    text-align-last: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Para que la letra siga siendo blanca al hacer click y dentro de las opciones */
+.search-bar select option {
+    background: white;
+    color: #222; /* Las opciones por dentro se leen mejor en negro */
+}
+
+/* Quitar el contorno celeste y poner el verde al hacer click */
+.search-bar input:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px #28a745; /* Contorno verde interno al escribir */
+}
+
+/* Asegurar que el select no cambie a celeste */
+.search-bar select:focus {
+    outline: none;
+    box-shadow: none;
+}
 
     .search-bar input {
       flex: 1;
