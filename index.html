@@ -67,44 +67,42 @@
     display: flex;
     align-items: center;
     background: #ffffff;
-    border-radius: 20px; /* Bordes más redondeados según tu imagen */
+    /* Un radio de 10px a 12px da ese efecto entre cuadrado y redondo */
+    border-radius: 12px; 
     width: 50%;
     max-width: 600px;
     height: 48px;
-    margin: 30px auto 0 auto; /* Bajamos la barra un poco más */
-    overflow: hidden;
+    margin: 30px auto 0 auto;
     position: relative;
     z-index: 10;
-    border: 2px solid #28a745; /* Contorno verde unificado */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    /* Importante: oculta lo que sobresalga de las esquinas */
+    overflow: hidden; 
+    border: none;
 }
 
-/* SELECTOR IZQUIERDO (Animes) */
+/* LADO IZQUIERDO: Selector Animes */
 .search-bar select {
-    flex: 0 0 140px;
+    flex: 0 0 135px;
     height: 100%;
     border: none;
-    background: #28a745; 
+    background: #28a745;
     color: white;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.95rem;
     outline: none;
     cursor: pointer;
+    text-align: center;
+    /* Mismo radio para que encaje perfecto a la izquierda */
+    border-radius: 12px 0 0 12px;
     
-    /* RESET DE APARIENCIA */
     appearance: none;
     -webkit-appearance: none;
-    -moz-appearance: none;
-
-    /* CENTRADO REAL: Quitamos el padding asimétrico */
-    padding: 0 35px 0 15px; /* Ajustamos para compensar el espacio de la flecha */
-    text-align: center;
-
-    /* FLECHA PERSONALIZADA */
+    padding: 0 25px 0 10px;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 20px center; /* La movemos más a la izquierda para no pisar el borde */
-    background-size: 16px;
+    background-position: right 12px center;
+    background-size: 14px;
 }
 
 /* Para que la letra siga siendo blanca al hacer click y dentro de las opciones */
@@ -126,39 +124,40 @@
 }
 
 /* BOTÓN DE LUPA - Restaurando el entorno verde redondeado */
+/* INPUT CENTRAL */
+.search-bar input {
+    flex: 1;
+    border: none;
+    padding: 0 15px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+/* LADO DERECHO: Botón Lupa */
 .search-bar button {
-    flex: 0 0 65px; /* Ajustamos un poco el ancho */
+    flex: 0 0 65px;
     height: 100%;
     border: none;
-    background: #28a745; /* Verde Deku */
+    background: #28a745;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     
-    /* Esto crea el efecto de cápsula solo en el lado derecho */
-    border-radius: 0 25px 25px 0; 
-    
-    /* Sombra interna opcional para que resalte como en la imagen */
-    box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+    /* El truco: un margen negativo a la derecha para que el verde 
+       se pegue al borde final y no deje ver el fondo blanco */
+    margin-right: -1px; 
+    border-radius: 0 12px 12px 0;
+    outline: none;
 }
 
-/* Asegurar que la imagen de la lupa no tenga bordes raros */
 .search-bar button img {
     width: 22px;
     height: 22px;
     filter: brightness(0) invert(1);
     display: block;
-}
-
-/* INPUT DE TEXTO */
-.search-bar input {
-    flex: 1;
+    /* Eliminamos cualquier sombra o borde propio de la imagen */
     border: none;
-    padding: 0 15px;
-    font-size: 1rem;
-    outline: none;
-    background: transparent;
 }
 
     /* REDES SOCIALES Y PERSONAJES INTERCALADOS */
