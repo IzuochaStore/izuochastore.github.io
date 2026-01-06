@@ -8,7 +8,7 @@
 
   <style>
     /* =========================================================
-        Reset y variables
+                        Reset y variables
     ========================================================== */
     :root{
       --text:#1a1a1a;
@@ -187,20 +187,39 @@
       .personaje-social { height: 110px; }
     }
 
-    /* AJUSTE PARA VISTA MINIMIZADA (Notebook ventana pequeña) */
-    @media (min-width: 601px) and (max-width: 1024px) {
-        .banner { overflow: hidden !important; display: flex !important; flex-direction: column !important; }
-        .search-bar { width: 85% !important; max-width: 550px !important; margin-top: 15px !important; display: flex !important; }
-        .social-icons { width: 85% !important; max-width: 550px !important; display: flex !important; justify-content: space-between !important; margin: 15px auto 0 auto !important; }
-        .social-icons a img { width: 32px !important; height: 32px !important; margin-bottom: 35px !important; }
-        .personaje-social { height: 50px !important; position: relative !important; bottom: 0 !important; }
-        img[alt="Deku"].personaje-social { transform: translateY(3px) !important; }
-        
-        /* Corrección Izuocha en vista minimizada notebook */
-        .izuocha-left { position: absolute !important; left: 0 !important; bottom: 0 !important; height: 100% !important; display: block !important; }
-        .izuocha-right { position: absolute !important; right: 0 !important; bottom: 0 !important; height: 100% !important; display: block !important; }
+  /* AJUSTE PARA VISTA REDUCIDA (Notebook ventana pequeña) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .banner { overflow: hidden !important; }
+    
+    /* Ampliamos el ancho para que quepan todos los iconos */
+    .social-icons { 
+        width: 95% !important; 
+        max-width: 650px !important; 
+        display: flex !important; 
+        justify-content: space-around !important; /* Distribuye mejor el espacio */
+        position: relative !important;
+        z-index: 20 !important; /* Asegura que estén al frente */
     }
 
+    /* Forzamos a que los enlaces de las redes sociales se vean */
+    .social-icons a {
+        display: block !important;
+        z-index: 30 !important;
+    }
+
+    .social-icons a img { 
+        width: 30px !important; 
+        height: 30px !important; 
+        margin-bottom: 25px !important; 
+    }
+
+    /* Bajamos un poco los personajes para que no tapen los iconos */
+    .personaje-social { 
+        height: 45px !important; 
+        position: relative !important; 
+        bottom: 0 !important; 
+    }
+}
     /* =========================================================
         AJUSTES EXCLUSIVOS PARA MÓVILES (Android/iPhone)
     ==========================================================*/
