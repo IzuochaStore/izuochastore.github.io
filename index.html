@@ -160,8 +160,8 @@
     }
 
     /* =========================================================
-        RESPONSIVIDAD (ESCRITORIO / NOTEBOOK)
-    ==========================================================*/
+                    PANTALLA COMPLETA NOTEBOOK
+       ==========================================================*/
     @media (max-width: 1100px) { .products { grid-template-columns: repeat(3, 1fr); } }
 
     @media (max-width: 900px) {
@@ -187,18 +187,24 @@
       .personaje-social { height: 110px; }
     }
 
-  /* AJUSTE PARA VISTA REDUCIDA (Notebook ventana pequeña) */
-@media (min-width: 601px) and (max-width: 1024px) {
-    .banner { overflow: hidden !important; }
+
+
+
+    
+  /* ==========================================================
+                   PANTALLA REDUCIDA NOTEBOOK
+     ========================================================== */
+@media (min-width: 601px) and (max-width: 1024px) { /* BLOQUE MEDIA QUERY */
+    .banner { overflow: hidden !important; }        /* "Una mesa" Corta cualquier cosa que intente salir de los limites del banner*/
     
     /* Ampliamos el ancho para que quepan todos los iconos */
-    .social-icons { 
-        width: 95% !important; 
-        max-width: 650px !important; 
-        display: flex !important; 
-        justify-content: space-around !important; /* Distribuye mejor el espacio */
-        position: relative !important;
-        z-index: 20 !important; /* Asegura que estén al frente */
+    .social-icons {                                 /*"Bandeja sobre la mesa"*/
+        width: 95% !important;                      /*La bandeja usara el 95% del ancho de la mesa horizontalmente*/
+        max-width: 650px !important;                /*Puedes usar el 95% del ancho de la mesa pero si eso supera los 650px te quedas en 650px*/
+        display: flex !important;                   /**/
+        justify-content: space-around !important;   /**/
+        position: relative !important;              /**/
+        z-index: 20 !important;                     /**/
     }
 
     /* Forzamos a que los enlaces de las redes sociales se vean */
@@ -220,9 +226,14 @@
         bottom: 0 !important; 
     }
 }
+
+
+
+
+    
     /* =========================================================
-        AJUSTES EXCLUSIVOS PARA MÓVILES (Android/iPhone)
-    ==========================================================*/
+                     PANTALLA VERTICAL ANDROID
+       ========================================================= */
     @media (max-width: 600px) {
         .banner {
             height: auto !important;
@@ -297,6 +308,10 @@
         .products { grid-template-columns: 1fr !important; }
     }
 
+
+
+
+    
     /* RESTO DE ESTILOS MODAL Y PRODUCTOS (RESTRICTOS) */
     .background { background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center; background-size: 100% auto; background-attachment: scroll; width: 100%; }
     .container { padding: 20px; background: transparent; }
