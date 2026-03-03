@@ -313,35 +313,32 @@
         }
 
 
-.social-icons {
-    width: 100% !important; /* Ocupamos todo el ancho disponible */
-    margin: 15px auto 5px auto !important; 
-    height: 70px !important; /* Aumentamos el alto para que quepan los personajes más grandes */
-    display: flex !important;
-    align-items: flex-end !important; /* Alineamos todo a la base */
-    justify-content: center !important; 
-    gap: 12px; /* Espacio generoso entre cada uno para evitar clics erróneos */
-    position: relative !important;
-    z-index: 99 !important;
-}
+/* Dentro de @media (max-width: 600px) */
 
-.social-icons a {
+.social-icons {
+    width: 95% !important; /* Usamos más ancho para que quepan todos */
+    margin: 5px auto 0 auto !important; 
+    height: 50px !important; /* Un poco más de altura para que no se asfixien */
     display: flex !important;
-    align-items: center !important;
-    padding: 5px; /* Esto agranda el área "tocable" sin agrandar la imagen visualmente */
+    align-items: center !important; 
+    justify-content: center !important; /* Los centramos en grupo */
+    gap: 8px; /* Espacio controlado entre cada icono y personaje */
+    position: relative !important;
+    z-index: 99 !important; /* Esto asegura que Facebook y TikTok no queden "atrás" de las fotos de los lados */
 }
 
 .social-icons a img { 
-    width: 34px !important; /* Tamaño ideal para ser "clicable" en móvil */
-    height: 34px !important; 
-    margin-bottom: 5px !important; /* Un pequeño ajuste para que no peguen al borde */
+    width: 24px !important; /* Reducimos ligeramente el tamaño para que entren los 5 */
+    height: 24px !important; 
+    margin-bottom: 0 !important;
+    display: block !important;
 }
 
 .personaje-social {
-    height: 55px !important; /* Más grandes y tiernos, pero sin tapar el buscador */
-    position: static !important;
-    margin-bottom: 0 !important;
-    flex-shrink: 0;
+    height: 38px !important; 
+    position: static !important; /* Mantenemos el flujo para que acompañen a los logos */
+    margin: 0 !important;
+    flex-shrink: 0; /* Evita que el celular intente aplastar las imágenes */
 }
 
         img[alt="Deku"].personaje-social { left: 18% !important; }
