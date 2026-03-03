@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="images/favicon.png" />
 
   <style>
-    
+  
     /* =========================================================
                         Reset y variables
        ========================================================= */
@@ -312,21 +312,26 @@
             display: block !important;
         }
 
-        .social-icons {
-            width: 65% !important; 
-            margin: 10px auto 0 auto !important;
-            height: 40px !important;
-            align-items: flex-end !important;
-            justify-content: space-around !important;
-        }
+.social-icons {
+    width: 85% !important; 
+    margin: 10px auto 5px auto !important; 
+    height: auto !important; /* Permite que el contenido dicte el alto */
+    display: flex !important;
+    align-items: center !important; /* Alinea logos y personajes al centro vertical */
+    justify-content: space-around !important;
+}
 
-        .social-icons a img { width: 22px !important; height: 22px !important; margin-bottom: 12px !important; }
-        
-        .personaje-social {
-            height: 35px !important;
-            bottom: 0 !important;
-            position: absolute !important;
-        }
+.social-icons a img { 
+    width: 26px !important; 
+    height: 26px !important; 
+    margin-bottom: 0 !important; /* Evita que el logo suba y se corte */
+}
+
+.personaje-social {
+    height: 40px !important; /* Ajustamos un poco el tamaño */
+    position: static !important; /* Cambiamos absolute por static para que respete el flujo */
+    margin-bottom: 0 !important;
+}
 
         img[alt="Deku"].personaje-social { left: 18% !important; }
         img[alt="Uraraka"].personaje-social { left: 63% !important; right: auto !important; }
