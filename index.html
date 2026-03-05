@@ -576,13 +576,14 @@
     const searchBtn = document.getElementById("searchBtn");
     const categorySelect = document.getElementById("categorySelect");
 
-    function updateCategories() {
-    // Las categorías que quieres que aparezcan
+   function updateCategories() {
+    // Definimos manualmente los animes que quieres que aparezcan
     const categoriasFijas = ["My Hero Academia", "Jujutsu Kaisen", "Chainsaw Man"];
     
-    // Limpiamos y ponemos "Todos" como primera opción (la que sale en la caja negra)
+    // El primer elemento será "Todos" (lo que verás en la caja negra)
     categorySelect.innerHTML = '<option value="all">Todos</option>';
     
+    // Agregamos el resto de los animes a la lista
     categoriasFijas.forEach(cat => {
         const opt = document.createElement("option");
         opt.value = cat; 
@@ -590,10 +591,8 @@
         categorySelect.appendChild(opt);
     });
 
-    // TRUCO VISUAL: Forzamos que el select siempre muestre "Animes" en el botón verde
-    // pero que internamente funcione con las opciones de la caja negra
-    categorySelect.style.color = "transparent"; 
-    categorySelect.style.textShadow = "0 0 0 white"; // Mantiene el texto blanco
+    // Mantenemos el truco visual para que el botón verde no cambie de color
+    categorySelect.style.color = "transparent";
 }
 
     function doSearch(){
