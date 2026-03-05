@@ -290,14 +290,15 @@
 .izuocha-right { 
     right: 0 !important; 
     left: auto !important; 
-    margin-right: 8% !important; /* Mantiene su posición X actual */
-
-    /* CAMBIO EN EJE Y: */
-    /* Usamos un valor negativo para que baje de la línea base */
-    bottom: -10px !important; 
     
-    /* Aseguramos que el alto se mantenga */
-    height: 85% !important; 
+    /* AJUSTE EJE X: Bajamos el porcentaje para que vuelva a la derecha */
+    margin-right: 2% !important; 
+
+    /* AJUSTE EJE Y: Un valor más pequeño para que baje solo un poquito */
+    bottom: -5px !important; 
+    
+    height: 85% !important;
+    position: absolute !important;
 }
 
         .search-bar {
