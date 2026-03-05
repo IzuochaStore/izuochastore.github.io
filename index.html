@@ -310,14 +310,15 @@
             overflow: hidden !important;
         }
 
-        .search-bar select {
-            flex: 0 0 85px !important;
-            width: 85px !important;
-            font-size: 0.75rem !important;
-            padding: 0 18px 0 6px !important;
-            background-position: right 6px center !important;
-            background-size: 12px !important;
-        }
+       .search-bar select {
+    flex: 0 0 75px !important; /* Un poco más estrecho para "Todos" */
+    width: 75px !important;
+    font-size: 0.8rem !important;
+    padding: 0 15px 0 5px !important;
+    background-position: right 4px center !important;
+    background-size: 10px !important;
+    text-align: center !important;
+}
 
         .search-bar input { flex: 1 !important; font-size: 0.85rem !important; }
         
@@ -421,7 +422,7 @@
   
   <div class="search-bar">
     <select id="categorySelect">
-      <option value="all">Animes</option>
+      <option value="all">Todos</option>
     </select>
     <input id="searchInput" type="text" placeholder="Buscar producto..." />
     <button id="searchBtn" type="button">
@@ -571,7 +572,22 @@
     searchBtn.addEventListener("click", doSearch);
     searchInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") doSearch(); });
     categorySelect.addEventListener("change", doSearch);
-    updateCategories();
+
+  function updateCategories() {
+    // Definimos las categorías que quieres que aparezcan fijas
+    const categoriasFijas = ["My Hero Academia", "Jujutsu Kaisen", "Chainsaw Man"];
+    
+    // Ponemos la opción inicial "Todos"
+    categorySelect.innerHTML = '<option value="all">Todos</option>';
+    
+    // Agregamos las categorías al menú desplegable
+    categoriasFijas.forEach(cat => {
+        const opt = document.createElement("option");
+        opt.value = cat; 
+        opt.textContent = cat;
+        categorySelect.appendChild(opt);
+    });
+}
 
     const modal = document.getElementById("productModal");
     const carouselImg = document.getElementById("carouselImage");
