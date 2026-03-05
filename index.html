@@ -329,18 +329,22 @@
         }
 
 
-/* Reemplaza estas clases dentro de tu @media (max-width: 600px) */
+/* Dentro de @media (max-width: 600px) */
 
 .social-icons {
     width: 98% !important; 
     margin: 10px auto 0 auto !important; 
-    height: 65px !important; /* Más altura para que quepan los iconos grandes */
+    height: 65px !important; 
     display: flex !important;
     align-items: center !important; 
     justify-content: center !important; 
-    gap: 12px; /* Espacio cómodo para no tocar el botón equivocado */
+    gap: 12px; 
     position: relative !important;
     z-index: 99 !important;
+
+    /* CAMBIO: Subimos el grupo completo hacia arriba */
+    /* Aumenta este número para que suban más, bájalo para que suban menos */
+    margin-bottom: 15px !important; 
 }
 
 .social-icons a img { 
