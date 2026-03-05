@@ -285,11 +285,20 @@
     margin-left: -5% !important; /* Puxa a imagen -5% para afuera de la izquierda */
 }
 
+/* Dentro de @media (max-width: 600px) */
+
 .izuocha-right { 
     right: 0 !important; 
     left: auto !important; 
-    margin-right: -2% !important; /* Ajusta mas o menos al centro */
-}}
+    margin-right: 8% !important; /* Mantiene su posición X actual */
+
+    /* CAMBIO EN EJE Y: */
+    /* Usamos un valor negativo para que baje de la línea base */
+    bottom: -10px !important; 
+    
+    /* Aseguramos que el alto se mantenga */
+    height: 85% !important; 
+}
 
         .search-bar {
             width: 70% !important; 
