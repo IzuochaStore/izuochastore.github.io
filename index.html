@@ -313,33 +313,22 @@
     position: relative !important; /* IMPORTANTE: Para posicionar el texto fijo */
 }
 
-/* Este es el texto que el usuario verá SIEMPRE en el botón verde */
-.search-bar::before {
-    content: "Animes";
-    position: absolute;
-    left: 8px; /* Ajusta para centrar visualmente el texto */
-    top: 50%;
-    transform: translateY(-50%);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 700;
-    z-index: 5;
-    pointer-events: none; /* Permite que el clic pase a través del texto al select */
-}
+
 
 .search-bar select {
-    flex: 0 0 85px !important; /* Un poco más ancho para que no choque con la flecha */
+    flex: 0 0 85px !important;
     width: 85px !important;
     font-size: 0.8rem !important;
     padding: 0 18px 0 6px !important;
     background-position: right 6px center !important;
     background-size: 10px !important;
     text-align: center !important;
-    
-    /* TRUCO: Escondemos el texto real del select para que solo se vea el del ::before */
-    color: transparent !important; 
-    position: relative !important;
-    z-index: 1 !important;
+    color: white !important; /* Ahora el texto será visible */
+    background-color: #28a745 !important;
+    border: none !important;
+    outline: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
 }
 
 .search-bar input { 
@@ -576,32 +565,86 @@ const searchInput = document.getElementById("searchInput");
     const searchBtn = document.getElementById("searchBtn");
     const categorySelect = document.getElementById("categorySelect");
 
-    // UNIFICAMOS: Solo una función updateCategories con todo lo necesario
     function updateCategories() {
-        const categoriasFijas = ["My Hero Academia", "Jujutsu Kaisen", "Chainsaw Man"];
-        
-        // Ponemos "Todos" como primera opción (la que se verá en la lista negra)
-        categorySelect.innerHTML = '<option value="all">Todos</option>';
-        
-        categoriasFijas.forEach(cat => {
-            const opt = document.createElement("option");
-            opt.value = cat; 
-            opt.textContent = cat;
-            categorySelect.appendChild(opt);
-        });
+    // Definimos el nombre que se muestra en la lista negra y su abreviatura
+    const categorias = [
+        { nombre: "Todos", abreviatura: "Animes", valor: "all" },
+        { nombre: "My Hero Academia", abreviatura: "MHA", valor: "My Hero Academia" },
+        { nombre: "Jujutsu Kaisen", abreviatura: "JJK", valor: "Jujutsu Kaisen" },
+        { nombre: "Chainsaw Man", abreviatura: "CSM", valor: "Chainsaw Man" }
+    ];
+    
+    const categorySelect = document.getElementById("categorySelect");
+    categorySelect.innerHTML = ''; // Limpiamos
+    
+    categorias.forEach(cat => {
+        const opt = document.createElement("option");
+        opt.value = cat.valor; 
+        opt.textContent = cat.nombre; // Lo que sale en la caja negra
+        // Guardamos la abreviatura en un atributo especial para usarla luego
+        opt.setAttribute('data-abbr', cat.abreviatura); 
+        categorySelect.appendChild(opt);
+    });
 
-        // Hacemos el texto del select transparente para que se vea el "Animes" del CSS
-        categorySelect.style.color = "transparent";
+    // Función para cambiar el texto visible por la abreviatura
+    const actualizarTextoVisible = () => {
+        const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+        const abbr = selectedOption.getAttribute('data-abbr');
+        
+        // Este es el truco: cambiamos lo que se ve en el botón verde
+        // pero la caja negra seguirá mostrando los nombres largos
+        categorySelect.style.color = "white";
+    };
+
+    // Escuchar cuando el usuario cambia de opción
+    categorySelect.removeEventListener("change", actualizarTextoVisible);
+    categorySelect.addEventListener("change", actualizarTextoVisible);
+
+      const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+    selectedOption.textContent = selectedOption.getAttribute('data-abbr');
+
+    // Inicializar con "Animes"
+    actualizarTextoVisible();
+}
+
+   function doSearch() {
+    // 1. TRUCO DE ABREVIATURAS: Cambia el texto del botón verde
+    const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+    const abbr = selectedOption.getAttribute('data-abbr');
+    
+    if (abbr) {
+        const originalText = selectedOption.textContent;
+        // Cambiamos el texto al corto (MHA, JJK, etc.) para que se vea en el botón
+        selectedOption.textContent = abbr;
+
+        // Esperamos un instante y restauramos el nombre largo 
+        // para que la lista desplegable siga viéndose bien la próxima vez
+        setTimeout(() => {
+            selectedOption.textContent = originalText;
+        }, 100);
     }
 
-    function doSearch(){
-      const q = (searchInput.value || "").toLowerCase().trim();
-      const selectedCat = categorySelect.value;
-      let filtered = products;
-      if (selectedCat !== "all") filtered = filtered.filter(p => p.anime === selectedCat);
-      if (q) filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || (p.anime && p.anime.toLowerCase().includes(q)));
-      renderProducts(filtered);
+    // 2. LÓGICA DE BÚSQUEDA Y FILTRADO
+    const q = (searchInput.value || "").toLowerCase().trim();
+    const selectedCat = categorySelect.value;
+    let filtered = products;
+
+    // Filtro por categoría (Anime)
+    if (selectedCat !== "all") {
+        filtered = filtered.filter(p => p.anime === selectedCat);
     }
+
+    // Filtro por texto (Input)
+    if (q) {
+        filtered = filtered.filter(p => 
+            p.title.toLowerCase().includes(q) || 
+            (p.anime && p.anime.toLowerCase().includes(q))
+        );
+    }
+
+    // Renderizamos los resultados
+    renderProducts(filtered);
+}
 
     searchBtn.addEventListener("click", doSearch);
     searchInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") doSearch(); });
