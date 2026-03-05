@@ -301,46 +301,72 @@
     position: absolute !important;
 }
 
-        .search-bar {
-            width: 70% !important; 
-            height: 40px !important;
-            margin: 15px auto 0 auto !important;
-            border-radius: 10px !important;
-            display: flex !important;
-            overflow: hidden !important;
-        }
+        /* Reemplaza tus bloques correspondientes por estos dentro de @media (max-width: 600px) */
 
-       .search-bar select {
-    flex: 0 0 75px !important; /* Un poco más estrecho para "Todos" */
-    width: 75px !important;
-    font-size: 0.8rem !important;
-    padding: 0 15px 0 5px !important;
-    background-position: right 4px center !important;
-    background-size: 10px !important;
-    text-align: center !important;
+.search-bar {
+    width: 70% !important; 
+    height: 40px !important;
+    margin: 15px auto 0 auto !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    overflow: hidden !important;
+    position: relative !important; /* IMPORTANTE: Para posicionar el texto fijo */
 }
 
-        .search-bar input { flex: 1 !important; font-size: 0.85rem !important; }
-        
-        .search-bar button {
-            flex: 0 0 45px !important;
-            width: 45px !important;
-            background-color: #28a745 !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
+/* Este es el texto que el usuario verá SIEMPRE en el botón verde */
+.search-bar::before {
+    content: "Animes";
+    position: absolute;
+    left: 8px; /* Ajusta para centrar visualmente el texto */
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 5;
+    pointer-events: none; /* Permite que el clic pase a través del texto al select */
+}
 
-        .search-bar button img {
-            width: 18px !important;
-            height: 18px !important;
-            filter: brightness(0) invert(1) !important;
-            opacity: 1 !important;
-            display: block !important;
-        }
+.search-bar select {
+    flex: 0 0 85px !important; /* Un poco más ancho para que no choque con la flecha */
+    width: 85px !important;
+    font-size: 0.8rem !important;
+    padding: 0 18px 0 6px !important;
+    background-position: right 6px center !important;
+    background-size: 10px !important;
+    text-align: center !important;
+    
+    /* TRUCO: Escondemos el texto real del select para que solo se vea el del ::before */
+    color: transparent !important; 
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.search-bar input { 
+    flex: 1 !important; 
+    font-size: 0.85rem !important; 
+    position: relative !important;
+    z-index: 10 !important; /* Para que el input siempre sea clickable */
+}
+
+.search-bar button {
+    flex: 0 0 45px !important;
+    width: 45px !important;
+    background-color: #28a745 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.search-bar button img {
+    width: 18px !important;
+    height: 18px !important;
+    filter: brightness(0) invert(1) !important;
+    opacity: 1 !important;
+    display: block !important;
+}
 
 
-/* Dentro de @media (max-width: 600px) */
 
 .social-icons {
     width: 98% !important; 
@@ -422,8 +448,8 @@
   
   <div class="search-bar">
     <select id="categorySelect">
-      <option value="all">Todos</option>
-    </select>
+    <option value="all">Todos</option>
+</select>
     <input id="searchInput" type="text" placeholder="Buscar producto..." />
     <button id="searchBtn" type="button">
       <img src="images/iconLupa.png" alt="Buscar" />
@@ -551,14 +577,24 @@
     const categorySelect = document.getElementById("categorySelect");
 
     function updateCategories() {
-      const categories = new Set(products.map(p => p.anime).filter(Boolean));
-      categorySelect.innerHTML = '<option value="all">Animes</option>';
-      categories.forEach(cat => {
+    // Las categorías que quieres que aparezcan
+    const categoriasFijas = ["My Hero Academia", "Jujutsu Kaisen", "Chainsaw Man"];
+    
+    // Limpiamos y ponemos "Todos" como primera opción (la que sale en la caja negra)
+    categorySelect.innerHTML = '<option value="all">Todos</option>';
+    
+    categoriasFijas.forEach(cat => {
         const opt = document.createElement("option");
-        opt.value = cat; opt.textContent = cat;
+        opt.value = cat; 
+        opt.textContent = cat;
         categorySelect.appendChild(opt);
-      });
-    }
+    });
+
+    // TRUCO VISUAL: Forzamos que el select siempre muestre "Animes" en el botón verde
+    // pero que internamente funcione con las opciones de la caja negra
+    categorySelect.style.color = "transparent"; 
+    categorySelect.style.textShadow = "0 0 0 white"; // Mantiene el texto blanco
+}
 
     function doSearch(){
       const q = (searchInput.value || "").toLowerCase().trim();
