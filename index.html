@@ -261,19 +261,35 @@
        ========================================================= */
     
     @media (max-width: 600px) {
-        .banner {
-            height: auto !important;
-            aspect-ratio: 12 / 4 !important; 
-            background: #ffffff !important; 
-            background-image: url("images/BannerBlancoAndroid31.jpg") !important;
-            background-size: cover !important;
-            justify-content: flex-start !important;
-            position: relative !important;
-        }
+        /* Solo estas 3 clases dentro de @media (max-width: 600px) */
 
-        .img-overlay { height: 85% !important; bottom: 0 !important; }
-        .izuocha-left { left: 0 !important; margin-left: 0 !important; }
-        .izuocha-right { right: 0 !important; left: auto !important; }
+.banner {
+    height: auto !important;
+    aspect-ratio: 12 / 4 !important; 
+    background: #ffffff !important; 
+    background-image: url("images/BannerBlancoAndroid31.jpg") !important;
+    background-size: cover !important;
+    justify-content: flex-start !important;
+    position: relative !important;
+    
+    /* CAMBIO 1: Agregamos overflow hidden para que las imágenes  */
+    /* con margen negativo se corten limpiamente en el borde del celular */
+    overflow: hidden !important; 
+}
+
+.img-overlay { height: 85% !important; bottom: 0 !important; }
+
+/* CAMBIO 2: Usamos márgenes negativos para pegarlas MÁS a los bordes */
+.izuocha-left { 
+    left: 0 !important; 
+    margin-left: -5% !important; /* Puxa a imagen -5% para afuera de la izquierda */
+}
+
+.izuocha-right { 
+    right: 0 !important; 
+    left: auto !important; 
+    margin-right: -5% !important; /* Puxa a imagen -5% para afuera de la derecha */
+}}
 
         .search-bar {
             width: 70% !important; 
