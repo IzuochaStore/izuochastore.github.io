@@ -572,28 +572,27 @@
     }
     renderProducts(products);
 
-    const searchInput = document.getElementById("searchInput");
+const searchInput = document.getElementById("searchInput");
     const searchBtn = document.getElementById("searchBtn");
     const categorySelect = document.getElementById("categorySelect");
 
-   function updateCategories() {
-    // Definimos manualmente los animes que quieres que aparezcan
-    const categoriasFijas = ["My Hero Academia", "Jujutsu Kaisen", "Chainsaw Man"];
-    
-    // El primer elemento será "Todos" (lo que verás en la caja negra)
-    categorySelect.innerHTML = '<option value="all">Todos</option>';
-    
-    // Agregamos el resto de los animes a la lista
-    categoriasFijas.forEach(cat => {
-        const opt = document.createElement("option");
-        opt.value = cat; 
-        opt.textContent = cat;
-        categorySelect.appendChild(opt);
-    });
+    // UNIFICAMOS: Solo una función updateCategories con todo lo necesario
+    function updateCategories() {
+        const categoriasFijas = ["My Hero Academia", "Jujutsu Kaisen", "Chainsaw Man"];
+        
+        // Ponemos "Todos" como primera opción (la que se verá en la lista negra)
+        categorySelect.innerHTML = '<option value="all">Todos</option>';
+        
+        categoriasFijas.forEach(cat => {
+            const opt = document.createElement("option");
+            opt.value = cat; 
+            opt.textContent = cat;
+            categorySelect.appendChild(opt);
+        });
 
-    // Mantenemos el truco visual para que el botón verde no cambie de color
-    categorySelect.style.color = "transparent";
-}
+        // Hacemos el texto del select transparente para que se vea el "Animes" del CSS
+        categorySelect.style.color = "transparent";
+    }
 
     function doSearch(){
       const q = (searchInput.value || "").toLowerCase().trim();
@@ -608,22 +607,10 @@
     searchInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") doSearch(); });
     categorySelect.addEventListener("change", doSearch);
 
-  function updateCategories() {
-    // Definimos las categorías que quieres que aparezcan fijas
-    const categoriasFijas = ["My Hero Academia", "Jujutsu Kaisen", "Chainsaw Man"];
-    
-    // Ponemos la opción inicial "Todos"
-    categorySelect.innerHTML = '<option value="all">Todos</option>';
-    
-    // Agregamos las categorías al menú desplegable
-    categoriasFijas.forEach(cat => {
-        const opt = document.createElement("option");
-        opt.value = cat; 
-        opt.textContent = cat;
-        categorySelect.appendChild(opt);
-    });
-}
+    // LLAMADA IMPORTANTE: Ejecutamos la función al cargar la página
+    updateCategories();
 
+    // Lógica del Modal (Se mantiene igual)
     const modal = document.getElementById("productModal");
     const carouselImg = document.getElementById("carouselImage");
     const dotsEl = document.getElementById("dots");
@@ -661,6 +648,7 @@
     document.getElementById("prevBtn").onclick = () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
 
     window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
+  
 </script>
 </body>
 </html>
