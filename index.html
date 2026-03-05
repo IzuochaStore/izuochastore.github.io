@@ -313,32 +313,32 @@
         }
 
 
-/* Dentro de @media (max-width: 600px) */
+/* Reemplaza estas clases dentro de tu @media (max-width: 600px) */
 
 .social-icons {
-    width: 95% !important; /* Usamos más ancho para que quepan todos */
-    margin: 5px auto 0 auto !important; 
-    height: 50px !important; /* Un poco más de altura para que no se asfixien */
+    width: 98% !important; 
+    margin: 10px auto 0 auto !important; 
+    height: 65px !important; /* Más altura para que quepan los iconos grandes */
     display: flex !important;
     align-items: center !important; 
-    justify-content: center !important; /* Los centramos en grupo */
-    gap: 8px; /* Espacio controlado entre cada icono y personaje */
+    justify-content: center !important; 
+    gap: 12px; /* Espacio cómodo para no tocar el botón equivocado */
     position: relative !important;
-    z-index: 99 !important; /* Esto asegura que Facebook y TikTok no queden "atrás" de las fotos de los lados */
+    z-index: 99 !important;
 }
 
 .social-icons a img { 
-    width: 24px !important; /* Reducimos ligeramente el tamaño para que entren los 5 */
-    height: 24px !important; 
+    width: 32px !important; /* Tamaño aumentado: fácil de tocar pero no gigante */
+    height: 32px !important; 
     margin-bottom: 0 !important;
     display: block !important;
 }
 
 .personaje-social {
-    height: 38px !important; 
-    position: static !important; /* Mantenemos el flujo para que acompañen a los logos */
+    height: 48px !important; /* Crecen proporcionalmente a los botones */
+    position: static !important; 
     margin: 0 !important;
-    flex-shrink: 0; /* Evita que el celular intente aplastar las imágenes */
+    flex-shrink: 0;
 }
 
         img[alt="Deku"].personaje-social { left: 18% !important; }
