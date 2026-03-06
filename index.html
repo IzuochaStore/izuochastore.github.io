@@ -181,8 +181,8 @@ body {
 /* 2. Comportamiento de las columnas según el ancho */
 @media (min-width: 1101px) {
   .products { 
-    grid-template-columns: repeat(4, 1fr) !important; /* Fuerza las 4 columnas */
-    gap: 16px; 
+    grid-template-columns: repeat(5, 1fr) !important; 
+    gap: 20px; 
   }
 }
 
@@ -408,8 +408,16 @@ body {
     img[alt="Deku"].personaje-social { left: 18% !important; }
     img[alt="Uraraka"].personaje-social { left: 63% !important; right: auto !important; }
 
-    /* 5. GRILLA DE PRODUCTOS */
-    .products { grid-template-columns: 1fr !important; }
+    /* 5. GRILLA DE PRODUCTOS ESTILO GLITCH */
+    .products { 
+        grid-template-columns: repeat(2, 1fr) !important; /* Dos productos por fila */
+        gap: 12px !important; /* Espacio más pequeño entre ellos */
+        padding: 10px !important;
+    }
+    
+    .product-info .name {
+        font-size: 0.85rem !important; /* Texto un poco más pequeño para que quepa bien */
+    }
 }
 
 
@@ -426,10 +434,37 @@ body {
     .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
     .header h1 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.35); font-size: 1.6rem; font-weight: 700; }
     .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    .product-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s ease; }
-    .product-card:hover { transform: translateY(-2px); }
-    .product-image { width: 100%; height: 240px; overflow: hidden; position: relative; }
-    .product-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.product-card { 
+    background: #fff; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12); 
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    border: 3px solid transparent; /* Borde invisible base */
+}
+    /* El borde verde al pasar el dedo o el mouse */
+.product-card:hover, .product-card:active { 
+    transform: translateY(-4px); 
+    border-color: #28a745; /* El verde de tu barra de búsqueda */
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.2);
+}
+    .product-image { 
+    width: 100%; 
+    aspect-ratio: 1 / 1; /* Proporción cuadrada como Glitch */
+    overflow: hidden; 
+    position: relative; 
+    background: #f9f9f9;
+}
+
+.product-image img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* Ajusta la foto sin estirarla */
+    display: block; 
+}
     .product-info { padding: 12px 14px 10px; text-align: center; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
     .product-info .brand { font-size: 0.88rem; color: #666; }
     .product-info .name { font-weight: 700; font-size: 1.02rem; color: #222; }
