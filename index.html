@@ -25,13 +25,12 @@
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
     
-   body {
+body {
   font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
   color: var(--text);
-  /* Cambiamos la configuración del fondo */
-  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
-  background-size: cover; /* Esto hace que la imagen cubra toda la pantalla sin deformarse */
-  background-attachment: fixed; /* Esto deja el fondo "congelado" mientras los productos suben */
+  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
+  background-size: 100% auto; /* Como lo tenías originalmente */
+  background-attachment: scroll;
   line-height: 1.45;
 }
 
@@ -262,137 +261,140 @@
        ========================================================= */
     
     @media (max-width: 600px) {
-        /* Solo estas 3 clases dentro de @media (max-width: 600px) */
-
-.banner {
-    height: auto !important;
-    aspect-ratio: 12 / 4 !important; 
-    background: #ffffff !important; 
-    background-image: url("images/BannerBlancoAndroid31.jpg") !important;
-    background-size: cover !important;
-    justify-content: flex-start !important;
-    position: relative !important;
-    
-    /* CAMBIO 1: Agregamos overflow hidden para que las imágenes  */
-    /* con margen negativo se corten limpiamente en el borde del celular */
-    overflow: hidden !important; 
-}
-
-.img-overlay { height: 85% !important; bottom: 0 !important; }
-
-/* CAMBIO 2: Usamos márgenes negativos para pegarlas MÁS a los bordes */
-.izuocha-left { 
-    left: 0 !important; 
-    margin-left: -5% !important; /* Puxa a imagen -5% para afuera de la izquierda */
-}
-
-/* Dentro de @media (max-width: 600px) */
-
-.izuocha-right { 
-    right: 0 !important; 
-    left: auto !important; 
-    
-    /* AJUSTE EJE X: Bajamos el porcentaje para que vuelva a la derecha */
-    margin-right: -2% !important; 
-
-    /* AJUSTE EJE Y: Un valor más pequeño para que baje solo un poquito */
-    bottom: -5px !important; 
-    
-    height: 85% !important;
-    position: absolute !important;
-}
-
-        /* Reemplaza tus bloques correspondientes por estos dentro de @media (max-width: 600px) */
-
-.search-bar {
-    width: 70% !important; 
-    height: 40px !important;
-    margin: 15px auto 0 auto !important;
-    border-radius: 10px !important;
-    display: flex !important;
-    overflow: hidden !important;
-    position: relative !important; /* IMPORTANTE: Para posicionar el texto fijo */
-}
-
-
-
-.search-bar select {
-    flex: 0 0 85px !important;
-    width: 85px !important;
-    font-size: 0.8rem !important;
-    padding: 0 18px 0 6px !important;
-    background-position: right 6px center !important;
-    background-size: 10px !important;
-    text-align: center !important;
-    color: white !important; /* Ahora el texto será visible */
-    background-color: #28a745 !important;
-    border: none !important;
-    outline: none !important;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-}
-
-.search-bar input { 
-    flex: 1 !important; 
-    font-size: 0.85rem !important; 
-    position: relative !important;
-    z-index: 10 !important; /* Para que el input siempre sea clickable */
-}
-
-.search-bar button {
-    flex: 0 0 45px !important;
-    width: 45px !important;
-    background-color: #28a745 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-
-.search-bar button img {
-    width: 18px !important;
-    height: 18px !important;
-    filter: brightness(0) invert(1) !important;
-    opacity: 1 !important;
-    display: block !important;
-}
-
-
-
-.social-icons {
-    width: 98% !important; 
-    margin: 10px auto 0 auto !important; 
-    height: 65px !important; 
-    display: flex !important;
-    align-items: center !important; 
-    justify-content: center !important; 
-    gap: 12px; 
-    position: relative !important;
-    z-index: 99 !important;
-
-    /* CAMBIO: Subimos el grupo completo hacia arriba */
-    /* Aumenta este número para que suban más, bájalo para que suban menos */
-    margin-bottom: 15px !important; 
-}
-
-.social-icons a img { 
-    width: 32px !important; /* Tamaño aumentado: fácil de tocar pero no gigante */
-    height: 32px !important; 
-    margin-bottom: 0 !important;
-    display: block !important;
-}
-
-.personaje-social {
-    height: 48px !important; /* Crecen proporcionalmente a los botones */
-    position: static !important; 
-    margin: 0 !important;
-    flex-shrink: 0;
-}
-
-        img[alt="Deku"].personaje-social { left: 18% !important; }
-        img[alt="Uraraka"].personaje-social { left: 63% !important; right: auto !important; }
-
-        .products { grid-template-columns: 1fr !important; }
+    /* 1. AJUSTE DE FONDO ANTI-TIRONES */
+    body {
+        background: none !important; /* Quitamos el fondo del body para evitar conflictos */
+        background-color: #ffffff !important;
     }
+
+    .fixed-bg-android {
+        display: block !important; /* Solo aparece en Android/Móvil */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
+        background-size: cover;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .background { background: transparent !important; }
+
+    /* 2. BANNER Y PERSONAJES */
+    .banner {
+        height: auto !important;
+        aspect-ratio: 12 / 4 !important; 
+        background: #ffffff !important; 
+        background-image: url("images/BannerBlancoAndroid31.jpg") !important;
+        background-size: cover !important;
+        justify-content: flex-start !important;
+        position: relative !important;
+        overflow: hidden !important; 
+    }
+
+    .img-overlay { height: 85% !important; bottom: 0 !important; }
+
+    .izuocha-left { 
+        left: 0 !important; 
+        margin-left: -5% !important; 
+    }
+
+    .izuocha-right { 
+        right: 0 !important; 
+        left: auto !important; 
+        margin-right: -2% !important; 
+        bottom: -5px !important; 
+        height: 85% !important;
+        position: absolute !important;
+    }
+
+    /* 3. BARRA DE BÚSQUEDA */
+    .search-bar {
+        width: 70% !important; 
+        height: 40px !important;
+        margin: 15px auto 0 auto !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    .search-bar select {
+        flex: 0 0 85px !important;
+        width: 85px !important;
+        font-size: 0.8rem !important;
+        padding: 0 18px 0 6px !important;
+        background-position: right 6px center !important;
+        background-size: 10px !important;
+        text-align: center !important;
+        color: white !important;
+        background-color: #28a745 !important;
+        border: none !important;
+        outline: none !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+    }
+
+    .search-bar input { 
+        flex: 1 !important; 
+        font-size: 0.85rem !important; 
+        position: relative !important;
+        z-index: 10 !important;
+    }
+
+    .search-bar button {
+        flex: 0 0 45px !important;
+        width: 45px !important;
+        background-color: #28a745 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .search-bar button img {
+        width: 18px !important;
+        height: 18px !important;
+        filter: brightness(0) invert(1) !important;
+        opacity: 1 !important;
+        display: block !important;
+    }
+
+    /* 4. REDES SOCIALES Y ICONOS */
+    .social-icons {
+        width: 98% !important; 
+        margin: 10px auto 0 auto !important; 
+        height: 65px !important; 
+        display: flex !important;
+        align-items: center !important; 
+        justify-content: center !important; 
+        gap: 12px; 
+        position: relative !important;
+        z-index: 99 !important;
+        margin-bottom: 15px !important; 
+    }
+
+    .social-icons a img { 
+        width: 32px !important; 
+        height: 32px !important; 
+        margin-bottom: 0 !important;
+        display: block !important;
+    }
+
+    .personaje-social {
+        height: 48px !important; 
+        position: static !important; 
+        margin: 0 !important;
+        flex-shrink: 0;
+    }
+
+    img[alt="Deku"].personaje-social { left: 18% !important; }
+    img[alt="Uraraka"].personaje-social { left: 63% !important; right: auto !important; }
+
+    /* 5. GRILLA DE PRODUCTOS */
+    .products { grid-template-columns: 1fr !important; }
+}
 
 
 
