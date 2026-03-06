@@ -167,31 +167,41 @@ body {
     }
 
     /* =========================================================
-   PANTALLA COMPLETA NOTEBOOK (FUSIONADO)
-========================================================= */
-
-/* 1. Ajuste global de las imágenes para que sean rectangulares (3:4) */
+             PANTALLA COMPLETA NOTEBOOK
+       ========================================================= */
 
 
 
-
-/* 3. Ajustes de Banner y Redes que ya tenías */
 @media (min-width: 900px) {
   .banner {
-    aspect-ratio: 6 / 1; /* Mantiene la proporción original del banner */
+    aspect-ratio: 6 / 1; 
     background-image: url("images/BannerNotebook61.jpg");
     height: auto !important;
   }
+
+  /* --- ARREGLO DE ICONOS AQUÍ --- */
   .social-icons { 
     margin-top: 5px; 
-    width: 65%; /* Ancho original */
+    width: 65%; 
+    gap: 20px; /* Espacio entre iconos y personajes */
   }
-  .personaje-social { height: 75px; }
+
+  .social-icons a img {
+    width: 45px !important; /* Tamaño más grande para PC */
+    height: 45px !important;
+    margin-bottom: 45px !important; /* Los eleva sobre los personajes */
+  }
+
+  .personaje-social { 
+    height: 85px !important; /* Tamaño de Deku y Uraraka en PC */
+  }
 }
 
+/* Si quieres que en pantallas Gigantes se vean aún mejor */
 @media (min-width: 1300px) {
   .social-icons { margin-top: 35px; }
-  .personaje-social { height: 110px; }
+  .social-icons a img { width: 55px !important; height: 55px !important; }
+  .personaje-social { height: 110px !important; }
 }
 
 
