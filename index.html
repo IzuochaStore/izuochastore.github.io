@@ -275,21 +275,23 @@ body {
         background-color: #ffffff !important;
     }
 
-   .fixed-bg-android {
+  .fixed-bg-android {
     display: block !important;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Mantiene la capa fija para evitar tirones */
+    height: 100vh; /* Ocupa todo el alto de la pantalla */
     
-    /* CAMBIO CLAVE AQUÍ: */
-    background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
-    background-size: 100% auto; /* Forzamos a que el ancho sea siempre el 100% igual que en PC */
-    background-color: #f8d7da; /* Color de respaldo por si la imagen es corta */
+    /* CAMBIO CLAVE: Volvemos a cover pero fijamos el centro */
+    background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
+    background-size: cover !important; 
     
+    /* Mantenemos las mejoras de suavidad para Brave/Android */
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+    will-change: transform;
+    
     z-index: -1;
     pointer-events: none;
 }
