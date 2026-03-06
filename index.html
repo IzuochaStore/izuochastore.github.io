@@ -275,25 +275,21 @@ body {
         background-color: #ffffff !important;
     }
 
-    .fixed-bg-android {
+   .fixed-bg-android {
     display: block !important;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    /* 100vh asegura que cubra toda la pantalla visible en cualquier navegador */
-    height: 100vh; 
-    /* Añadimos esta línea para navegadores antiguos de Android/Safari */
-    height: -webkit-fill-available; 
+    height: 100vh; /* Mantiene la capa fija para evitar tirones */
     
-    background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
-    background-size: cover;
+    /* CAMBIO CLAVE AQUÍ: */
+    background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
+    background-size: 100% auto; /* Forzamos a que el ancho sea siempre el 100% igual que en PC */
+    background-color: #f8d7da; /* Color de respaldo por si la imagen es corta */
     
-    /* 'transform: translateZ(0)' es un truco para que el navegador use la tarjeta de video 
-       y el scroll se sienta suave como seda en cualquier móvil */
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
-    
     z-index: -1;
     pointer-events: none;
 }
