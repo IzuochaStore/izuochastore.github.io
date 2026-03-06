@@ -411,7 +411,16 @@ body {
    .container { padding: 20px; background: transparent; }
     .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
     .header h1 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.35); font-size: 1.6rem; font-weight: 700; }
-    .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .products { 
+    display: grid; 
+    /* Esto obliga a que siempre haya 4 columnas en PC */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+    /* Esto evita que las fotos crezcan al infinito en pantallas anchas */
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 20px;
+}
 .product-card { 
     background: #fff; 
     border-radius: 12px; 
