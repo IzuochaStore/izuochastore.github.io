@@ -25,14 +25,15 @@
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
     
-    body {
-      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
-      background-size: 100% auto;
-      background-attachment: scroll;
-      line-height: 1.45;
-    }
+   body {
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  color: var(--text);
+  /* Cambiamos la configuración del fondo */
+  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
+  background-size: cover; /* Esto hace que la imagen cubra toda la pantalla sin deformarse */
+  background-attachment: fixed; /* Esto deja el fondo "congelado" mientras los productos suben */
+  line-height: 1.45;
+}
 
     /* =========================================================
                     BANNER Y BUSCADOR (ESTILO BASE)
@@ -398,8 +399,18 @@
 
     
     /* RESTO DE ESTILOS MODAL Y PRODUCTOS (RESTRICTOS) */
-    .background { background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center; background-size: 100% auto; background-attachment: scroll; width: 100%; }
-    .container { padding: 20px; background: transparent; }
+    /* Dentro de @media (max-width: 600px) */
+.background { 
+  background: transparent !important; /* Quitamos cualquier fondo repetido aquí */
+  width: 100%; 
+}
+    .container { 
+  padding: 20px; 
+  background: rgba(255, 255, 255, 0.1); /* Un velo blanco casi invisible para dar contraste */
+  backdrop-filter: blur(3px); /* Difumina ligeramente el fondo detrás de los productos */
+  border-radius: 20px;
+  margin-top: 10px;
+}
     .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
     .header h1 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.35); font-size: 1.6rem; font-weight: 700; }
     .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
