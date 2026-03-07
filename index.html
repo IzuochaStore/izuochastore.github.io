@@ -400,8 +400,10 @@ body {
     /* 5. GRILLA DE PRODUCTOS ESTILO GLITCH */
     .products { 
         grid-template-columns: repeat(2, 1fr) !important; 
-        gap: 12px !important; 
+        gap: 15px !important; /* Espacio más pequeño para celular */
+        padding: 15px !important;
     }
+
     
     .product-info .name {
         font-size: 0.85rem !important; /* Texto un poco más pequeño para que quepa bien */
@@ -421,15 +423,26 @@ body {
    .container { padding: 20px; background: transparent; }
     .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
     .header h1 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.35); font-size: 1.6rem; font-weight: 700; }
-    .products { 
+/* REEMPLAZA TU BLOQUE .products POR ESTE */
+.products { 
     display: grid; 
-    /* Esto obliga a que siempre haya 4 columnas en PC */
+    
+    /* 1. Mantiene las 4 columnas en Notebook */
     grid-template-columns: repeat(4, 1fr); 
-    gap: 20px; 
-    /* Esto evita que las fotos crezcan al infinito en pantallas anchas */
+    
+    /* 2. El espacio ENTRE productos (como en Glitch) */
+    gap: 40px; 
+    
+    /* 3. El espacio entre el BORDE del fondo y los productos */
+    /* Al ser igual al gap (40px), todo se ve proporcional */
+    padding: 40px; 
+    
+    /* 4. Centra todo el catálogo */
     max-width: 1200px; 
     margin: 0 auto; 
-    padding: 20px;
+    
+    /* 5. Distribución uniforme */
+    justify-content: space-evenly;
 }
 .product-card { 
     background: #fff; 
