@@ -21,7 +21,6 @@
       --accent-pink:#ec8db0;     /* Stock (Uraraka) */
       --accent-pink-text:#5a2440;/* Texto sobre rosa suave */
       --separator:#ffffff;       /* Línea blanca */
-      --accent-deku-dark: #01744b;
     }
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
@@ -446,17 +445,16 @@ body {
     margin: 0 auto; 
     justify-content: space-evenly;
 }
-.product-card {
-    /* Cambia el borde a 3px y ponlo transparente */
-    border: 3px solid transparent; 
-    
-    /* Asegúrate de que tenga el redondeo de Glitch */
-    border-radius: 20px; 
-    
-    /* Esto es vital para que el cambio de color sea suave */
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    
-    /* Lo demás (background, shadow, etc.) se mantiene igual */
+.product-card { 
+    background: #fff; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12); 
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    border: 3px solid transparent; /* Borde invisible base */
 }
 .product-info { 
     padding: 15px 14px; /* Un poco más de espacio arriba y abajo */
@@ -469,15 +467,7 @@ body {
     .product-info .brand { font-size: 0.88rem; color: #666; }
     .product-info .name { font-weight: 700; font-size: 1.02rem; color: #222; }
     .product-info .price { color: var(--accent-red); font-weight: 800; font-size: 1.02rem; }
-    .stock { 
-      background: var(--accent-pink); 
-      color: #fff; 
-      text-align: center; 
-      padding: 10px 12px; 
-      font-weight: 700; 
-      border-top: 1px solid rgba(0,0,0,0.06); 
-      border-radius: 0 0 17px 17px;
-    }
+    .stock { background: var(--accent-pink); color: #fff; text-align: center; padding: 10px 12px; font-weight: 700; border-top: 1px solid rgba(0,0,0,0.06); }
     .stock.agotado { background: #b2b2b2; color: #fff; }
 
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.82); display: none; align-items: center; justify-content: center; z-index: 999; padding: 24px; }
@@ -509,16 +499,12 @@ body {
         display: block;
     }
 
-   .product-card:hover, .product-card:active {
-    /* Esto le da la elevación de la imagen de referencia */
-    transform: translateY(-8px); 
-    
-    /* AQUÍ usas tu nuevo verde y el grosor de 3px se activa */
-    border-color: #01744b !important; 
-    
-    /* Sombra con un toque del mismo verde para el resplandor */
-    box-shadow: 0 12px 25px rgba(1, 116, 75, 0.2); 
-}
+    /* 2. EL BORDE VERDE (También fuera de los @media para que funcione en todo) */
+    .product-card:hover, .product-card:active { 
+        transform: translateY(-4px); 
+        border-color: #01744b !important; 
+        box-shadow: 0 8px 20px rgba(42, 140, 111, 0.25);
+    }
   </style>
 </head>
 
