@@ -167,10 +167,8 @@ body {
     }
 
     /* =========================================================
-             PANTALLA COMPLETA NOTEBOOK
+            INICIO PANTALLA COMPLETA NOTEBOOK
        ========================================================= */
-
-
 
 @media (min-width: 900px) {
   .banner {
@@ -197,6 +195,12 @@ body {
   }
 }
 
+        /* =========================================================
+            FIN PANTALLA COMPLETA NOTEBOOK
+           ========================================================= */
+
+
+
 /* Si quieres que en pantallas Gigantes se vean aún mejor */
 @media (min-width: 1300px) {
   .social-icons { margin-top: 35px; }
@@ -205,11 +209,9 @@ body {
 }
 
 
-
-
     
   /* ==========================================================
-                   PANTALLA REDUCIDA NOTEBOOK
+                  INICIO PANTALLA REDUCIDA NOTEBOOK
      ========================================================== */
     
 @media (min-width: 601px) and (max-width: 1024px) { /* BLOQUE MEDIA QUERY */
@@ -252,12 +254,14 @@ body {
     }
 }
 
-
+  /*  ==========================================================
+                  FIN PANTALLA REDUCIDA NOTEBOOK
+      ========================================================== */
 
 
     
     /* =========================================================
-                     PANTALLA VERTICAL ANDROID
+                     INICIO PANTALLA VERTICAL ANDROID
        ========================================================= */
     
     @media (max-width: 600px) {
@@ -417,7 +421,9 @@ body {
     }
 }
 
-
+    /* =========================================================
+                     FIN PANTALLA VERTICAL ANDROID
+       ========================================================= */
 
 
     
@@ -505,6 +511,68 @@ body {
         border-color: #01744b !important; 
         box-shadow: 0 8px 20px rgba(42, 140, 111, 0.25);
     }
+
+    /* ESTILOS TIPO GLITCH PRODUCTIONS */
+.glitch-product-container {
+  display: flex;
+  gap: 40px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.glitch-gallery {
+  flex: 1.2;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #fdfdfd;
+  aspect-ratio: 1/1;
+}
+
+.glitch-slider {
+  display: flex;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  height: 100%;
+}
+
+.glitch-slider img {
+  min-width: 100%;
+  object-fit: contain;
+}
+
+.glitch-info { flex: 0.8; }
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.8);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 5;
+  font-size: 1.2rem;
+}
+.slider-btn.prev { left: 15px; }
+.slider-btn.next { right: 15px; }
+
+.glitch-dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+@media (max-width: 850px) {
+  .glitch-product-container { flex-direction: column; padding: 15px; }
+  .glitch-info { padding: 10px; }
+}
   </style>
 </head>
 
@@ -541,6 +609,34 @@ body {
   </div>
 </div>
 
+<div id="productDetailSection" style="display: none; padding-top: 20px;">
+  <div class="container">
+    <button onclick="closeProductDetail()" style="background:#01744b; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; margin-bottom:20px; font-weight:700;">
+      ← Volver al catálogo
+    </button>
+    
+    <div class="glitch-product-container">
+      <div class="glitch-gallery">
+        <div class="glitch-slider" id="glitchSlider">
+          </div>
+        <button class="slider-btn prev" onclick="moveSlider(-1)">&#10094;</button>
+        <button class="slider-btn next" onclick="moveSlider(1)">&#10095;</button>
+        <div class="glitch-dots" id="glitchDots"></div>
+      </div>
+
+      <div class="glitch-info">
+        <h2 id="glitchName">Nombre del Producto</h2>
+        <p id="glitchBrand" style="color:var(--muted)"></p>
+        <div id="glitchPrice" class="price" style="font-size:2rem; margin:15px 0;"></div>
+        <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
+        <div class="separator" style="height:2px; background:#eee; margin:20px 0;"></div>
+        <h3>Descripción</h3>
+        <p id="glitchDesc" style="white-space: pre-wrap; margin-top:10px; line-height:1.6;"></p>
+      </div>
+    </div>
+  </div>
+</div>
+  
 <div class="modal" id="productModal" aria-hidden="true">
   <div class="sheet" role="dialog" aria-modal="true">
     <div class="topbar">
@@ -620,7 +716,7 @@ body {
       }
     ];
 
-    const productsGrid = document.getElementById("productsGrid");
+   const productsGrid = document.getElementById("productsGrid");
     function renderProducts(list){
       productsGrid.innerHTML = "";
       list.forEach(p => {
@@ -635,7 +731,10 @@ body {
           </div>
           <div class="stock ${p.stock > 0 ? "" : "agotado"}">${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}</div>
         `;
-        card.addEventListener("click", () => openModal(p));
+        
+        // REEMPLAZAMOS LA LÍNEA DEL MODAL POR ESTA:
+        card.onclick = () => openProductDetail(p); 
+        
         productsGrid.appendChild(card);
       });
     }
@@ -750,21 +849,58 @@ const searchInput = document.getElementById("searchInput");
       });
     }
 
-    function openModal(p){
-      modal.style.display = "flex";
-      document.getElementById("modalTitle").textContent = p.title;
-      document.getElementById("modalBrand").textContent = p.brand;
-      document.getElementById("modalName").textContent = p.title;
-      document.getElementById("modalPrice").textContent = p.price;
-      const ms = document.getElementById("modalStock");
-      ms.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
-      if(p.stock <= 0) ms.classList.add("agotado"); else ms.classList.remove("agotado");
-      document.getElementById("modalDesc").textContent = p.description;
-      currentImages = p.images;
-      currentIndex = 0;
-      carouselImg.src = currentImages[0];
-      updateDots();
-    }
+    let glitchCurrentIndex = 0;
+    let glitchImages = [];
+
+function openProductDetail(p) {
+    // Escondemos el menú principal y el fondo original del catálogo
+    document.querySelector('.background').style.display = 'none';
+    document.getElementById('productDetailSection').style.display = 'block';
+
+    // Llenamos la info
+    document.getElementById('glitchName').textContent = p.title;
+    document.getElementById('glitchBrand').textContent = p.brand;
+    document.getElementById('glitchPrice').textContent = p.price;
+    document.getElementById('glitchDesc').textContent = p.description;
+    
+    const stockEl = document.getElementById('glitchStock');
+    stockEl.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
+    p.stock > 0 ? stockEl.classList.remove('agotado') : stockEl.classList.add('agotado');
+
+    // Preparamos el carrusel
+    glitchImages = p.images;
+    glitchCurrentIndex = 0;
+    const slider = document.getElementById('glitchSlider');
+    slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="product">`).join('');
+    
+    updateSlider();
+    
+    // Cambiamos la URL visualmente (como Glitch Store)
+    window.history.pushState({}, '', `#product/${p.id}`);
+    window.scrollTo(0,0);
+}
+
+  function closeProductDetail() {
+    document.querySelector('.background').style.display = 'block';
+    document.getElementById('productDetailSection').style.display = 'none';
+    window.history.pushState({}, '', window.location.pathname);
+}
+
+  function moveSlider(step) {
+    glitchCurrentIndex = (glitchCurrentIndex + step + glitchImages.length) % glitchImages.length;
+    updateSlider();
+}
+
+function updateSlider() {
+    const slider = document.getElementById('glitchSlider');
+    slider.style.transform = `translateX(-${glitchCurrentIndex * 100}%)`;
+    
+    // Actualizar puntitos
+    const dots = document.getElementById('glitchDots');
+    dots.innerHTML = glitchImages.map((_, i) => 
+    `<div class="dot ${i === glitchCurrentIndex ? 'active' : ''}" onclick="glitchCurrentIndex=${i}; updateSlider();"></div>`
+).join('');
+}
 
     document.getElementById("modalCloseBtn").onclick = () => modal.style.display = "none";
     document.getElementById("nextBtn").onclick = () => { currentIndex = (currentIndex + 1) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
