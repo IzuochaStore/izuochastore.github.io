@@ -21,6 +21,7 @@
       --accent-pink:#ec8db0;     /* Stock (Uraraka) */
       --accent-pink-text:#5a2440;/* Texto sobre rosa suave */
       --separator:#ffffff;       /* Línea blanca */
+    
     }
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
@@ -584,9 +585,8 @@ body {
   <img src="images/IzuochaDerecha.jpg" class="img-overlay izuocha-right" alt="IzuochaDerecha" />
   
   <div class="search-bar">
-    <select id="categorySelect">
-    <option value="all">Todos</option>
-</select>
+   <select id="categorySelect" onchange="irACategoria(this.value)">
+    </select>
     <input id="searchInput" type="text" placeholder="Buscar producto..." />
     <button id="searchBtn" type="button">
       <img src="images/iconLupa.png" alt="Buscar" />
@@ -747,7 +747,7 @@ const searchInput = document.getElementById("searchInput");
     function updateCategories() {
     // Definimos el nombre que se muestra en la lista negra y su abreviatura
     const categorias = [
-        { nombre: "Todos", abreviatura: "Animes", valor: "all" },
+        { nombre: "Animes", abreviatura: "Animes", valor: "all" },
         { nombre: "My Hero Academia", abreviatura: "MHA", valor: "My Hero Academia" },
         { nombre: "Jujutsu Kaisen", abreviatura: "JJK", valor: "Jujutsu Kaisen" },
         { nombre: "Chainsaw Man", abreviatura: "CSM", valor: "Chainsaw Man" }
@@ -907,6 +907,27 @@ function updateSlider() {
     document.getElementById("prevBtn").onclick = () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
 
     window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
+
+function irACategoria(valor) {
+    // 1. Forzamos el regreso al catálogo principal
+    const detalle = document.getElementById('productDetailSection');
+    const catalogo = document.querySelector('.background');
+    
+    if (detalle && catalogo) {
+        detalle.style.display = 'none';
+        catalogo.style.display = 'block';
+    }
+
+    // 2. Quitamos el ID del producto de la URL
+    window.history.pushState({}, '', window.location.pathname);
+
+    // 3. Ejecutamos la búsqueda filtrada
+    // (Llamamos a doSearch que ya la tienes programada arriba)
+    doSearch();
+
+    // 4. Subimos al inicio para que se vea el catálogo
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
   
 </script>
 </body>
