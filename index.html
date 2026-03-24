@@ -589,7 +589,7 @@ body {
   <img src="images/IzuochaDerecha.jpg" class="img-overlay izuocha-right" alt="IzuochaDerecha" />
   
   <div class="search-bar">
-   <select id="categorySelect" onchange="irACategoria(this.value)">
+  <select id="categorySelect" onchange="irACategoria(this.value)" onclick="if(this.value=='Animes') irACategoria('Animes')">
     </select>
     <input id="searchInput" type="text" placeholder="Buscar producto..." />
     <button id="searchBtn" type="button">
@@ -863,11 +863,19 @@ const searchInput = document.getElementById("searchInput");
 
     renderProducts(filtered);
 }
+// Al hacer clic en la lupa, buscamos sin borrar el texto
+searchBtn.addEventListener("click", () => doSearch(false));
 
-    searchBtn.addEventListener("click", doSearch);
-    searchInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") doSearch(); });
-    categorySelect.addEventListener("change", doSearch);
+// Al presionar Enter, buscamos sin borrar el texto
+searchInput.addEventListener("keydown", (e) => { 
+    if(e.key === "Enter") doSearch(false); 
+});
 
+// Al cambiar la categoría, ejecutamos irACategoria (para cerrar el producto) 
+// y doSearch(true) para limpiar la barra
+categorySelect.addEventListener("change", () => {
+    irACategoria(categorySelect.value);
+});
     // LLAMADA IMPORTANTE: Ejecutamos la función al cargar la página
     updateCategories();
 
@@ -947,7 +955,11 @@ function updateSlider() {
     window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
 
 function irACategoria(valor) {
-    //Fuerza el regreso al catálogo principal
+    // 1. Limpiamos la barra de búsqueda visualmente
+    const input = document.getElementById("searchInput");
+    if(input) input.value = "";
+
+    // 2. Cerramos el detalle del producto y mostramos el catálogo
     const detalle = document.getElementById('productDetailSection');
     const catalogo = document.querySelector('.background');
     
@@ -956,13 +968,15 @@ function irACategoria(valor) {
         catalogo.style.display = 'block';
     }
 
-    //Quito el ID del producto de la URL
+    // 3. Si eliges "Animes", mostramos todo. Si no, filtramos.
+    if (valor === "Animes") {
+        renderProducts(products); 
+    } else {
+        doSearch(true); // El 'true' que añadimos en tu Paso 1 limpia el filtro
+    }
+
+    // 4. Reset de URL y scroll al inicio
     window.history.pushState({}, '', window.location.pathname);
-
-    //Ejecuto la búsqueda filtrada
-    doSearch();
-
-    //Sube al inicio para que se vea el catálogo
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
   
