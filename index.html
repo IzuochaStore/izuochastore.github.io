@@ -354,13 +354,15 @@ body {
         z-index: 10 !important;
     }
 
-    .search-bar button {
-        flex: 0 0 45px !important;
-        width: 45px !important;
+      .search-bar button {
+        flex: 0 0 55px !important; /* Le damos un poco más de espacio */
+        height: 100% !important;
         background-color: #01744b !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
+        border-radius: 0 10px 10px 0 !important; /* Asegura el redondeado derecho */
+        margin-right: 0 !important;
     }
 
     .search-bar button img {
@@ -790,7 +792,7 @@ const searchInput = document.getElementById("searchInput");
     function updateCategories() {
     // Definimos el nombre que se muestra en la lista negra y su abreviatura
     const categorias = [
-        { nombre: "Animes", abreviatura: "Animes", valor: "all" },
+        { nombre: "Animes", abreviatura: "Animes", valor: "Animes" },
         { nombre: "My Hero Academia", abreviatura: "MHA", valor: "My Hero Academia" },
         { nombre: "Jujutsu Kaisen", abreviatura: "JJK", valor: "Jujutsu Kaisen" },
         { nombre: "Chainsaw Man", abreviatura: "CSM", valor: "Chainsaw Man" }
