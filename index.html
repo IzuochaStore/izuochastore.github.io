@@ -835,31 +835,25 @@ const searchInput = document.getElementById("searchInput");
     actualizarTextoVisible();
 }
 
-   function doSearch() {
-    // 1. TRUCO DE ABREVIATURAS: Cambia el texto del botón verde
-    const selectedOption = categorySelect.options[categorySelect.selectedIndex];
-    const abbr = selectedOption.getAttribute('data-abbr');
-    
-    if (abbr) {
-        const originalText = selectedOption.textContent;
-        selectedOption.textContent = abbr;
+   function doSearch(isCategoryChange = false) {
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
 
-        setTimeout(() => {
-            selectedOption.textContent = originalText;
-        }, 100);
+    // Si venimos de cambiar la categoría, limpiamos el texto
+    if (isCategoryChange) {
+        searchInput.value = "";
     }
 
-    // 2. LÓGICA DE BÚSQUEDA Y FILTRADO
     const q = (searchInput.value || "").toLowerCase().trim();
     const selectedCat = categorySelect.value;
     let filtered = products;
 
-    // Filtro por categoría (Anime)
-    if (selectedCat !== "all") {
+    // Filtro por categoría
+    if (selectedCat !== "Animes") { // Ajustado a tu valor por defecto "Animes"
         filtered = filtered.filter(p => p.anime === selectedCat);
     }
 
-    // Filtro por texto (Input)
+    // Filtro por texto
     if (q) {
         filtered = filtered.filter(p => 
             p.title.toLowerCase().includes(q) || 
@@ -867,7 +861,6 @@ const searchInput = document.getElementById("searchInput");
         );
     }
 
-    // Renderizamos los resultados
     renderProducts(filtered);
 }
 
