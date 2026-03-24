@@ -839,7 +839,16 @@ const searchInput = document.getElementById("searchInput");
     const searchInput = document.getElementById("searchInput");
     const categorySelect = document.getElementById("categorySelect");
 
-    // Si venimos de cambiar la categoría, limpiamos el texto
+    // 1. Si buscamos algo, hay que cerrar el detalle y volver al catálogo para ver los resultados
+    const detalle = document.getElementById('productDetailSection');
+    const catalogo = document.querySelector('.background');
+    
+    if (detalle && catalogo) {
+        detalle.style.display = 'none';
+        catalogo.style.display = 'block';
+    }
+
+    // 2. Si venimos de cambiar la categoría, limpiamos el texto
     if (isCategoryChange) {
         searchInput.value = "";
     }
@@ -848,12 +857,12 @@ const searchInput = document.getElementById("searchInput");
     const selectedCat = categorySelect.value;
     let filtered = products;
 
-    // Filtro por categoría
-    if (selectedCat !== "Animes") { // Ajustado a tu valor por defecto "Animes"
+    // 3. Filtro por categoría
+    if (selectedCat !== "Animes") { 
         filtered = filtered.filter(p => p.anime === selectedCat);
     }
 
-    // Filtro por texto
+    // 4. Filtro por texto
     if (q) {
         filtered = filtered.filter(p => 
             p.title.toLowerCase().includes(q) || 
@@ -862,22 +871,18 @@ const searchInput = document.getElementById("searchInput");
     }
 
     renderProducts(filtered);
+    
+    // 5. Quitamos cualquier ID de producto de la URL y subimos al inicio
+    window.history.pushState({}, '', window.location.pathname);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-// Al hacer clic en la lupa, buscamos sin borrar el texto
+
+// --- LISTENERS ---
 searchBtn.addEventListener("click", () => doSearch(false));
+searchInput.addEventListener("keydown", (e) => { if(e.key === "Enter") doSearch(false); });
+categorySelect.addEventListener("change", () => irACategoria(categorySelect.value));
 
-// Al presionar Enter, buscamos sin borrar el texto
-searchInput.addEventListener("keydown", (e) => { 
-    if(e.key === "Enter") doSearch(false); 
-});
-
-// Al cambiar la categoría, ejecutamos irACategoria (para cerrar el producto) 
-// y doSearch(true) para limpiar la barra
-categorySelect.addEventListener("change", () => {
-    irACategoria(categorySelect.value);
-});
-    // LLAMADA IMPORTANTE: Ejecutamos la función al cargar la página
-    updateCategories();
+updateCategories();
 
     // Lógica del Modal (Se mantiene igual)
     const modal = document.getElementById("productModal");
