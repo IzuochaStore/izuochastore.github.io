@@ -954,13 +954,7 @@ function updateSlider() {
     window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
 
 function irACategoria(valor) {
-    // 1. Limpia el texto de la barra de búsqueda
-    const searchInput = document.getElementById("searchInput");
-    if (searchInput) {
-        searchInput.value = ""; 
-    }
-
-    // 2. Fuerza el regreso al catálogo principal si estabas viendo un producto
+    //Fuerza el regreso al catálogo principal
     const detalle = document.getElementById('productDetailSection');
     const catalogo = document.querySelector('.background');
     
@@ -968,16 +962,6 @@ function irACategoria(valor) {
         detalle.style.display = 'none';
         catalogo.style.display = 'block';
     }
-
-    // Quito el ID del producto de la URL
-    window.history.pushState({}, '', window.location.pathname);
-
-    // Ejecuto la búsqueda filtrada (ahora con el texto vacío)
-    doSearch();
-
-    // Sube al inicio para que se vea el catálogo
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
 
     //Quito el ID del producto de la URL
     window.history.pushState({}, '', window.location.pathname);
