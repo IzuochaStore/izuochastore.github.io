@@ -796,11 +796,12 @@ const searchInput = document.getElementById("searchInput");
     function updateCategories() {
     // Definimos el nombre que se muestra en la lista negra y su abreviatura
     const categorias = [
-        { nombre: "Animes", abreviatura: "Animes", valor: "all" },
-        { nombre: "My Hero Academia", abreviatura: "MHA", valor: "My Hero Academia" },
-        { nombre: "Jujutsu Kaisen", abreviatura: "JJK", valor: "Jujutsu Kaisen" },
-        { nombre: "Chainsaw Man", abreviatura: "CSM", valor: "Chainsaw Man" }
-    ];
+    // Cambiamos 'all' por 'Animes' para que coincida con la función doSearch
+    { nombre: "Animes", abreviatura: "Animes", valor: "Animes" }, 
+    { nombre: "My Hero Academia", abreviatura: "MHA", valor: "My Hero Academia" },
+    { nombre: "Jujutsu Kaisen", abreviatura: "JJK", valor: "Jujutsu Kaisen" },
+    { nombre: "Chainsaw Man", abreviatura: "CSM", valor: "Chainsaw Man" }
+];
     
     const categorySelect = document.getElementById("categorySelect");
     categorySelect.innerHTML = ''; // Limpiamos
