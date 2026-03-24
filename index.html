@@ -612,7 +612,7 @@ body {
 <div id="productDetailSection" style="display: none; padding-top: 20px;">
   <div class="container">
     <button onclick="closeProductDetail()" style="background:#01744b; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; margin-bottom:20px; font-weight:700;">
-      ← Volver al catálogo
+       Volver al catálogo
     </button>
     
     <div class="glitch-product-container">
@@ -922,7 +922,6 @@ function irACategoria(valor) {
     window.history.pushState({}, '', window.location.pathname);
 
     // 3. Ejecutamos la búsqueda filtrada
-    // (Llamamos a doSearch que ya la tienes programada arriba)
     doSearch();
 
     // 4. Subimos al inicio para que se vea el catálogo
