@@ -166,7 +166,77 @@ body {
       pointer-events: none;
       margin-bottom: 0;
     }
+    
+/* --- 1. ESTILO GENERAL (Notebooks y Pantallas Grandes) --- */
+.header { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 16px; 
+    margin-bottom: 25px; 
+    padding: 0 40px; /* Alineado con el padding de tus productos */
+}
 
+.header h1 { 
+    color: #fff; 
+    text-shadow: 0 2px 6px rgba(0,0,0,0.35); 
+    font-size: 1.8rem; 
+    font-weight: 700; 
+}
+
+/* Contenedor del menú */
+.filter-dropdown { position: relative; display: inline-block; }
+
+/* Botón de Ordenar */
+.filter-btn {
+    background: white;
+    border: 2px solid #01744b;
+    color: #01744b;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: 0.2s;
+}
+
+.filter-btn:hover { background: #f0fdf4; }
+
+/* Icono de 3 líneas */
+.filter-icon {
+    width: 18px; height: 2px; background: #01744b; position: relative;
+}
+.filter-icon::before, .filter-icon::after {
+    content: ''; position: absolute; width: 18px; height: 2px; background: #01744b; left: 0;
+}
+.filter-icon::before { top: -6px; }
+.filter-icon::after { top: 6px; }
+
+/* Caja desplegable */
+.filter-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 110%;
+    background: white;
+    min-width: 200px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.filter-content a {
+    color: #333; padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9rem;
+}
+
+.filter-content a:hover { background: #f1f1f1; color: #01744b; }
+
+.show { display: block !important; }
+    
     /* =========================================================
             INICIO PANTALLA COMPLETA NOTEBOOK
        ========================================================= */
@@ -418,6 +488,17 @@ body {
     .product-info .name {
         font-size: 0.85rem !important; /* Texto un poco más pequeño para que quepa bien */
     }
+
+    .header { 
+        padding: 0 15px !important; 
+        margin-bottom: 15px !important; 
+    }
+    .header h1 { font-size: 1.25rem !important; }
+    .filter-btn { 
+        font-size: 0.75rem !important; 
+        padding: 6px 10px !important; 
+    }
+    .filter-content { min-width: 160px !important; }  
 }
 
     /* =========================================================
@@ -432,9 +513,7 @@ body {
   width: 100%; 
 }
    .container { padding: 20px; background: transparent; }
-    .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
-    .header h1 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.35); font-size: 1.6rem; font-weight: 700; }
-    
+  
 .products { 
     display: grid; 
     /* 4 columnas fijas para que no se vean gigantes */
@@ -615,7 +694,19 @@ body {
 
 <div class="background">
   <div class="container">
-    <div class="header"><h1>Catálogo</h1></div>
+    <div class="header">
+  <h1>Catálogo</h1>
+  <div class="filter-dropdown">
+    <button class="filter-btn" onclick="toggleFilter()">
+      <span class="filter-icon"></span>
+      Ordenar y filtrar
+    </button>
+    <div id="filterMenu" class="filter-content">
+      <a href="javascript:void(0)" onclick="ordenarProductos('menor')">Precio: Menor a Mayor</a>
+      <a href="javascript:void(0)" onclick="ordenarProductos('mayor')">Precio: Mayor a Menor</a>
+    </div>
+  </div>
+</div>
     <div class="products" id="productsGrid"></div>
   </div>
 </div>
@@ -990,6 +1081,69 @@ function irACategoria(valor) {
     window.history.pushState({}, '', window.location.pathname);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// --- LÓGICA DE ORDENAR Y FILTRAR POR PRECIO ---
+
+// 1. Función para abrir/cerrar el menú desplegable
+function toggleFilter() {
+    const menu = document.getElementById("filterMenu");
+    menu.classList.toggle("show");
+}
+
+// 2. Función principal de ordenamiento
+function ordenarProductos(orden) {
+    // Hacemos una copia de los productos actuales para no afectar la lista original
+    let listaParaOrdenar = [...products];
+
+    // Si hay una búsqueda o categoría activa, primero filtramos para ordenar solo lo que se ve
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const q = (searchInput.value || "").toLowerCase().trim();
+    const selectedCat = categorySelect.value;
+
+    // Aplicamos los filtros actuales antes de ordenar
+    listaParaOrdenar = listaParaOrdenar.filter(p => {
+        const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
+        const matchText = !q || p.title.toLowerCase().includes(q) || (p.anime && p.anime.toLowerCase().includes(q));
+        return matchCategory && matchText;
+    });
+
+    // Ahora ordenamos la lista resultante
+    listaParaOrdenar.sort((a, b) => {
+        // Convertimos "$5.000 CLP" a número (5000)
+        let precioA = parseInt(a.price.replace(/[^0-9]/g, ''));
+        let precioB = parseInt(b.price.replace(/[^0-9]/g, ''));
+
+        if (orden === 'menor') return precioA - precioB;
+        if (orden === 'mayor') return precioB - precioA;
+        return 0;
+    });
+
+    // Renderizamos la lista ordenada
+    renderProducts(listaParaOrdenar);
+    
+    // Cerramos el menú
+    toggleFilter();
+}
+
+// 3. Cerrar el menú si el usuario hace clic fuera de él
+// Nota: Reemplazamos tu window.onclick anterior por este más completo
+window.onclick = function(event) {
+    // Cerrar modal si existe
+    if (typeof modal !== 'undefined' && event.target == modal) {
+        modal.style.display = "none";
+    }
+    
+    // Cerrar menú de filtros si hace clic fuera
+    if (!event.target.closest('.filter-dropdown')) {
+        const dropdowns = document.getElementsByClassName("filter-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            if (dropdowns[i].classList.contains('show')) {
+                dropdowns[i].classList.remove('show');
+            }
+        }
+    }
+};
   
 </script>
 </body>
