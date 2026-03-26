@@ -549,8 +549,12 @@ body {
 
     
     .header { 
-        padding: 0 15px !important; /* Mismo padding horizontal que .products en Android */
+        padding: 0 15px !important; 
         margin-bottom: 20px !important; 
+        display: flex !important;
+        justify-content: space-between !important; /* Título a la izq, Botón a la der */
+        align-items: center !important;
+        width: 100% !important;
     }
     
     .header h1 { font-size: 1.25rem !important; }
@@ -565,28 +569,20 @@ body {
         height: 40px !important;
         border-radius: 10px !important;
         font-weight: 700;
-        
-        /* Restauramos un tamaño de letra más cómodo */
-        font-size: 0.85rem !important; 
-        
+        font-size: 0.8rem !important; /* Bajamos un pelín para que quepa el texto largo */
         cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        
         display: block !important;
         text-align: center;
+        padding: 0 5px 0 30px !important; /* Ajustamos padding para dar más espacio al texto */
         
-        /* Padding balanceado para el icono */
-        padding: 0 10px 0 32px !important; 
+        /* ANCHO EXACTO DE COLUMNA */
+        width: calc((100vw - 45px) / 2) !important; 
         
-        /* EL CAMBIO CLAVE: Mismo ancho exacto que un producto */
-        /* (100% total - 15px de espacio entre columnas) / 2 columnas */
-        width: calc((100% - 15px) / 2) !important;
-        
-        margin-left: 0 !important; /* Quitamos el empuje para que se alinee con la columna */
-        
-        appearance: none; 
-        -webkit-appearance: none;
+        appearance: none !important;
+        -webkit-appearance: none !important;
         white-space: nowrap;
+        overflow: hidden; /* Evita que el texto se salga */
+        text-overflow: ellipsis; /* Pone "..." si el texto no cabe */
     }
 
     /* Ajuste del contenedor para que se posicione sobre la 2da columna */
@@ -598,12 +594,15 @@ body {
         position: relative; 
     }
 
-    /* Icono blanco centrado en su espacio */
-    .filter-icon-native {
+   .filter-icon-native {
         background: white !important;
-        left: 12px !important; 
+        left: 10px !important; /* Un poco más pegado al borde */
         z-index: 5;
         width: 14px !important;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 2px;
     }
     .filter-icon-native::before, .filter-icon-native::after {
         background: white !important;
