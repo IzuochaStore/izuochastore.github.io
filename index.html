@@ -743,6 +743,8 @@ body {
       <span class="filter-icon-native"></span>
       <select id="filterSelectNative" class="filter-select-native" onchange="ordenarProductosNativo(this.value)">
         <option value="" disabled selected>Ordenar y filtrar</option>
+        <option value="default">Orden Predeterminado</option>
+        <option value="az">Nombre: A - Z</option>
         <option value="menor">Precio: Menor a Mayor</option>
         <option value="mayor">Precio: Mayor a Menor</option>
       </select>
@@ -754,6 +756,8 @@ body {
         Ordenar y filtrar
       </button>
       <div id="filterMenuCustom" class="filter-content-custom">
+        <a href="javascript:void(0)" onclick="ordenarProductosCustom('default')">Orden Predeterminado</a>
+        <a href="javascript:void(0)" onclick="ordenarProductosCustom('az')">Nombre: A - Z</a>
         <a href="javascript:void(0)" onclick="ordenarProductosCustom('menor')">Precio: Menor a Mayor</a>
         <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor')">Precio: Mayor a Menor</a>
       </div>
@@ -1158,11 +1162,11 @@ function ordenarProductosNativo(orden) {
     ordenarProductosBase(orden);
 }
 
-// 3. Lógica BASE de Ordenamiento (Usada por ambos sistemas)
 function ordenarProductosBase(orden) {
+    // 1. Clonamos la lista original para no dañarla
     let listaParaOrdenar = [...products];
 
-    // Aplicamos los filtros actuales de búsqueda y categoría antes de ordenar
+    // 2. Aplicamos filtros de búsqueda/categoría actuales
     const searchInput = document.getElementById("searchInput");
     const categorySelect = document.getElementById("categorySelect");
     const q = (searchInput.value || "").toLowerCase().trim();
@@ -1174,14 +1178,23 @@ function ordenarProductosBase(orden) {
         return matchCategory && matchText;
     });
 
-    // Ordenamos la lista resultante
-    listaParaOrdenar.sort((a, b) => {
-        let precioA = parseInt(a.price.replace(/[^0-9]/g, ''));
-        let precioB = parseInt(b.price.replace(/[^0-9]/g, ''));
-        return orden === 'menor' ? precioA - precioB : precioB - precioA;
-    });
+    // 3. LÓGICA DE ORDENAMIENTO
+    if (orden === 'az') {
+        // Orden alfabético por el título del producto
+        listaParaOrdenar.sort((a, b) => a.title.localeCompare(b.title));
+    } 
+    else if (orden === 'menor') {
+        listaParaOrdenar.sort((a, b) => parseInt(a.price.replace(/[^0-9]/g, '')) - parseInt(b.price.replace(/[^0-9]/g, '')));
+    } 
+    else if (orden === 'mayor') {
+        listaParaOrdenar.sort((a, b) => parseInt(b.price.replace(/[^0-9]/g, '')) - parseInt(a.price.replace(/[^0-9]/g, '')));
+    }
+    else if (orden === 'default') {
+        // El 'Orden Predeterminado' simplemente no aplica sort, 
+        // pero como filtramos arriba, se mantiene el orden original de tu array de código.
+    }
 
-    // Renderizamos la lista ordenada
+    // 4. Renderizamos los cambios
     renderProducts(listaParaOrdenar);
 }
 
