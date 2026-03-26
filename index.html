@@ -551,13 +551,16 @@ body {
     .header { 
         padding: 0 15px !important; 
         margin-bottom: 20px !important; 
-        display: flex !important;
-        justify-content: space-between !important; /* Título a la izq, Botón a la der */
-        align-items: center !important;
         width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important; /* Alinea 'Catálogo' a izq y botón a der */
+        align-items: center !important;
     }
     
-    .header h1 { font-size: 1.25rem !important; }
+    .header h1 {
+        font-size: 1.25rem !important; 
+        flex-shrink: 0; /* Imprescindible: El título no se aplasta */
+    }
 
     /* Ocultamos custom, mostramos nativo */
     .filter-custom-wrapper { display: none !important; }
@@ -569,22 +572,31 @@ body {
         height: 40px !important;
         border-radius: 10px !important;
         font-weight: 700;
-        font-size: 0.8rem !important; /* Bajamos un pelín para que quepa el texto largo */
+        
+        /* CAMBIO 1: Bajamos el tamaño quirúrgicamente para que el texto LARGO quepa sin saltar de línea */
+        font-size: 0.72rem !important; 
+        
         cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         display: block !important;
         text-align: center;
-        padding: 0 5px 0 30px !important; /* Ajustamos padding para dar más espacio al texto */
+
+        /* Padding: 10px balanceado a la izquierda para el icono */
+        padding: 0 5px 0 32px !important; 
         
-        /* ANCHO EXACTO DE COLUMNA */
-        width: calc((100vw - 45px) / 2) !important; 
+        /* CAMBIO 2: ANCHO MATEMÁTICO DE COLUMNA: (100% del contenedor - 15px de espacio) / 2 */
+        width: calc((100% - 15px) / 2) !important; 
+        margin-left: auto !important; /* Lo empuja a la derecha, sobre la columna 2 */
+        
+        /* CAMBIO 3: Borramos el guion y evitamos que el texto salte de línea */
+        white-space: nowrap !important;
+        overflow: hidden !important; 
+        text-overflow: ellipsis; /* Pone "..." si el usuario tiene una fuente gigante */
         
         appearance: none !important;
         -webkit-appearance: none !important;
-        white-space: nowrap;
-        overflow: hidden; /* Evita que el texto se salga */
-        text-overflow: ellipsis; /* Pone "..." si el texto no cabe */
+        background-image: none !important;
     }
-
     /* Ajuste del contenedor para que se posicione sobre la 2da columna */
     .filter-native-wrapper { 
         display: flex !important; 
