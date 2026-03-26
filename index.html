@@ -390,148 +390,235 @@ body {
     /* =========================================================
                      INICIO PANTALLA VERTICAL ANDROID
        ========================================================= */
-    
     @media (max-width: 600px) {
-    /* 1. AJUSTE DE FONDO Y BODY (Se mantiene igual) */
-    .background { background: transparent !important; overflow: visible !important; }
-    body { background: none !important; background-color: #ffffff !important; }
+    /* 1. AJUSTE DE FONDO ANTI-TIRONES */
+    .background { 
+        background: transparent !important; 
+        overflow: visible !important; /* Evita que el contenedor intente 'empujar' al fondo */
+    }
+    body {
+        background: none !important; /* Quitamos el fondo del body para evitar conflictos */
+        background-color: #ffffff !important;
+    }
 
-    .fixed-bg-android {
-        display: block !important;
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100vh;
-        background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
-        background-size: cover !important;
-        transform: translateZ(0); -webkit-transform: translateZ(0);
-        will-change: transform; z-index: -1; pointer-events: none;
-    }
+  .fixed-bg-android {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Ocupa todo el alto de la pantalla */
+    background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
+    background-size: cover !important; 
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+    pointer-events: none;
+}
 
-    /* 2. BANNER Y PERSONAJES (Se mantiene igual) */
-    .banner {
-        height: auto !important;
-        aspect-ratio: 12 / 4 !important;
-        background: #ffffff !important;
-        background-image: url("images/BannerBlancoAndroid31.jpg") !important;
-        background-size: cover !important;
-        justify-content: flex-start !important;
-        position: relative !important;
-        overflow: hidden !important;
-    }
-    .img-overlay { height: 85% !important; bottom: 0 !important; }
-    .izuocha-left { left: 0 !important; margin-left: -5% !important; }
-    .izuocha-right { 
-        right: 0 !important; left: auto !important; margin-right: -2% !important; 
-        bottom: -5px !important; height: 85% !important; position: absolute !important; 
-    }
+    .background { background: transparent !important; }
 
-    /* 3. BARRA DE BÚSQUEDA (Se mantiene igual) */
-    .search-bar {
-        width: 70% !important; height: 40px !important;
-        margin: 15px auto 0 auto !important; border-radius: 10px !important;
-        display: flex !important; overflow: hidden !important; position: relative !important;
-    }
-    .search-bar select {
-        flex: 0 0 85px !important; width: 85px !important; font-size: 0.8rem !important;
-        padding: 0 18px 0 6px !important; background-position: right 6px center !important;
-        background-size: 10px !important; text-align: center !important;
-        color: white !important; background-color: #01744b !important;
-        border: none !important; outline: none !important;
-        appearance: none !important; -webkit-appearance: none !important;
-    }
-    .search-bar input { flex: 1 !important; min-width: 0 !important; font-size: 0.85rem !important; padding: 0 10px !important; }
-    .search-bar button {
-        flex: 0 0 55px !important; height: 100% !important; background-color: #01744b !important;
-        display: flex !important; justify-content: center !important; align-items: center !important;
-        border-radius: 0 10px 10px 0 !important;
-    }
-    .search-bar button img { width: 18px !important; height: 18px !important; filter: brightness(0) invert(1) !important; }
+    /* 2. BANNER Y PERSONAJES */
+    .banner {
+        height: auto !important;
+        aspect-ratio: 12 / 4 !important; 
+        background: #ffffff !important; 
+        background-image: url("images/BannerBlancoAndroid31.jpg") !important;
+        background-size: cover !important;
+        justify-content: flex-start !important;
+        position: relative !important;
+        overflow: hidden !important; 
+    }
 
-    /* 4. REDES SOCIALES (Se mantiene igual) */
-    .social-icons {
-        width: 98% !important; margin: 10px auto 0 auto !important; height: 65px !important;
-        display: flex !important; align-items: center !important; justify-content: center !important;
-        gap: 12px; position: relative !important; z-index: 99 !important; margin-bottom: 15px !important;
-    }
-    .social-icons a img { width: 32px !important; height: 32px !important; }
-    .personaje-social { height: 48px !important; position: static !important; flex-shrink: 0; }
-    img[alt="Deku"].personaje-social { left: 18% !important; }
-    img[alt="Uraraka"].personaje-social { left: 63% !important; }
+    .img-overlay { height: 85% !important; bottom: 0 !important; }
 
-    /* 5. GRILLA DE PRODUCTOS (Se mantiene igual) */
-    .products { grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; padding: 15px !important; }
-    .product-info .name { font-size: 0.85rem !important; }
+    .izuocha-left { 
+        left: 0 !important; 
+        margin-left: -5% !important; 
+    }
 
-    /* 6. HEADER Y FILTROS - CORRECCIÓN DE ALINEAMIENTO */
-    .header { 
-        padding: 0 15px !important; 
-        margin-bottom: 20px !important; 
-        width: 100% !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-    }
-    
-    .header h1 { 
-        font-size: 1.25rem !important; 
-        flex-shrink: 0; /* Evita que el título se aplaste */
-    }
+    .izuocha-right { 
+        right: 0 !important; 
+        left: auto !important; 
+        margin-right: -2% !important; 
+        bottom: -5px !important; 
+        height: 85% !important;
+        position: absolute !important;
+    }
 
-    .filter-custom-wrapper { display: none !important; }
+    /* 3. BARRA DE BÚSQUEDA */
+    .search-bar {
+        width: 70% !important; 
+        height: 40px !important;
+        margin: 15px auto 0 auto !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
 
-    .filter-native-wrapper { 
-        display: flex !important; 
-        justify-content: flex-end !important;
-        flex-grow: 1; /* Ocupa el espacio restante sin empujar el título */
-        position: relative;
-    }
+    .search-bar select {
+        flex: 0 0 85px !important;
+        width: 85px !important;
+        font-size: 0.8rem !important;
+        padding: 0 18px 0 6px !important;
+        background-position: right 6px center !important;
+        background-size: 10px !important;
+        text-align: center !important;
+        color: white !important;
+        background-color: #01744b !important;
+        border: none !important;
+        outline: none !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+    }
 
-    .filter-select-native {
-        background-color: #01744b !important;
-        color: white !important;
-        border: none !important;
-        height: 40px !important;
-        border-radius: 10px !important;
-        font-weight: 700;
-        font-size: 0.85rem !important; 
-        
-        /* AJUSTE DE ANCHO: Quitamos el calc que lo rompió y usamos auto con padding */
-        width: auto !important;
-        min-width: 140px !important; 
-        max-width: 180px !important;
-        
-        padding: 0 12px 0 35px !important; 
-        margin-left: auto !important;
-        
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        background-image: none !important; /* Mantenemos esto para limpiar la flecha */
-        
-        display: block !important;
-        white-space: nowrap;
-        text-align: center;
-    }
+   .search-bar input { 
+    flex: 1 !important; 
+    min-width: 0 !important; 
+    font-size: 0.85rem !important; 
+    position: relative !important;
+    z-index: 10 !important;
+    border: none !important; /* Limpieza extra */
+    padding: 0 10px !important; /* Para que el texto no pegue a los bordes */
+}
 
-    .filter-icon-native {
-        background: white !important;
-        left: 12px !important; 
-        width: 14px !important;
-        height: 2px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 5;
-    }
-    
-    .filter-icon-native::before, .filter-icon-native::after {
-        content: '';
-        position: absolute;
-        width: 14px;
-        height: 2px;
-        background: white !important;
-        left: 0;
-    }
-    .filter-icon-native::before { top: -5px; }
-    .filter-icon-native::after { top: 5px; }
+
+      .search-bar button {
+        flex: 0 0 55px !important; /* Le damos un poco más de espacio */
+        height: 100% !important;
+        background-color: #01744b !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        border-radius: 0 10px 10px 0 !important; /* Asegura el redondeado derecho */
+        margin-right: 0 !important;
+    }
+
+    .search-bar button img {
+        width: 18px !important;
+        height: 18px !important;
+        filter: brightness(0) invert(1) !important;
+        opacity: 1 !important;
+        display: block !important;
+    }
+
+    .social-icons {
+        width: 98% !important; 
+        margin: 10px auto 0 auto !important; 
+        height: 65px !important; 
+        display: flex !important;
+        align-items: center !important; 
+        justify-content: center !important; 
+        gap: 12px; 
+        position: relative !important;
+        z-index: 99 !important;
+        margin-bottom: 15px !important; 
+    }
+
+    .social-icons a img { 
+        width: 32px !important; 
+        height: 32px !important; 
+        margin-bottom: 0 !important;
+        display: block !important;
+    }
+
+    .personaje-social {
+        height: 48px !important; 
+        position: static !important; 
+        margin: 0 !important;
+        flex-shrink: 0;
+    }
+
+    img[alt="Deku"].personaje-social { left: 18% !important; }
+    img[alt="Uraraka"].personaje-social { left: 63% !important; right: auto !important; }
+
+    /* 5. GRILLA DE PRODUCTOS ESTILO GLITCH */
+    .products { 
+        grid-template-columns: repeat(2, 1fr) !important; 
+        gap: 15px !important; /* Espacio más pequeño para celular */
+        padding: 15px !important;
+    }
+
+    
+    .product-info .name {
+        font-size: 0.85rem !important; /* Texto un poco más pequeño para que quepa bien */
+    }
+
+    
+    .header { 
+        padding: 0 15px !important; 
+        margin-bottom: 20px !important; 
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .header h1 { font-size: 1.25rem !important; }
+
+    /* Ocultamos custom, mostramos nativo */
+    .filter-custom-wrapper { display: none !important; }
+   /* Estilos del Select Nativo (Simetría Total con Columna 2) */
+    .filter-select-native {
+        background-color: #01744b !important;
+        color: white !important;
+        border: none !important; /* Elimina cualquier borde heredado */
+        height: 40px !important;
+        border-radius: 10px !important;
+        font-weight: 700;
+        font-size: 0.85rem !important; 
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        
+        display: block !important;
+        text-align: center;
+        
+        /* Padding: 32px a la izquierda para que el texto no choque con las 3 líneas */
+        padding: 0 10px 0 32px !important; 
+        
+        /* Ancho exacto de la segunda columna de productos */
+        width: calc((100% - 15px) / 2) !important;
+        margin-left: auto !important; /* Lo empuja a la derecha para alinearse con la 2da columna */
+        
+        /* LIMPIEZA DE ANDROID/CHROME */
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        background-image: none !important; /* ¡CLAVE! Quita la flecha que viene del buscador */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* Si el texto es muy largo, pone "..." en vez de romper el botón */
+    }
+
+    /* Ajuste del contenedor para que se posicione sobre la 2da columna */
+    .filter-native-wrapper { 
+        display: flex !important; 
+        align-items: center; 
+        justify-content: flex-end; /* Mantiene el botón sobre la columna derecha */
+        width: 100%;
+        position: relative; 
+    }
+
+    /* Icono blanco centrado en su espacio */
+    .filter-icon-native {
+        background: white !important;
+        left: 12px !important; 
+        z-index: 5;
+        width: 14px !important;
+    }
+    .filter-icon-native::before, .filter-icon-native::after {
+        background: white !important;
+    }
+    .filter-icon-native::before { top: -5px; }
+    .filter-icon-native::after { top: 5px; }
+
+/* SOLUCIÓN AL BORDE OSCURO EN ANDROID */
+    .filter-select-native:focus, 
+    .filter-select-native:active {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important; /* Elimina el resaltado de tap azul */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important; /* Mantiene la sombra normal */
+    }
+      
 }
 
     /* =========================================================
