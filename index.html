@@ -564,7 +564,7 @@ body {
         width: 100%;
         position: relative; 
     }
-  /* Estilos del Select Nativo Estilizado */
+  /* Estilos del Select Nativo Estilizado (CORREGIDO) */
     .filter-select-native {
         background-color: #01744b !important;
         color: white !important;
@@ -572,25 +572,33 @@ body {
         height: 40px !important;
         border-radius: 10px !important;
         font-weight: 700;
-        font-size: 0.8rem !important;
+        font-size: 0.85rem !important; /* Un pelín más grande para legibilidad */
         cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         
-        /* CENTRADO Y ANCHO EN ANDROID */
+        /* ALINEACIÓN Y ANCHO */
+        display: block !important;
         text-align: center;
-        padding: 0 10px 0 35px !important; /* Espacio para el icono a la izquierda */
+        /* Aumentamos el padding derecho para equilibrar el espacio del icono izquierdo */
+        padding: 0 10px 0 32px !important; 
         
-        /* Recalculamos el 75% para Android (grid-gap de 15px) */
-        width: calc((100% - (1 * 15px)) / 2 * 0.75) !important;
-        margin-left: auto; /* Pega a la derecha */
+        /* CAMBIO CLAVE: Ajustamos el cálculo para que sea el 85% en vez del 75% 
+           porque el texto "Orden Predeterminado" es muy largo para Android */
+        width: calc((100% - 15px) / 2 * 0.85) !important;
+        min-width: 140px !important; /* Evita que se comprima de más */
+        margin-left: auto; 
         
-        appearance: none; -webkit-appearance: none;
+        appearance: none; 
+        -webkit-appearance: none;
+        white-space: nowrap; /* Evita que el texto salte de línea */
     }
 
-    /* Icono blanco para Android */
+    /* Icono blanco (Ajuste de posición) */
     .filter-icon-native {
         background: white !important;
-        left: 12px !important; /* Posición fija a la izquierda del select */
+        left: 10px !important; /* Un poco más a la izquierda */
+        z-index: 5;
+        width: 14px !important;
     }
     .filter-icon-native::before, .filter-icon-native::after {
         background: white !important;
