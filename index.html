@@ -549,17 +549,19 @@ body {
 
     
     .header { 
-        padding: 0 15px !important; 
-        margin-bottom: 20px !important; 
-        width: 100% !important;
+        padding: 0 15px !important; /* Alineado con el padding de .products */
+        margin-top: 10px !important;
+        margin-bottom: 15px !important; 
         display: flex !important;
-        justify-content: space-between !important; /* Alinea 'Catálogo' a izq y botón a der */
+        justify-content: space-between !important;
         align-items: center !important;
+        width: 100% !important;
     }
-    
-    .header h1 {
-        font-size: 1.25rem !important; 
-        flex-shrink: 0; /* Imprescindible: El título no se aplasta */
+
+    .header h1 { 
+        font-size: 1.15rem !important; 
+        flex-shrink: 0; 
+        margin: 0 !important;
     }
 
     /* Ocultamos custom, mostramos nativo */
@@ -569,29 +571,26 @@ body {
         background-color: #01744b !important;
         color: white !important;
         border: none !important;
-        height: 40px !important;
-        border-radius: 10px !important;
+        height: 38px !important; /* Un poco más estilizado */
+        border-radius: 8px !important;
         font-weight: 700;
         
-        /* CAMBIO 1: Bajamos el tamaño quirúrgicamente para que el texto LARGO quepa sin saltar de línea */
-        font-size: 0.72rem !important; 
+        /* FUENTE: 0.70rem es el límite para que 'Ordenar y Filtrar' no genere guiones */
+        font-size: 0.70rem !important; 
         
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         display: block !important;
         text-align: center;
-
-        /* Padding: 10px balanceado a la izquierda para el icono */
-        padding: 0 5px 0 32px !important; 
         
-        /* CAMBIO 2: ANCHO MATEMÁTICO DE COLUMNA: (100% del contenedor - 15px de espacio) / 2 */
+        /* ANCHO: (Total - Gap de 15px) / 2 para ser idéntico a la columna */
         width: calc((100% - 15px) / 2) !important; 
-        margin-left: auto !important; /* Lo empuja a la derecha, sobre la columna 2 */
         
-        /* CAMBIO 3: Borramos el guion y evitamos que el texto salte de línea */
+        /* ELIMINAR GUIONES Y SALTOS */
         white-space: nowrap !important;
-        overflow: hidden !important; 
-        text-overflow: ellipsis; /* Pone "..." si el usuario tiene una fuente gigante */
+        overflow: hidden !important;
+        text-overflow: clip !important; /* Corta en seco para evitar el guion automático */
+        
+        padding: 0 5px 0 28px !important; 
+        margin-left: auto !important; /* Empuja el botón al borde derecho */
         
         appearance: none !important;
         -webkit-appearance: none !important;
@@ -606,11 +605,11 @@ body {
         position: relative; 
     }
 
-   .filter-icon-native {
+.filter-icon-native {
         background: white !important;
-        left: 10px !important; /* Un poco más pegado al borde */
+        left: 8px !important; 
         z-index: 5;
-        width: 14px !important;
+        width: 12px !important;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
