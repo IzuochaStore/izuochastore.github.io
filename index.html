@@ -392,172 +392,95 @@ body {
        ========================================================= */
     
     @media (max-width: 600px) {
-    /* 1. AJUSTE DE FONDO ANTI-TIRONES */
-    .background { 
-        background: transparent !important; 
-        overflow: visible !important; /* Evita que el contenedor intente 'empujar' al fondo */
+    /* 1. AJUSTE DE FONDO Y BODY (Se mantiene igual) */
+    .background { background: transparent !important; overflow: visible !important; }
+    body { background: none !important; background-color: #ffffff !important; }
+
+    .fixed-bg-android {
+        display: block !important;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100vh;
+        background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
+        background-size: cover !important;
+        transform: translateZ(0); -webkit-transform: translateZ(0);
+        will-change: transform; z-index: -1; pointer-events: none;
     }
-    body {
-        background: none !important; /* Quitamos el fondo del body para evitar conflictos */
-        background-color: #ffffff !important;
-    }
 
-  .fixed-bg-android {
-    display: block !important;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh; /* Ocupa todo el alto de la pantalla */
-    background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center center;
-    background-size: cover !important; 
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    will-change: transform;
-    z-index: -1;
-    pointer-events: none;
-}
-
-    .background { background: transparent !important; }
-
-    /* 2. BANNER Y PERSONAJES */
+    /* 2. BANNER Y PERSONAJES (Se mantiene igual) */
     .banner {
         height: auto !important;
-        aspect-ratio: 12 / 4 !important; 
-        background: #ffffff !important; 
+        aspect-ratio: 12 / 4 !important;
+        background: #ffffff !important;
         background-image: url("images/BannerBlancoAndroid31.jpg") !important;
         background-size: cover !important;
         justify-content: flex-start !important;
         position: relative !important;
-        overflow: hidden !important; 
-    }
-
-    .img-overlay { height: 85% !important; bottom: 0 !important; }
-
-    .izuocha-left { 
-        left: 0 !important; 
-        margin-left: -5% !important; 
-    }
-
-    .izuocha-right { 
-        right: 0 !important; 
-        left: auto !important; 
-        margin-right: -2% !important; 
-        bottom: -5px !important; 
-        height: 85% !important;
-        position: absolute !important;
-    }
-
-    /* 3. BARRA DE BÚSQUEDA */
-    .search-bar {
-        width: 70% !important; 
-        height: 40px !important;
-        margin: 15px auto 0 auto !important;
-        border-radius: 10px !important;
-        display: flex !important;
         overflow: hidden !important;
-        position: relative !important;
+    }
+    .img-overlay { height: 85% !important; bottom: 0 !important; }
+    .izuocha-left { left: 0 !important; margin-left: -5% !important; }
+    .izuocha-right { 
+        right: 0 !important; left: auto !important; margin-right: -2% !important; 
+        bottom: -5px !important; height: 85% !important; position: absolute !important; 
     }
 
+    /* 3. BARRA DE BÚSQUEDA (Se mantiene igual) */
+    .search-bar {
+        width: 70% !important; height: 40px !important;
+        margin: 15px auto 0 auto !important; border-radius: 10px !important;
+        display: flex !important; overflow: hidden !important; position: relative !important;
+    }
     .search-bar select {
-        flex: 0 0 85px !important;
-        width: 85px !important;
-        font-size: 0.8rem !important;
-        padding: 0 18px 0 6px !important;
-        background-position: right 6px center !important;
-        background-size: 10px !important;
-        text-align: center !important;
-        color: white !important;
-        background-color: #01744b !important;
-        border: none !important;
-        outline: none !important;
-        appearance: none !important;
-        -webkit-appearance: none !important;
+        flex: 0 0 85px !important; width: 85px !important; font-size: 0.8rem !important;
+        padding: 0 18px 0 6px !important; background-position: right 6px center !important;
+        background-size: 10px !important; text-align: center !important;
+        color: white !important; background-color: #01744b !important;
+        border: none !important; outline: none !important;
+        appearance: none !important; -webkit-appearance: none !important;
     }
-
-   .search-bar input { 
-    flex: 1 !important; 
-    min-width: 0 !important; 
-    font-size: 0.85rem !important; 
-    position: relative !important;
-    z-index: 10 !important;
-    border: none !important; /* Limpieza extra */
-    padding: 0 10px !important; /* Para que el texto no pegue a los bordes */
-}
-
-
-      .search-bar button {
-        flex: 0 0 55px !important; /* Le damos un poco más de espacio */
-        height: 100% !important;
-        background-color: #01744b !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        border-radius: 0 10px 10px 0 !important; /* Asegura el redondeado derecho */
-        margin-right: 0 !important;
+    .search-bar input { flex: 1 !important; min-width: 0 !important; font-size: 0.85rem !important; padding: 0 10px !important; }
+    .search-bar button {
+        flex: 0 0 55px !important; height: 100% !important; background-color: #01744b !important;
+        display: flex !important; justify-content: center !important; align-items: center !important;
+        border-radius: 0 10px 10px 0 !important;
     }
+    .search-bar button img { width: 18px !important; height: 18px !important; filter: brightness(0) invert(1) !important; }
 
-    .search-bar button img {
-        width: 18px !important;
-        height: 18px !important;
-        filter: brightness(0) invert(1) !important;
-        opacity: 1 !important;
-        display: block !important;
-    }
-
+    /* 4. REDES SOCIALES (Se mantiene igual) */
     .social-icons {
-        width: 98% !important; 
-        margin: 10px auto 0 auto !important; 
-        height: 65px !important; 
-        display: flex !important;
-        align-items: center !important; 
-        justify-content: center !important; 
-        gap: 12px; 
-        position: relative !important;
-        z-index: 99 !important;
-        margin-bottom: 15px !important; 
+        width: 98% !important; margin: 10px auto 0 auto !important; height: 65px !important;
+        display: flex !important; align-items: center !important; justify-content: center !important;
+        gap: 12px; position: relative !important; z-index: 99 !important; margin-bottom: 15px !important;
     }
-
-    .social-icons a img { 
-        width: 32px !important; 
-        height: 32px !important; 
-        margin-bottom: 0 !important;
-        display: block !important;
-    }
-
-    .personaje-social {
-        height: 48px !important; 
-        position: static !important; 
-        margin: 0 !important;
-        flex-shrink: 0;
-    }
-
+    .social-icons a img { width: 32px !important; height: 32px !important; }
+    .personaje-social { height: 48px !important; position: static !important; flex-shrink: 0; }
     img[alt="Deku"].personaje-social { left: 18% !important; }
-    img[alt="Uraraka"].personaje-social { left: 63% !important; right: auto !important; }
+    img[alt="Uraraka"].personaje-social { left: 63% !important; }
 
-    /* 5. GRILLA DE PRODUCTOS ESTILO GLITCH */
-    .products { 
-        grid-template-columns: repeat(2, 1fr) !important; 
-        gap: 15px !important; /* Espacio más pequeño para celular */
-        padding: 15px !important;
-    }
+    /* 5. GRILLA DE PRODUCTOS (Se mantiene igual) */
+    .products { grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; padding: 15px !important; }
+    .product-info .name { font-size: 0.85rem !important; }
 
-    
-    .product-info .name {
-        font-size: 0.85rem !important; /* Texto un poco más pequeño para que quepa bien */
-    }
-
-    
+    /* 6. HEADER Y FILTROS (AQUÍ ESTÁ EL CAMBIO DE ORDEN) */
     .header { 
-        padding: 0 15px !important; /* Mismo padding horizontal que .products en Android */
-        margin-bottom: 20px !important; 
+        padding: 0 15px !important; margin-bottom: 20px !important; 
+        width: 100% !important; max-width: 100% !important; 
     }
-    
     .header h1 { font-size: 1.25rem !important; }
 
-    /* Ocultamos custom, mostramos nativo */
-    .filter-custom-wrapper { display: none !important; }
-   /* Estilos del Select Nativo (Simetría Total con Columna 2) */
+    /* IMPORTANTE: Ocultar los de Notebook primero */
+    .filter-custom-wrapper, .filter-btn-custom { display: none !important; }
+
+    /* PRIMERO DEFINIMOS EL CONTENEDOR NATIVO */
+    .filter-native-wrapper { 
+        display: flex !important; 
+        align-items: center; 
+        justify-content: flex-end !important; /* Empuja el select a la derecha */
+        width: 100%;
+        position: relative; 
+    }
+
+    /* LUEGO EL SELECT NATIVO */
     .filter-select-native {
         background-color: #01744b !important;
         color: white !important;
@@ -565,60 +488,46 @@ body {
         height: 40px !important;
         border-radius: 10px !important;
         font-weight: 700;
-        
-        /* Restauramos un tamaño de letra más cómodo */
         font-size: 0.85rem !important; 
-        
         cursor: pointer;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        
         display: block !important;
         text-align: center;
-        
-        /* Padding balanceado para el icono */
         padding: 0 10px 0 32px !important; 
+        width: calc((100% - 15px) / 2) !important; /* Ancho de una columna */
+        margin-left: 0 !important; /* El justify-content del padre ya lo ubica */
         
-        /* EL CAMBIO CLAVE: Mismo ancho exacto que un producto */
-        /* (100% total - 15px de espacio entre columnas) / 2 columnas */
-        width: calc((100% - 15px) / 2) !important;
-        
-        margin-left: 0 !important; /* Quitamos el empuje para que se alinee con la columna */
-        
-        appearance: none; 
-        -webkit-appearance: none;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        background-image: none !important; /* Quita la flecha del buscador */
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    /* Ajuste del contenedor para que se posicione sobre la 2da columna */
-    .filter-native-wrapper { 
-        display: flex !important; 
-        align-items: center; 
-        justify-content: flex-end; /* Mantiene el botón sobre la columna derecha */
-        width: 100%;
-        position: relative; 
-    }
-
-    /* Icono blanco centrado en su espacio */
+    /* ICONOS (Dentro del botón) */
     .filter-icon-native {
         background: white !important;
         left: 12px !important; 
         z-index: 5;
         width: 14px !important;
+        position: absolute; /* Para que flote dentro del wrapper */
+        height: 2px;
+        top: 50%;
+        transform: translateY(-50%);
     }
     .filter-icon-native::before, .filter-icon-native::after {
-        background: white !important;
+        content: ''; position: absolute; width: 14px; height: 2px; background: white !important; left: 0;
     }
     .filter-icon-native::before { top: -5px; }
     .filter-icon-native::after { top: 5px; }
 
-/* SOLUCIÓN AL BORDE OSCURO EN ANDROID */
-    .filter-select-native:focus, 
-    .filter-select-native:active {
+    /* SOLUCIÓN AL BORDE OSCURO */
+    .filter-select-native:focus, .filter-select-native:active {
         outline: none !important;
-        -webkit-tap-highlight-color: transparent !important; /* Elimina el resaltado de tap azul */
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important; /* Mantiene la sombra normal */
+        -webkit-tap-highlight-color: transparent !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
     }
-      
 }
 
     /* =========================================================
