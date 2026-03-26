@@ -167,28 +167,37 @@ body {
       margin-bottom: 0;
     }
     
-/* --- 1. ESTILO GENERAL (Notebooks y Pantallas Grandes) --- */
-.header { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    gap: 16px; 
-    margin-bottom: 25px; 
-    padding: 0 40px; /* Alineado con el padding de tus productos */
+/* --- ESTILOS GENERALES DEL HEADER --- */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    padding: 0 40px; /* Alineado con notebooks */
 }
 
-.header h1 { 
-    color: #fff; 
-    text-shadow: 0 2px 6px rgba(0,0,0,0.35); 
-    font-size: 1.8rem; 
-    font-weight: 700; 
+.header h1 {
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    font-size: 1.8rem;
+    font-weight: 700;
 }
 
-/* Contenedor del menú */
-.filter-dropdown { position: relative; display: inline-block; }
+.filter-controls {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
-/* Botón de Ordenar */
-.filter-btn {
+/* =========================================================
+   NOTEBOOK (Custom Menu) - ESTILOS QUE TE GUSTAN
+   ========================================================= */
+.filter-custom-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.filter-btn-custom {
     background: white;
     border: 2px solid #01744b;
     color: #01744b;
@@ -196,27 +205,26 @@ body {
     border-radius: 10px;
     cursor: pointer;
     font-weight: 700;
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: 0.2s;
+    transition: all 0.2s;
 }
 
-.filter-btn:hover { background: #f0fdf4; }
+.filter-btn-custom:hover { background: #f0fdf4; }
 
-/* Icono de 3 líneas */
-.filter-icon {
+.filter-icon-custom {
     width: 18px; height: 2px; background: #01744b; position: relative;
 }
-.filter-icon::before, .filter-icon::after {
+.filter-icon-custom::before, .filter-icon-custom::after {
     content: ''; position: absolute; width: 18px; height: 2px; background: #01744b; left: 0;
 }
-.filter-icon::before { top: -6px; }
-.filter-icon::after { top: 6px; }
+.filter-icon-custom::before { top: -6px; }
+.filter-icon-custom::after { top: 6px; }
 
-/* Caja desplegable */
-.filter-content {
+.filter-content-custom {
     display: none;
     position: absolute;
     right: 0;
@@ -227,15 +235,28 @@ body {
     border-radius: 12px;
     z-index: 1000;
     overflow: hidden;
+    border: 1px solid #eee;
 }
 
-.filter-content a {
-    color: #333; padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9rem;
+.filter-content-custom a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
 }
 
-.filter-content a:hover { background: #f1f1f1; color: #01744b; }
+.filter-content-custom a:hover {
+    background: #f1f1f1;
+    color: #01744b;
+}
 
-.show { display: block !important; }
+.show-custom { display: block !important; }
+
+/* Ocultar el menú nativo por defecto (para notebooks) */
+.filter-native-wrapper { display: none; }
+
+
     
     /* =========================================================
             INICIO PANTALLA COMPLETA NOTEBOOK
@@ -489,16 +510,37 @@ body {
         font-size: 0.85rem !important; /* Texto un poco más pequeño para que quepa bien */
     }
 
-    .header { 
-        padding: 0 15px !important; 
-        margin-bottom: 15px !important; 
-    }
+    
+    .header { padding: 0 15px !important; margin-bottom: 15px !important; }
     .header h1 { font-size: 1.25rem !important; }
-    .filter-btn { 
-        font-size: 0.75rem !important; 
-        padding: 6px 10px !important; 
+
+    /* EL CAMBIO: Ocultamos el custom, mostramos el nativo */
+    .filter-custom-wrapper { display: none !important; }
+    .filter-native-wrapper { display: flex !important; align-items: center; position: relative; }
+
+    /* Estilos del Select Nativo (con icono a la izquierda) */
+    .filter-select-native {
+        background-color: white;
+        border: 2px solid #01744b;
+        color: #01744b;
+        padding: 6px 8px 6px 30px !important; /* Espacio extra a la izquierda */
+        border-radius: 8px !important;
+        font-weight: 700;
+        font-size: 0.75rem !important;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        appearance: none; -webkit-appearance: none; -moz-appearance: none;
     }
-    .filter-content { min-width: 160px !important; }  
+
+    .filter-icon-native {
+        position: absolute; left: 8px; width: 14px; height: 2px; background: #01744b; pointer-events: none;
+    }
+    .filter-icon-native::before, .filter-icon-native::after {
+        content: ''; position: absolute; width: 14px; height: 2px; background: #01744b; left: 0;
+    }
+    .filter-icon-native::before { top: -5px; }
+    .filter-icon-native::after { top: 6px; }
+ 
 }
 
     /* =========================================================
@@ -696,17 +738,29 @@ body {
   <div class="container">
     <div class="header">
   <h1>Catálogo</h1>
-  <div class="filter-dropdown">
-    <button class="filter-btn" onclick="toggleFilter()">
-      <span class="filter-icon"></span>
-      Ordenar y filtrar
-    </button>
-    <div id="filterMenu" class="filter-content">
-      <a href="javascript:void(0)" onclick="ordenarProductos('menor')">Precio: Menor a Mayor</a>
-      <a href="javascript:void(0)" onclick="ordenarProductos('mayor')">Precio: Mayor a Menor</a>
+  <div class="filter-controls">
+    <div class="filter-native-wrapper">
+      <span class="filter-icon-native"></span>
+      <select id="filterSelectNative" class="filter-select-native" onchange="ordenarProductosNativo(this.value)">
+        <option value="" disabled selected>Ordenar y filtrar</option>
+        <option value="menor">Precio: Menor a Mayor</option>
+        <option value="mayor">Precio: Mayor a Menor</option>
+      </select>
+    </div>
+
+    <div class="filter-custom-wrapper">
+      <button class="filter-btn-custom" onclick="toggleFilterCustom()">
+        <span class="filter-icon-custom"></span>
+        Ordenar y filtrar
+      </button>
+      <div id="filterMenuCustom" class="filter-content-custom">
+        <a href="javascript:void(0)" onclick="ordenarProductosCustom('menor')">Precio: Menor a Mayor</a>
+        <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor')">Precio: Mayor a Menor</a>
+      </div>
     </div>
   </div>
 </div>
+    
     <div class="products" id="productsGrid"></div>
   </div>
 </div>
@@ -1082,65 +1136,67 @@ function irACategoria(valor) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// --- LÓGICA DE ORDENAR Y FILTRAR POR PRECIO ---
+// =========================================================
+// LÓGICA DE FILTRADO COMBINADO (NATIVO Y CUSTOM)
+// =========================================================
 
-// 1. Función para abrir/cerrar el menú desplegable
-function toggleFilter() {
-    const menu = document.getElementById("filterMenu");
-    menu.classList.toggle("show");
+// 1. Funciones para el MENÚ CUSTOM (Notebooks)
+function toggleFilterCustom() {
+    const menu = document.getElementById("filterMenuCustom");
+    menu.classList.toggle("show-custom");
 }
 
-// 2. Función principal de ordenamiento
-function ordenarProductos(orden) {
-    // Hacemos una copia de los productos actuales para no afectar la lista original
+function ordenarProductosCustom(orden) {
+    // Reutilizamos la lógica de ordenamiento nativa para no repetir código
+    ordenarProductosBase(orden);
+    toggleFilterCustom(); // Cierra el menú al elegir
+}
+
+// 2. Función para el SELECT NATIVO (Android)
+function ordenarProductosNativo(orden) {
+    if (!orden) return;
+    ordenarProductosBase(orden);
+}
+
+// 3. Lógica BASE de Ordenamiento (Usada por ambos sistemas)
+function ordenarProductosBase(orden) {
     let listaParaOrdenar = [...products];
 
-    // Si hay una búsqueda o categoría activa, primero filtramos para ordenar solo lo que se ve
+    // Aplicamos los filtros actuales de búsqueda y categoría antes de ordenar
     const searchInput = document.getElementById("searchInput");
     const categorySelect = document.getElementById("categorySelect");
     const q = (searchInput.value || "").toLowerCase().trim();
     const selectedCat = categorySelect.value;
 
-    // Aplicamos los filtros actuales antes de ordenar
     listaParaOrdenar = listaParaOrdenar.filter(p => {
         const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
         const matchText = !q || p.title.toLowerCase().includes(q) || (p.anime && p.anime.toLowerCase().includes(q));
         return matchCategory && matchText;
     });
 
-    // Ahora ordenamos la lista resultante
+    // Ordenamos la lista resultante
     listaParaOrdenar.sort((a, b) => {
-        // Convertimos "$5.000 CLP" a número (5000)
         let precioA = parseInt(a.price.replace(/[^0-9]/g, ''));
         let precioB = parseInt(b.price.replace(/[^0-9]/g, ''));
-
-        if (orden === 'menor') return precioA - precioB;
-        if (orden === 'mayor') return precioB - precioA;
-        return 0;
+        return orden === 'menor' ? precioA - precioB : precioB - precioA;
     });
 
     // Renderizamos la lista ordenada
     renderProducts(listaParaOrdenar);
-    
-    // Cerramos el menú
-    toggleFilter();
 }
 
-// 3. Cerrar el menú si el usuario hace clic fuera de él
-// Nota: Reemplazamos tu window.onclick anterior por este más completo
+// 4. Cerrar el menú custom si haces clic afuera
 window.onclick = function(event) {
-    // Cerrar modal si existe
+    // Cerrar modal
     if (typeof modal !== 'undefined' && event.target == modal) {
         modal.style.display = "none";
     }
     
-    // Cerrar menú de filtros si hace clic fuera
-    if (!event.target.closest('.filter-dropdown')) {
-        const dropdowns = document.getElementsByClassName("filter-content");
-        for (let i = 0; i < dropdowns.length; i++) {
-            if (dropdowns[i].classList.contains('show')) {
-                dropdowns[i].classList.remove('show');
-            }
+    // Cerrar menú custom si hace clic fuera
+    if (!event.target.closest('.filter-controls')) {
+        const dropdown = document.getElementById("filterMenuCustom");
+        if (dropdown && dropdown.classList.contains('show-custom')) {
+            dropdown.classList.remove('show-custom');
         }
     }
 };
