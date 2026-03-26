@@ -461,26 +461,30 @@ body {
     .products { grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; padding: 15px !important; }
     .product-info .name { font-size: 0.85rem !important; }
 
-    /* 6. HEADER Y FILTROS (AQUÍ ESTÁ EL CAMBIO DE ORDEN) */
+    /* 6. HEADER Y FILTROS - CORRECCIÓN DE ALINEAMIENTO */
     .header { 
-        padding: 0 15px !important; margin-bottom: 20px !important; 
-        width: 100% !important; max-width: 100% !important; 
+        padding: 0 15px !important; 
+        margin-bottom: 20px !important; 
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
     }
-    .header h1 { font-size: 1.25rem !important; }
+    
+    .header h1 { 
+        font-size: 1.25rem !important; 
+        flex-shrink: 0; /* Evita que el título se aplaste */
+    }
 
-    /* IMPORTANTE: Ocultar los de Notebook primero */
-    .filter-custom-wrapper, .filter-btn-custom { display: none !important; }
+    .filter-custom-wrapper { display: none !important; }
 
-    /* PRIMERO DEFINIMOS EL CONTENEDOR NATIVO */
     .filter-native-wrapper { 
         display: flex !important; 
-        align-items: center; 
-        justify-content: flex-end !important; /* Empuja el select a la derecha */
-        width: 100%;
-        position: relative; 
+        justify-content: flex-end !important;
+        flex-grow: 1; /* Ocupa el espacio restante sin empujar el título */
+        position: relative;
     }
 
-    /* LUEGO EL SELECT NATIVO */
     .filter-select-native {
         background-color: #01744b !important;
         color: white !important;
@@ -489,45 +493,45 @@ body {
         border-radius: 10px !important;
         font-weight: 700;
         font-size: 0.85rem !important; 
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        display: block !important;
-        text-align: center;
-        padding: 0 10px 0 32px !important; 
-        width: calc((100% - 15px) / 2) !important; /* Ancho de una columna */
-        margin-left: 0 !important; /* El justify-content del padre ya lo ubica */
+        
+        /* AJUSTE DE ANCHO: Quitamos el calc que lo rompió y usamos auto con padding */
+        width: auto !important;
+        min-width: 140px !important; 
+        max-width: 180px !important;
+        
+        padding: 0 12px 0 35px !important; 
+        margin-left: auto !important;
         
         appearance: none !important;
         -webkit-appearance: none !important;
-        background-image: none !important; /* Quita la flecha del buscador */
+        background-image: none !important; /* Mantenemos esto para limpiar la flecha */
+        
+        display: block !important;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        text-align: center;
     }
 
-    /* ICONOS (Dentro del botón) */
     .filter-icon-native {
         background: white !important;
         left: 12px !important; 
-        z-index: 5;
         width: 14px !important;
-        position: absolute; /* Para que flote dentro del wrapper */
         height: 2px;
+        position: absolute;
         top: 50%;
         transform: translateY(-50%);
+        z-index: 5;
     }
+    
     .filter-icon-native::before, .filter-icon-native::after {
-        content: ''; position: absolute; width: 14px; height: 2px; background: white !important; left: 0;
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 2px;
+        background: white !important;
+        left: 0;
     }
     .filter-icon-native::before { top: -5px; }
     .filter-icon-native::after { top: 5px; }
-
-    /* SOLUCIÓN AL BORDE OSCURO */
-    .filter-select-native:focus, .filter-select-native:active {
-        outline: none !important;
-        -webkit-tap-highlight-color: transparent !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
-    }
 }
 
     /* =========================================================
