@@ -549,9 +549,9 @@ body {
 
     
     .header { 
-        padding: 0 15px !important; /* Alineado con el padding de .products */
-        margin-top: 10px !important;
-        margin-bottom: 15px !important; 
+        padding: 0 15px !important; 
+        margin-top: 5px !important;    /* Reduce el espacio con el banner */
+        margin-bottom: 15px !important; /* Espacio uniforme con los productos */
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
@@ -567,53 +567,57 @@ body {
     /* Ocultamos custom, mostramos nativo */
     .filter-custom-wrapper { display: none !important; }
    /* Estilos del Select Nativo (Simetría Total con Columna 2) */
-    .filter-select-native {
+   .filter-select-native {
         background-color: #01744b !important;
         color: white !important;
         border: none !important;
-        height: 38px !important; /* Un poco más estilizado */
+        height: 38px !important; 
         border-radius: 8px !important;
         font-weight: 700;
         
-        /* FUENTE: 0.70rem es el límite para que 'Ordenar y Filtrar' no genere guiones */
-        font-size: 0.70rem !important; 
+        /* FUENTE: 0.72rem es el límite para que el texto 'Ordenar y Filtrar' 
+           no se rompa en la mayoría de pantallas de celular */
+        font-size: 0.72rem !important; 
         
+        /* Ocupa el 100% del wrapper que calculamos arriba */
+        width: 100% !important; 
         display: block !important;
-        text-align: center;
+        text-align: center !important;
         
-        /* ANCHO: (Total - Gap de 15px) / 2 para ser idéntico a la columna */
-        width: calc((100% - 15px) / 2) !important; 
+        /* Padding: 28px a la izquierda para dejar espacio al icono */
+        padding: 0 5px 0 28px !important; 
+        margin: 0 !important;
         
-        /* ELIMINAR GUIONES Y SALTOS */
+        /* ANTI-GUION: Forzamos a que el texto sea una sola línea */
         white-space: nowrap !important;
         overflow: hidden !important;
-        text-overflow: clip !important; /* Corta en seco para evitar el guion automático */
-        
-        padding: 0 5px 0 28px !important; 
-        margin-left: auto !important; /* Empuja el botón al borde derecho */
+        text-overflow: clip !important; 
         
         appearance: none !important;
         -webkit-appearance: none !important;
         background-image: none !important;
     }
     /* Ajuste del contenedor para que se posicione sobre la 2da columna */
-    .filter-native-wrapper { 
+  .filter-native-wrapper { 
         display: flex !important; 
         align-items: center; 
-        justify-content: flex-end; /* Mantiene el botón sobre la columna derecha */
-        width: 100%;
-        position: relative; 
+        justify-content: flex-end; 
+        /* MATEMÁTICAS: (100% de la pantalla - 15px de gap) / 2 = Ancho exacto de la columna 2 */
+        width: calc((100% - 15px) / 2) !important; 
+        position: relative !important;
+        margin-left: auto !important; /* Lo empuja a la derecha */
     }
 
 .filter-icon-native {
         background: white !important;
-        left: 8px !important; 
+        left: 10px !important; 
         z-index: 5;
-        width: 12px !important;
+        width: 14px !important;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
         height: 2px;
+        pointer-events: none;
     }
     .filter-icon-native::before, .filter-icon-native::after {
         background: white !important;
