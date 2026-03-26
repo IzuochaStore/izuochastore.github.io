@@ -168,52 +168,73 @@ body {
     }
     
 /* --- ESTILOS GENERALES DEL HEADER --- */
+/* 1. EL CONTENEDOR HEADER (El secreto del alineamiento) */
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 25px;
-    padding: 0 40px; /* Alineado con notebooks */
+    
+    /* Importante: Usamos el mismo max-width y margen que tus productos */
+    max-width: 1300px;
+    margin: 0 auto 30px auto; /* Centrado horizontalmente en la pantalla */
+    
+    /* Usamos el mismo padding horizontal que .products (40px) */
+    padding: 0 40px; 
+    
+    gap: 16px;
 }
 
+/* 2. ALINEAMIENTO DE 'CATÁLOGO' (Izquierda total) */
 .header h1 {
     color: #fff;
     text-shadow: 0 2px 6px rgba(0,0,0,0.35);
     font-size: 1.8rem;
     font-weight: 700;
+    margin: 0; /* Quitamos márgenes para que pegue a la izquierda */
+    line-height: 1; /* Alineamiento vertical preciso */
 }
 
+/* Contenedor de controles (para Notebook) */
 .filter-controls {
     position: relative;
     display: flex;
-    align-items: center;
+    justify-content: flex-end; /* Empuja el contenido a la derecha */
+    flex-grow: 1; /* Ocupa el espacio disponible */
 }
 
-/* =========================================================
-   NOTEBOOK (Custom Menu) - ESTILOS QUE TE GUSTAN
-   ========================================================= */
 .filter-custom-wrapper {
     position: relative;
     display: flex;
+    justify-content: flex-end;
+    width: 100%; /* Permite que el ancho del botón se calcule respecto a esto */
 }
 
+/* =========================================================
+   3. BOTÓN NOTEBOOK (Alineamiento Derecho y Ancho 75%)
+   ========================================================= */
 .filter-btn-custom {
-    background-color: #01744b; /* Verde igual al buscador */
+    background-color: #01744b;
     border: none;
     color: white;
-    padding: 0 16px;
-    height: 48px; /* Misma altura que la barra de búsqueda */
+    padding: 0; /* Quitamos padding horizontal para centrado perfecto */
+    height: 48px;
     border-radius: 12px;
     cursor: pointer;
     font-weight: 700;
     font-size: 0.95rem;
     display: flex;
     align-items: center;
-    justify-content: center; /* CENTRADO TOTAL */
+    justify-content: center; /* CENTRADO TOTAL DEL CONTENIDO */
     gap: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transition: all 0.2s ease;
-    min-width: 180px;
+    
+    /* EL AJUSTE CLAVE (Notebook Grande): 
+       Calculamos el 75% del ancho de un producto (usando el grid-gap de 40px) */
+    width: calc((100% - (3 * 40px)) / 4 * 0.75);
+    
+    /* Aseguramos que el botón pegue a la derecha */
+    margin-left: auto;
 }
 
 .filter-btn-custom:hover {
@@ -221,7 +242,7 @@ body {
     transform: translateY(-1px);
 }
 
-/* Icono de 3 líneas en BLANCO para Notebook */
+/* Icono en blanco */
 .filter-icon-custom {
     width: 18px; height: 2px; background: white; position: relative;
 }
@@ -230,6 +251,9 @@ body {
 }
 .filter-icon-custom::before { top: -6px; }
 .filter-icon-custom::after { top: 6px; }
+
+/* Ocultar nativo en notebook */
+.filter-native-wrapper { display: none; }
 
 .filter-content-custom {
     display: none;
@@ -260,8 +284,6 @@ body {
 
 .show-custom { display: block !important; }
 
-/* Ocultar el menú nativo por defecto (para notebooks) */
-.filter-native-wrapper { display: none; }
 
 
     
@@ -310,10 +332,10 @@ body {
 
     
   /* ==========================================================
-                  INICIO PANTALLA REDUCIDA NOTEBOOK
+                  INICIO PANTALLA REDUCIDA NOTEBOOK Y TABLET
      ========================================================== */
     
-@media (min-width: 601px) and (max-width: 1024px) { /* BLOQUE MEDIA QUERY */
+@media (max-width: 1100px) and (min-width: 601px) { /* BLOQUE MEDIA QUERY */
     .banner { overflow: hidden !important; }        /* "Una mesa" Corta cualquier cosa que intente salir de los limites del banner*/
     
     /* Ampliamos el ancho para que quepan todos los iconos */
@@ -349,6 +371,14 @@ body {
         gap: 25px !important;
         padding: 25px !important;
     }
+
+  .header { padding: 0 20px !important; }
+
+    /* Recalculamos el 75% para 2 columnas (grid-gap de 20px) */
+    .filter-btn-custom {
+        width: calc((100% - (1 * 20px)) / 2 * 0.75) !important;
+    }
+  
 }
 
   /*  ==========================================================
@@ -518,39 +548,64 @@ body {
     }
 
     
-    .header { padding: 0 15px !important; margin-bottom: 15px !important; }
+    .header { 
+        padding: 0 15px !important; /* Mismo padding horizontal que .products en Android */
+        margin-bottom: 20px !important; 
+    }
+    
     .header h1 { font-size: 1.25rem !important; }
 
-    /* EL CAMBIO: Ocultamos el custom, mostramos el nativo */
+    /* Ocultamos custom, mostramos nativo */
     .filter-custom-wrapper { display: none !important; }
-    .filter-native-wrapper { display: flex !important; align-items: center; position: relative; }
-
-    /* Estilos del Select Nativo (con icono a la izquierda) */
-  .filter-select-native {
+    .filter-native-wrapper { 
+        display: flex !important; 
+        align-items: center; 
+        justify-content: flex-end; 
+        width: 100%;
+        position: relative; 
+    }
+  /* Estilos del Select Nativo Estilizado */
+    .filter-select-native {
         background-color: #01744b !important;
         color: white !important;
         border: none !important;
         height: 40px !important;
-        padding: 0 10px 0 35px !important; /* Espacio para el icono a la izquierda */
         border-radius: 10px !important;
         font-weight: 700;
         font-size: 0.8rem !important;
-        text-align: center; /* Centra el texto en algunos navegadores */
-        appearance: none;
-        -webkit-appearance: none;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        
+        /* CENTRADO Y ANCHO EN ANDROID */
+        text-align: center;
+        padding: 0 10px 0 35px !important; /* Espacio para el icono a la izquierda */
+        
+        /* Recalculamos el 75% para Android (grid-gap de 15px) */
+        width: calc((100% - (1 * 15px)) / 2 * 0.75) !important;
+        margin-left: auto; /* Pega a la derecha */
+        
+        appearance: none; -webkit-appearance: none;
     }
 
-    /* Icono en BLANCO para Android */
+    /* Icono blanco para Android */
     .filter-icon-native {
         background: white !important;
-        left: 12px !important;
+        left: 12px !important; /* Posición fija a la izquierda del select */
     }
     .filter-icon-native::before, .filter-icon-native::after {
         background: white !important;
     }
     .filter-icon-native::before { top: -5px; }
-    .filter-icon-native::after { top: 6px; }
- 
+    .filter-icon-native::after { top: 5px; }
+
+/* SOLUCIÓN AL BORDE OSCURO EN ANDROID */
+    .filter-select-native:focus, 
+    .filter-select-native:active {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important; /* Elimina el resaltado de tap azul */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important; /* Mantiene la sombra normal */
+    }
+      
 }
 
     /* =========================================================
