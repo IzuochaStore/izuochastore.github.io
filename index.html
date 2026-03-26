@@ -557,14 +557,7 @@ body {
 
     /* Ocultamos custom, mostramos nativo */
     .filter-custom-wrapper { display: none !important; }
-    .filter-native-wrapper { 
-        display: flex !important; 
-        align-items: center; 
-        justify-content: flex-end; 
-        width: 100%;
-        position: relative; 
-    }
-  /* Estilos del Select Nativo Estilizado (CORREGIDO) */
+   /* Estilos del Select Nativo (Simetría Total con Columna 2) */
     .filter-select-native {
         background-color: #01744b !important;
         color: white !important;
@@ -572,31 +565,43 @@ body {
         height: 40px !important;
         border-radius: 10px !important;
         font-weight: 700;
-        font-size: 0.85rem !important; /* Un pelín más grande para legibilidad */
+        
+        /* Restauramos un tamaño de letra más cómodo */
+        font-size: 0.85rem !important; 
+        
         cursor: pointer;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         
-        /* ALINEACIÓN Y ANCHO */
         display: block !important;
         text-align: center;
-        /* Aumentamos el padding derecho para equilibrar el espacio del icono izquierdo */
+        
+        /* Padding balanceado para el icono */
         padding: 0 10px 0 32px !important; 
         
-        /* CAMBIO CLAVE: Ajustamos el cálculo para que sea el 85% en vez del 75% 
-           porque el texto "Orden Predeterminado" es muy largo para Android */
-        width: calc((100% - 15px) / 2 * 0.85) !important;
-        min-width: 140px !important; /* Evita que se comprima de más */
-        margin-left: auto; 
+        /* EL CAMBIO CLAVE: Mismo ancho exacto que un producto */
+        /* (100% total - 15px de espacio entre columnas) / 2 columnas */
+        width: calc((100% - 15px) / 2) !important;
+        
+        margin-left: 0 !important; /* Quitamos el empuje para que se alinee con la columna */
         
         appearance: none; 
         -webkit-appearance: none;
-        white-space: nowrap; /* Evita que el texto salte de línea */
+        white-space: nowrap;
     }
 
-    /* Icono blanco (Ajuste de posición) */
+    /* Ajuste del contenedor para que se posicione sobre la 2da columna */
+    .filter-native-wrapper { 
+        display: flex !important; 
+        align-items: center; 
+        justify-content: flex-end; /* Mantiene el botón sobre la columna derecha */
+        width: 100%;
+        position: relative; 
+    }
+
+    /* Icono blanco centrado en su espacio */
     .filter-icon-native {
         background: white !important;
-        left: 10px !important; /* Un poco más a la izquierda */
+        left: 12px !important; 
         z-index: 5;
         width: 14px !important;
     }
