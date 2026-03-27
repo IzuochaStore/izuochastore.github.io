@@ -167,56 +167,48 @@ body {
       margin-bottom: 0;
     }
     
-/* --- ESTILOS GENERALES DEL HEADER --- */
-/* 1. EL CONTENEDOR HEADER (El secreto del alineamiento) */
+/* --- ESTILOS GENERALES DEL HEADER CORREGIDOS --- */
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid; /* Cambiamos Flex por Grid */
+    /* Imitamos la grilla de productos: 4 columnas con el mismo gap */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 40px; 
     
-    /* Importante: Usamos el mismo max-width y margen que tus productos */
     max-width: 1300px;
-    margin: 0 auto 30px auto; /* Centrado horizontalmente en la pantalla */
-    
-    /* Usamos el mismo padding horizontal que .products (40px) */
+    margin: 0 auto 20px auto; 
     padding: 0 40px; 
-    
-    gap: 16px;
+    align-items: center;
 }
 
-/* 2. ALINEAMIENTO DE 'CATÁLOGO' (Izquierda total) */
+/* El título "Catálogo" ocupa la 1ra columna */
 .header h1 {
+    grid-column: 1;
     color: #fff;
     text-shadow: 0 2px 6px rgba(0,0,0,0.35);
     font-size: 1.8rem;
     font-weight: 700;
-    margin: 0; /* Quitamos márgenes para que pegue a la izquierda */
-    line-height: 1; /* Alineamiento vertical preciso */
+    margin: 0;
+    white-space: nowrap;
 }
 
-/* Contenedor de controles (para Notebook) */
+/* El contenedor del botón se posiciona en la 2da columna */
 .filter-controls {
+    grid-column: 2; /* ESTO LO UBICA SOBRE LA 2DA COLUMNA */
     position: relative;
     display: flex;
-    justify-content: flex-end; /* Empuja el contenido a la derecha */
-    flex-grow: 1; /* Ocupa el espacio disponible */
+    width: 100%;
 }
 
 .filter-custom-wrapper {
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    width: 100%; /* Permite que el ancho del botón se calcule respecto a esto */
+    width: 100%;
 }
 
 /* =========================================================
-   3. BOTÓN NOTEBOOK (Alineamiento Derecho y Ancho 75%)
-   ========================================================= */
+ /* BOTÓN NOTEBOOK: Ahora es proporcional al 100% de su columna */
 .filter-btn-custom {
     background-color: #01744b;
     border: none;
     color: white;
-    padding: 0; /* Quitamos padding horizontal para centrado perfecto */
     height: 48px;
     border-radius: 12px;
     cursor: pointer;
@@ -224,17 +216,14 @@ body {
     font-size: 0.95rem;
     display: flex;
     align-items: center;
-    justify-content: center; /* CENTRADO TOTAL DEL CONTENIDO */
+    justify-content: center;
     gap: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transition: all 0.2s ease;
     
-    /* EL AJUSTE CLAVE (Notebook Grande): 
-       Calculamos el 75% del ancho de un producto (usando el grid-gap de 40px) */
-    width: calc((100% - (3 * 40px)) / 4 * 0.75);
-    
-    /* Aseguramos que el botón pegue a la derecha */
-    margin-left: auto;
+    /* Ocupa todo el ancho de la columna 2 */
+    width: 100%; 
+    margin: 0;
 }
 
 .filter-btn-custom:hover {
@@ -372,11 +361,15 @@ body {
         padding: 25px !important;
     }
 
-  .header { padding: 0 20px !important; }
+  /* Ajustamos el header a 2 columnas para que coincida con los productos */
+    .header {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 25px !important;
+        padding: 0 25px !important;
+    }
 
-    /* Recalculamos el 75% para 2 columnas (grid-gap de 20px) */
     .filter-btn-custom {
-        width: calc((100% - (1 * 20px)) / 2 * 0.75) !important;
+        width: 100% !important; /* Sigue ocupando toda la 2da columna */
     }
   
 }
@@ -548,14 +541,10 @@ body {
     }
 
     
-    .header { 
-        padding: 0 15px !important; 
-        margin-top: 5px !important;    /* Reduce el espacio con el banner */
-        margin-bottom: 15px !important; /* Espacio uniforme con los productos */
-        display: flex !important;
+   .header {
+        display: flex !important; /* En celular volvemos a flex para espacio simple */
         justify-content: space-between !important;
-        align-items: center !important;
-        width: 100% !important;
+        gap: 15px !important;
     }
 
     .header h1 { 
@@ -597,15 +586,10 @@ body {
         -webkit-appearance: none !important;
         background-image: none !important;
     }
-    /* Ajuste del contenedor para que se posicione sobre la 2da columna */
-  .filter-native-wrapper { 
-        display: flex !important; 
-        align-items: center; 
-        justify-content: flex-end; 
-        /* MATEMÁTICAS: (100% de la pantalla - 15px de gap) / 2 = Ancho exacto de la columna 2 */
-        width: calc((100% - 15px) / 2) !important; 
-        position: relative !important;
-        margin-left: auto !important; /* Lo empuja a la derecha */
+  .filter-native-wrapper {
+        /* (100% - gap) / 2 para que mida exacto lo mismo que un producto */
+        width: calc((100% - 15px) / 2) !important;
+        margin-left: 0 !important; 
     }
 
 .filter-icon-native {
