@@ -167,65 +167,40 @@ body {
       margin-bottom: 0;
     }
     
-/* --- ESTILOS GENERALES DEL HEADER CORREGIDOS --- */
 .header {
-    display: grid; /* Cambiamos Flex por Grid */
-    /* Imitamos la grilla de productos: 4 columnas con el mismo gap */
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 40px; 
-    
-    max-width: 1300px;
-    margin: 0 auto 20px auto; 
-    padding: 0 40px; 
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0;
+  gap: 20px;
 }
 
-/* El título "Catálogo" ocupa la 1ra columna */
 .header h1 {
-    grid-column: 1;
-    color: #fff;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.35);
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin: 0;
-    white-space: nowrap;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
 }
 
-/* El contenedor del botón se posiciona en la 2da columna */
 .filter-controls {
-    grid-column: 2; /* ESTO LO UBICA SOBRE LA 2DA COLUMNA */
-    position: relative;
-    display: flex;
-    width: 100%;
+  width: 250px;
 }
 
 .filter-custom-wrapper {
+  width: 100%;   /* Mantén esta regla aquí */
+}
+
+.filter-btn-custom {
+  width: 100%;
+}
+
+    
+.filter-custom-wrapper {
     width: 100%;
 }
-
-/* =========================================================
- /* BOTÓN NOTEBOOK: Ahora es proporcional al 100% de su columna */
-.filter-btn-custom {
-    background-color: #01744b;
-    border: none;
-    color: white;
-    height: 48px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transition: all 0.2s ease;
     
-    /* Ocupa todo el ancho de la columna 2 */
-    width: 100%; 
-    margin: 0;
-}
-
 .filter-btn-custom:hover {
     background-color: #015d3c;
     transform: translateY(-1px);
