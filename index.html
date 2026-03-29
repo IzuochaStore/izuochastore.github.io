@@ -788,8 +788,8 @@ body {
 <div class="fixed-bg-android"></div>
   
 <div class="banner">
-  <img src="images/IzuochaIzquierda.jpg" class="img-overlay izuocha-left" alt="IzuochaIzquierda" />
-  <img src="images/IzuochaDerecha.jpg" class="img-overlay izuocha-right" alt="IzuochaDerecha" />
+  <img src="images/IzuochaIzquierda1.webp" class="img-overlay izuocha-left" alt="IzuochaIzquierda1" />
+  <img src="images/IzuochaDerecha1.webp" class="img-overlay izuocha-right" alt="IzuochaDerecha1" />
   
   <div class="search-bar">
   <select id="categorySelect" onchange="irACategoria(this.value)" onclick="if(this.value=='Animes') irACategoria('Animes')">
@@ -801,11 +801,11 @@ body {
   </div>
 
   <div class="social-icons">
-    <a href="https://www.facebook.com/share/17i8tNa7iS/"target="_blank"><img src="images/iconFacebook.png" alt="Facebook"></a>
-    <img src="images/DekuSheep.png" class="personaje-social" alt="Deku">
-    <a href="https://www.instagram.com/izuocha_store?igsh=eDNxdnZ5aHZ4bG9p"target="_blank"><img src="images/iconInstagram.png" alt="Instagram"></a>
-    <img src="images/UrarakaCat.jpg" class="personaje-social" alt="Uraraka">
-    <a href="https://www.tiktok.com/@izuocha_store?_r=1&_t=ZS-92o6unir1P7"target="_blank"><img src="images/iconTiktok.png" alt="TikTok"></a>
+    <a href="https://www.facebook.com/share/17i8tNa7iS/"target="_blank"><img src="images/iconFacebook1.webp" alt="Facebook"></a>
+    <img src="images/DekuSheep1.webp" class="personaje-social" alt="Deku">
+    <a href="https://www.instagram.com/izuocha_store?igsh=eDNxdnZ5aHZ4bG9p"target="_blank"><img src="images/iconInstagram1.webp" alt="Instagram"></a>
+    <img src="images/UrarakaCat1.webp" class="personaje-social" alt="Uraraka">
+    <a href="https://www.tiktok.com/@izuocha_store?_r=1&_t=ZS-92o6unir1P7"target="_blank"><img src="images/iconTiktok1.webp" alt="TikTok"></a>
   </div>
 </div>
 
@@ -911,6 +911,7 @@ body {
         price: "$5.000 CLP",
         stock: 1,
         anime: "My Hero Academia",
+        thumbnail: "images/VasoTodoroki0.3.webp",
         images: ["images/VasoTodoroki1.3.jpg", "images/VasoTodoroki2.3.jpg", "images/VasoTodoroki3.3.jpg"],
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable.
@@ -930,6 +931,7 @@ body {
         price: "$5.000 CLP",
         stock: 0,
         anime: "My Hero Academia",
+        thumbnail: "images/VasoHawks0.3.webp",
         images: ["images/VasoHawks1.3.jpg", "images/VasoHawks2.3.jpg", "images/VasoHawks3.3.jpg"],
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable.
@@ -949,6 +951,7 @@ body {
         price: "$6.000 CLP",
         stock: 1,
         anime: "My Hero Academia",
+        thumbnail: "images/VasoBDT0.3.webp",
         images: ["images/VasoBDT1.3.jpg", "images/VasoBDT2.3.jpg", "images/VasoBDT3.3.jpg"],
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable.
@@ -968,6 +971,7 @@ body {
         price: "$5.000 CLP",
         stock: 1,
         anime: "My Hero Academia",
+        thumbnail: "images/VasoRody0.3.webp",
         images: ["images/VasoRody1.3.jpg", "images/VasoRody2.3.jpg", "images/VasoRody3.3.jpg"],
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable.
@@ -987,6 +991,7 @@ body {
         price: "$5.000 CLP",
         stock: 1,
         anime: "My Hero Academia",
+        thumbnail: "images/VasoBakugo0.3.webp",
         images: ["images/VasoBakugo1.3.jpg", "images/VasoBakugo2.3.jpg", "images/VasoBakugo3.3.jpg"],
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E) Bandai 2021. Entrega Portal Temuco, horario conversable.
@@ -1008,7 +1013,9 @@ body {
         const card = document.createElement("div");
         card.className = "product-card";
         card.innerHTML = `
-          <div class="product-image"><img src="${p.images[0]}" alt="${p.title}"></div>
+          <div class="product-image">
+          <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
+          </div>
           <div class="product-info">
             <div class="brand">${p.brand}</div>
             <div class="name">${p.title}</div>
@@ -1016,10 +1023,7 @@ body {
           </div>
           <div class="stock ${p.stock > 0 ? "" : "agotado"}">${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}</div>
         `;
-        
-        // REEMPLAZAMOS LA LÍNEA DEL MODAL POR ESTA:
-        card.onclick = () => openProductDetail(p); 
-        
+        card.onclick = () => openProductDetail(p);
         productsGrid.appendChild(card);
       });
     }
@@ -1140,11 +1144,9 @@ updateCategories();
     let glitchImages = [];
 
 function openProductDetail(p) {
-    // Escondemos el menú principal y el fondo original del catálogo
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
 
-    // Llenamos la info
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
     document.getElementById('glitchPrice').textContent = p.price;
@@ -1154,10 +1156,12 @@ function openProductDetail(p) {
     stockEl.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
     p.stock > 0 ? stockEl.classList.remove('agotado') : stockEl.classList.add('agotado');
 
-    // Preparamos el carrusel
-    glitchImages = p.images;
+    // Carrusel: Solo cargamos el array de imágenes de alta calidad
+    glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
+    
+    // Generamos el carrusel (sin la miniatura .webp)
     slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="product">`).join('');
     
     updateSlider();
