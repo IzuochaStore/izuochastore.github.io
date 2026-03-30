@@ -561,13 +561,21 @@ body {
 
     .filter-select-native {
         display: block !important;
-        width: 100% !important;
+        /* Cambiamos 100% por un ancho máximo para que no se vea infinito */
+        width: 85% !important; 
+        margin: 0 auto !important; /* Lo centra horizontalmente */
+        
         background-color: #01744b !important;
         color: white !important;
         height: 42px !important;
         border-radius: 10px !important;
         font-size: 0.9rem !important;
-        padding-left: 35px !important;
+        font-weight: 700 !important;
+
+        /* CENTRADO DE TEXTO */
+        text-align: center !important; 
+        padding-left: 0 !important; /* Quitamos el padding lateral que lo empujaba */
+        
         border: none !important;
         appearance: none !important;
         -webkit-appearance: none !important;
