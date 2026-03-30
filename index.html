@@ -562,18 +562,19 @@ body {
     .filter-select-native {
         display: block !important;
         /* Cambiamos 100% por un ancho máximo para que no se vea infinito */
-        width: 85% !important; 
+        width: 80% !important; 
         margin: 0 auto !important; /* Lo centra horizontalmente */
         
         background-color: #01744b !important;
         color: white !important;
         height: 42px !important;
-        border-radius: 10px !important;
+        border-radius: 10px !important; /*redondeado*/
         font-size: 0.9rem !important;
         font-weight: 700 !important;
 
         /* CENTRADO DE TEXTO */
         text-align: center !important; 
+      padding-right: 20px !important;
         padding-left: 0 !important; /* Quitamos el padding lateral que lo empujaba */
         
         border: none !important;
@@ -582,17 +583,20 @@ body {
     }
 
 /* RECONSTRUIMOS EL ICONO DE RAYITAS */
-    .filter-icon-native {
+   .filter-icon-native {
         display: block !important;
         position: absolute !important;
-        left: 10px !important;
+        /* Calculamos la posición para que coincida con el borde del botón de 85% */
+        left: 13% !important; 
         top: 50% !important;
         transform: translateY(-50%) !important;
         width: 14px !important;
         height: 2px !important;
         background: white !important;
         z-index: 5 !important;
+        pointer-events: none; /* Para que el click pase a través del icono al select */
     }
+      
     .filter-icon-native::before, .filter-icon-native::after {
         content: '' !important;
         position: absolute !important;
