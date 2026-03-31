@@ -44,17 +44,25 @@
     
 body {
   font-family: "Montserrat", sans-serif !important;
-    font-optical-sizing: auto;
-    font-style: normal;
+  font-optical-sizing: auto;
+  font-style: normal;
   color: var(--text);
-  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
-  background-size: 100% auto; /* Como lo tenías originalmente */
-  background-attachment: scroll;
+  background-color: #ffffff; 
   line-height: 1.45;
 }
 
 .fixed-bg-android {
-  display: none;
+  /* En PC lo mostramos con display block */
+  display: block; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
+  background-size: 100% auto; 
+  z-index: -1;
+  pointer-events: none;
 }
     
     /* =========================================================
