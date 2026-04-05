@@ -6,6 +6,10 @@
   <title>Izuocha_Store - Catálogo</title>
   <link rel="icon" type="image/png" href="images/favicon.png" />
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  
   <style>
   
     /* =========================================================
@@ -23,20 +27,42 @@
       --separator:#ffffff;       /* Línea blanca */
     
     }
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%}
+    
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box
+    }
+
+    button, input, select, textarea {
+        font-family: "Montserrat", sans-serif !important;
+    }
+    
+    html,body{
+      height:100%
+    }
     
 body {
-  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  font-family: "Montserrat", sans-serif !important;
+  font-optical-sizing: auto;
+  font-style: normal;
   color: var(--text);
-  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
-  background-size: 100% auto; /* Como lo tenías originalmente */
-  background-attachment: scroll;
+  background-color: #ffffff; 
   line-height: 1.45;
 }
 
 .fixed-bg-android {
-  display: none;
+  /* En PC lo mostramos con display block */
+  display: block; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
+  background-size: 100% auto; 
+  z-index: -1;
+  pointer-events: none;
 }
     
     /* =========================================================
@@ -94,6 +120,7 @@ body {
     }
 
     .search-bar select {
+      font-family: "Montserrat", sans-serif !important;
       flex: 0 0 140px;
       height: 100%;
       border: none;
@@ -115,6 +142,7 @@ body {
     }
 
     .search-bar input {
+      font-family: "Montserrat", sans-serif !important;
       flex: 1;
       border: none;
       padding: 0 15px;
@@ -168,44 +196,45 @@ body {
     }
     
 /* --- ESTILOS GENERALES DEL HEADER CORREGIDOS --- */
-.header {
-    display: grid; /* Cambiamos Flex por Grid */
-    /* Imitamos la grilla de productos: 4 columnas con el mismo gap */
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 40px; 
-    
-    max-width: 1300px;
-    margin: 0 auto 20px auto; 
-    padding: 0 40px; 
-    align-items: center;
+
+/* NUEVO ESTILO: APILADO Y CENTRADO */
+.header-catalogo-v2 {
+    display: flex;
+    flex-direction: column; /* Título arriba, botón abajo */
+    align-items: center;    /* Centrado horizontal */
+    width: 100%;
+    margin: 40px auto 25px auto;
+    padding: 0 20px;
 }
 
-/* El título "Catálogo" ocupa la 1ra columna */
-.header h1 {
-    grid-column: 1;
+.catalogo-titulo-v2 {
     color: #fff;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.35);
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin: 0;
-    white-space: nowrap;
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 2.2rem;
+    font-weight: 900 !important;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-/* El contenedor del botón se posiciona en la 2da columna */
-.filter-controls {
-    grid-column: 2; /* ESTO LO UBICA SOBRE LA 2DA COLUMNA */
+.filter-controls-v2 {
     position: relative;
     display: flex;
+    justify-content: center;
     width: 100%;
+    max-width: 320px; /* Ancho elegante para el botón */
 }
 
-.filter-custom-wrapper {
-    width: 100%;
-}
+
+
+
+
 
 /* =========================================================
  /* BOTÓN NOTEBOOK: Ahora es proporcional al 100% de su columna */
 .filter-btn-custom {
+    font-family: "Montserrat", sans-serif !important;
     background-color: #01744b;
     border: none;
     color: white;
@@ -259,6 +288,7 @@ body {
 }
 
 .filter-content-custom a {
+    font-family: "Montserrat", sans-serif !important;
     color: #333;
     padding: 12px 16px;
     text-decoration: none;
@@ -540,62 +570,68 @@ body {
         font-size: 0.85rem !important; /* Texto un poco más pequeño para que quepa bien */
     }
 
-    
-   /* --- CORRECCIÓN DEL HEADER EN ANDROID --- */
-    .header {
-        display: flex !important; 
-        justify-content: space-between !important;
-        align-items: center !important;
+ /* Ajuste de Título y Botón para Android */
+    .header-catalogo-v2 {
+        margin: 20px auto 15px auto !important;
+    }
+
+    .catalogo-titulo-v2 {
+        font-size: 1.6rem !important;
+        margin-bottom: 12px !important;
+    }
+
+    .filter-controls-v2 {
+        width: 85% !important;
+    }
+
+    .filter-native-wrapper { 
+        display: block !important; 
         width: 100% !important;
-        padding: 0 15px !important; /* Margen lateral para que no pegue a los bordes */
-        margin-top: 10px !important;
+        position: relative;
     }
 
-    .header h1 { 
-        font-size: 1.15rem !important; 
-        color: white !important;
-        margin: 0 !important;
-    }
-
-   
-   /* Estilos del Select Nativo (Simetría Total con Columna 2) */
-   .filter-select-native {
+    .filter-select-native {
         display: block !important;
-        width: 100% !important;
+        width: 80% !important; 
+        margin: 0 auto !important;
         background-color: #01744b !important;
         color: white !important;
-        height: 38px !important;
-        border-radius: 8px !important;
-        font-size: 0.72rem !important;
+        height: 42px !important;
+        border-radius: 10px !important;
+        font-family: "Montserrat", sans-serif !important;
+        font-size: 0.88rem !important;
         font-weight: 700 !important;
-        padding-left: 30px !important; /* Espacio para el icono de rayitas */
+
+        /* --- EL TRUCO DEL EQUILIBRIO --- */
+        text-align: center !important; 
+        /* Le damos un padding izquierdo para "proteger" el espacio de las barras 
+           y un padding derecho igual para que el texto quede centrado en el espacio restante */
+        padding-left: 40px !important; 
+        padding-right: 10px !important; 
+        
         border: none !important;
         appearance: none !important;
         -webkit-appearance: none !important;
     }
-  /* FORZAMOS QUE EL BOTÓN NATIVO SEA VISIBLE */
-    .filter-native-wrapper { 
-        display: block !important; /* Esto lo hace reaparecer */
-        position: relative !important;
-        width: calc((100% - 15px) / 2) !important; /* Mismo ancho que una card de producto */
-    }
 
-/* RECONSTRUIMOS EL ICONO DE RAYITAS */
-    .filter-icon-native {
+.filter-icon-native {
         display: block !important;
         position: absolute !important;
-        left: 10px !important;
+        /* Ajustado para el botón al 80% */
+        left: 15% !important; 
         top: 50% !important;
         transform: translateY(-50%) !important;
-        width: 14px !important;
+        width: 16px !important; /* Un pelín más ancho para que se note */
         height: 2px !important;
         background: white !important;
         z-index: 5 !important;
+        pointer-events: none !important;
     }
+      
     .filter-icon-native::before, .filter-icon-native::after {
         content: '' !important;
         position: absolute !important;
-        width: 14px !important;
+        width: 16px !important;
         height: 2px !important;
         background: white !important;
         left: 0 !important;
@@ -660,8 +696,19 @@ body {
     gap: 8px; 
     flex-grow: 1; 
 }
-    .product-info .brand { font-size: 0.88rem; color: #666; }
-    .product-info .name { font-weight: 700; font-size: 1.02rem; color: #222; }
+    .product-info .brand { 
+      font-weight: 400 !important;
+      font-size: 0.88rem; 
+      color: #666; 
+    }
+  
+    .product-info .name { 
+      font-family: "Montserrat", sans-serif !important;
+      font-weight: 700 !important;
+      font-size: 1.02rem; 
+      color: #222; 
+    }
+    
     .product-info .price { color: var(--accent-red); font-weight: 800; font-size: 1.02rem; }
     .stock { background: var(--accent-pink); color: #fff; text-align: center; padding: 10px 12px; font-weight: 700; border-top: 1px solid rgba(0,0,0,0.06); }
     .stock.agotado { background: #b2b2b2; color: #fff; }
@@ -812,11 +859,12 @@ body {
 <div class="background">
   <div class="container">
 
-    
-    <div class="header">
-  <h1>Catálogo</h1>
-  <div class="filter-controls">
-    
+
+      
+<div class="header-catalogo-v2">
+  <h1 class="catalogo-titulo-v2">Catálogo</h1>
+  
+  <div class="filter-controls-v2">
     <div class="filter-native-wrapper">
       <span class="filter-icon-native"></span>
       <select id="filterSelectNative" class="filter-select-native" onchange="ordenarProductosNativo(this.value)">
@@ -840,10 +888,8 @@ body {
         <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor')">Precio: Mayor a menor</a>
       </div>
     </div>
-
   </div>
 </div>
-
     
     <div class="products" id="productsGrid"></div>
   </div>
