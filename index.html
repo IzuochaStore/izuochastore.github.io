@@ -828,29 +828,36 @@ body {
     border-radius: 2px;
 }
 
-   /* Contenedor actualizado: justifica a la derecha y alinea contenido */
+  /* Contenedor: Mantiene todo a la derecha y con buen espacio */
 .contenedor-stock-sello {
     display: flex;
     align-items: center; 
-    justify-content: flex-end; /* Esto lo pega a la derecha */
-    gap: 15px; 
-    margin: 20px 0;
-    width: 100%; 
+    justify-content: flex-end; /* Justificado a la derecha */
+    gap: 20px; /* Más espacio entre el botón y el sello gigante */
+    margin: 25px 0;
+    width: 100%;
 }
 
-/* Estilo del sello: más grande y con animación */
+/* Sello Izuocha: Formato 1:1 más grande */
 .sello-izuocha-detalle {
     display: none; 
-    width: 110px;   /* Aquí ajustas el tamaño que quieras */
-    height: auto;
+    width: 150px;   /* Tamaño aumentado. Prueba con 180px si lo quieres aún más grande */
+    height: 150px;  /* Forzamos el alto para mantener el ratio 1:1 */
     flex-shrink: 0;
-    animation: fadeIn 0.3s ease; /* Mantiene la animación que te gustó */
+    object-fit: contain; /* Asegura que la imagen no se deforme */
+    animation: fadeIn 0.4s ease-out; /* Animación un poco más lenta para el tamaño nuevo */
 }
 
-/* No borres el @keyframes, es necesario para que funcione el 'fadeIn' */
+/* Animación de entrada suave */
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+    from { 
+        opacity: 0; 
+        transform: translateY(10px) scale(0.9); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
 }
     
   </style>
