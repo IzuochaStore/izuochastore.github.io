@@ -827,6 +827,24 @@ body {
     height: 3px !important; /* La hacemos un poquito más gruesa para que resalte */
     border-radius: 2px;
 }
+
+    /* Contenedor de la tarjeta */
+.product-card {
+    position: relative; /* CRÍTICO para que la imagen no flote a cualquier lado */
+    display: flex;
+    flex-direction: column;
+}
+
+/* La imagen de Izuocha sobre la barra de stock */
+.izuocha-agotado-img {
+    position: absolute;
+    bottom: 35px; /* Ajusta este número para subir o bajar la imagen sobre la línea */
+    right: 5px;   /* Alineado a la derecha */
+    width: 70px;  /* Tamaño similar al "Deku cordero" */
+    height: auto;
+    z-index: 10;
+    pointer-events: none; /* Evita que la imagen bloquee el clic del producto */
+}
     
   </style>
 </head>
@@ -1267,26 +1285,40 @@ body {
     ];
 
    const productsGrid = document.getElementById("productsGrid");
-    function renderProducts(list){
-      productsGrid.innerHTML = "";
-      list.forEach(p => {
+  
+   function renderProducts(list) {
+    const productsGrid = document.getElementById("productsGrid");
+    productsGrid.innerHTML = "";
+    
+    list.forEach(p => {
+        const estaAgotado = (p.stock === 0);
+        
+        // Creamos el HTML de la imagen de Izuocha SOLO si está agotado
+        const imgIzuocha = estaAgotado 
+            ? `<img src="images/izuochaAgotado.jpg" class="izuocha-agotado-img" alt="Agotado">` 
+            : "";
+
         const card = document.createElement("div");
         card.className = "product-card";
         card.innerHTML = `
-          <div class="product-image">
-          <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
-          </div>
-          <div class="product-info">
-            <div class="brand">${p.brand}</div>
-            <div class="name">${p.title}</div>
-            <div class="price">${p.price}</div>
-          </div>
-          <div class="stock ${p.stock > 0 ? "" : "agotado"}">${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}</div>
+            <div class="product-image">
+                <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
+            </div>
+            <div class="product-info">
+                <div class="brand">${p.brand}</div>
+                <div class="name">${p.title}</div>
+                <div class="price">${p.price}</div>
+            </div>
+            
+            ${imgIzuocha} <div class="stock ${estaAgotado ? "agotado" : ""}">
+                ${estaAgotado ? "Agotado" : p.stock + " en Stock"}
+            </div>
         `;
+        
         card.onclick = () => openProductDetail(p);
         productsGrid.appendChild(card);
-      });
-    }
+    });
+}
     renderProducts(products);
 
 const searchInput = document.getElementById("searchInput");
