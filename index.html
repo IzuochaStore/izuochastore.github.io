@@ -827,7 +827,21 @@ body {
     height: 3px !important; /* La hacemos un poquito más gruesa para que resalte */
     border-radius: 2px;
 }
-    
+
+    /* --- NUEVO: Estilo para la imagen de Izuocha sobre el stock --- */
+.izuocha-agotado-img {
+    position: absolute;
+    bottom: 38px; 
+    right: 8px;   
+    width: 65px;  
+    height: auto;
+    z-index: 5;
+    pointer-events: none; 
+}
+
+.product-card {
+    position: relative;
+}
   </style>
 </head>
 
@@ -1270,6 +1284,13 @@ body {
     function renderProducts(list){
       productsGrid.innerHTML = "";
       list.forEach(p => {
+        // --- INICIO CAMBIO ESPECÍFICO ---
+        const estaAgotado = p.stock === 0;
+        const imgIzuochaHTML = estaAgotado 
+            ? `<img src="images/izuochaAgotado.webp" class="izuocha-agotado-img" alt="Agotado">` 
+            : "";
+        // --- FIN CAMBIO ESPECÍFICO ---
+
         const card = document.createElement("div");
         card.className = "product-card";
         card.innerHTML = `
@@ -1281,7 +1302,8 @@ body {
             <div class="name">${p.title}</div>
             <div class="price">${p.price}</div>
           </div>
-          <div class="stock ${p.stock > 0 ? "" : "agotado"}">${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}</div>
+          
+          ${imgIzuochaHTML} <div class="stock ${estaAgotado ? "agotado" : ""}">${estaAgotado ? "Agotado" : p.stock + " en Stock"}</div>
         `;
         card.onclick = () => openProductDetail(p);
         productsGrid.appendChild(card);
