@@ -827,6 +827,27 @@ body {
     height: 3px !important; /* La hacemos un poquito más gruesa para que resalte */
     border-radius: 2px;
 }
+
+    /* Contenedor para alinear el botón de stock y el sello */
+.contenedor-stock-sello {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre el botón y el sello */
+    margin: 15px 0;
+}
+
+/* Estilo del sello de Izuocha Agotado */
+.sello-izuocha-detalle {
+    display: none; /* Oculto por defecto */
+    width: 80px;   /* Tamaño ajustable */
+    height: auto;
+    animation: fadeIn 0.3s ease; /* Pequeña animación de entrada */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
     
   </style>
 </head>
@@ -914,7 +935,12 @@ body {
         <h2 id="glitchName">Nombre del Producto</h2>
         <p id="glitchBrand" style="color:var(--muted)"></p>
         <div id="glitchPrice" class="price" style="font-size:2rem; margin:15px 0;"></div>
-        <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
+        
+        <div class="contenedor-stock-sello">
+    <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
+    <img id="glitchSello" src="izuochaAgotado.webp" class="sello-izuocha-detalle" alt="Sello Agotado">
+</div>
+        
         <div class="separator" style="height:2px; background:#eee; margin:20px 0;"></div>
         <h3>Descripción</h3>
        <p id="glitchDesc"></p>
@@ -1415,8 +1441,17 @@ function openProductDetail(p) {
     document.getElementById('glitchDesc').textContent = p.description;
     
     const stockEl = document.getElementById('glitchStock');
-    stockEl.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
-    p.stock > 0 ? stockEl.classList.remove('agotado') : stockEl.classList.add('agotado');
+const selloEl = document.getElementById('glitchSello'); // Referencia al sello
+
+if (p.stock > 0) {
+    stockEl.textContent = p.stock + " en Stock";
+    stockEl.classList.remove('agotado');
+    selloEl.style.display = 'none'; // Escondemos el sello si hay stock
+} else {
+    stockEl.textContent = "Agotado";
+    stockEl.classList.add('agotado');
+    selloEl.style.display = 'block'; // Mostramos el sello si está agotado
+}
 
     // Carrusel: Solo cargamos el array de imágenes de alta calidad
     glitchImages = p.images; 
