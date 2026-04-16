@@ -827,23 +827,6 @@ body {
     height: 3px !important; /* La hacemos un poquito más gruesa para que resalte */
     border-radius: 2px;
 }
-
-  /* Posicionamiento del sello junto al botón */
-.izuocha-stock-sello {
-    display: none; 
-    position: absolute;
-    top: 50%; 
-    right: -75px; /* Ajusta este número si quieres que estén más cerca o lejos del botón */
-    transform: translateY(-50%);
-    width: 65px; 
-    height: auto;
-    z-index: 10;
-}
-
-.izuocha-stock-sello img {
-    width: 100%;
-    height: auto;
-}
     
   </style>
 </head>
@@ -931,10 +914,7 @@ body {
         <h2 id="glitchName">Nombre del Producto</h2>
         <p id="glitchBrand" style="color:var(--muted)"></p>
         <div id="glitchPrice" class="price" style="font-size:2rem; margin:15px 0;"></div>
-       <div style="position: relative; display: inline-block;">
-    <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
-    <div id="izuochaStockSello" class="izuocha-stock-sello"></div>
-</div>
+        <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
         <div class="separator" style="height:2px; background:#eee; margin:20px 0;"></div>
         <h3>Descripción</h3>
        <p id="glitchDesc"></p>
@@ -1287,40 +1267,26 @@ body {
     ];
 
    const productsGrid = document.getElementById("productsGrid");
-  
-   function renderProducts(list) {
-    const productsGrid = document.getElementById("productsGrid");
-    productsGrid.innerHTML = "";
-    
-    list.forEach(p => {
-        const estaAgotado = (p.stock === 0);
-        
-        // Creamos el HTML de la imagen de Izuocha SOLO si está agotado
-        const imgIzuocha = estaAgotado 
-            ? `<img src="images/izuochaAgotado.webp" class="izuocha-agotado-img" alt="Agotado">` 
-            : "";
-
+    function renderProducts(list){
+      productsGrid.innerHTML = "";
+      list.forEach(p => {
         const card = document.createElement("div");
         card.className = "product-card";
         card.innerHTML = `
-            <div class="product-image">
-                <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
-            </div>
-            <div class="product-info">
-                <div class="brand">${p.brand}</div>
-                <div class="name">${p.title}</div>
-                <div class="price">${p.price}</div>
-            </div>
-            
-            ${imgIzuocha} <div class="stock ${estaAgotado ? "agotado" : ""}">
-                ${estaAgotado ? "Agotado" : p.stock + " en Stock"}
-            </div>
+          <div class="product-image">
+          <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
+          </div>
+          <div class="product-info">
+            <div class="brand">${p.brand}</div>
+            <div class="name">${p.title}</div>
+            <div class="price">${p.price}</div>
+          </div>
+          <div class="stock ${p.stock > 0 ? "" : "agotado"}">${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}</div>
         `;
-        
         card.onclick = () => openProductDetail(p);
         productsGrid.appendChild(card);
-    });
-}
+      });
+    }
     renderProducts(products);
 
 const searchInput = document.getElementById("searchInput");
@@ -1449,32 +1415,19 @@ function openProductDetail(p) {
     document.getElementById('glitchDesc').textContent = p.description;
     
     const stockEl = document.getElementById('glitchStock');
-    const izuochaSelloContainer = document.getElementById('izuochaStockSello');
-    
-    // Limpieza previa
-    izuochaSelloContainer.innerHTML = '';
-    izuochaSelloContainer.style.display = 'none';
+    stockEl.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
+    p.stock > 0 ? stockEl.classList.remove('agotado') : stockEl.classList.add('agotado');
 
-    if (p.stock === 0) {
-        stockEl.textContent = "Agotado";
-        stockEl.classList.add('agotado');
-        
-        // Creamos y mostramos el sello de Izuocha
-        const imgIzuocha = document.createElement("img");
-        imgIzuocha.src = "images/izuochaAgotado.jpg";
-        izuochaSelloContainer.appendChild(imgIzuocha);
-        izuochaSelloContainer.style.display = 'block';
-    } else {
-        stockEl.textContent = p.stock + " en Stock";
-        stockEl.classList.remove('agotado');
-    }
-
+    // Carrusel: Solo cargamos el array de imágenes de alta calidad
     glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
+    
+    // Generamos el carrusel (sin la miniatura .webp)
     slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="product">`).join('');
     
     updateSlider();
+    
     window.history.pushState({}, '', `#product/${p.id}`);
     window.scrollTo(0,0);
 }
