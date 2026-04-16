@@ -828,19 +828,20 @@ body {
     border-radius: 2px;
 }
 
-    /* --- NUEVO: Estilo para la imagen de Izuocha sobre el stock --- */
-.izuocha-agotado-img {
-    position: absolute;
-    bottom: 38px; 
-    right: 8px;   
-    width: 65px;  
-    height: auto;
-    z-index: 5;
-    pointer-events: none; 
+ /* Solo para la vista de detalle */
+.glitch-canvas-wrapper {
+    position: relative; 
 }
 
-.product-card {
-    position: relative;
+.izuocha-detalle-agotado {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 100px; /* Tamaño para el detalle */
+    height: auto;
+    z-index: 10;
+    pointer-events: none;
+    filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.5));
 }
   </style>
 </head>
@@ -1281,34 +1282,27 @@ body {
     ];
 
    const productsGrid = document.getElementById("productsGrid");
-    function renderProducts(list){
-      productsGrid.innerHTML = "";
-      list.forEach(p => {
-        // --- INICIO CAMBIO ESPECÍFICO ---
-        const estaAgotado = p.stock === 0;
-        const imgIzuochaHTML = estaAgotado 
-            ? `<img src="images/izuochaAgotado.webp" class="izuocha-agotado-img" alt="Agotado">` 
-            : "";
-        // --- FIN CAMBIO ESPECÍFICO ---
-
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.innerHTML = `
-          <div class="product-image">
-          <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
-          </div>
-          <div class="product-info">
-            <div class="brand">${p.brand}</div>
-            <div class="name">${p.title}</div>
-            <div class="price">${p.price}</div>
-          </div>
-          
-          ${imgIzuochaHTML} <div class="stock ${estaAgotado ? "agotado" : ""}">${estaAgotado ? "Agotado" : p.stock + " en Stock"}</div>
-        `;
-        card.onclick = () => openProductDetail(p);
-        productsGrid.appendChild(card);
-      });
-    }
+    // DEJA ESTA FUNCIÓN ASÍ (SIN CAMBIOS)
+function renderProducts(list){
+  productsGrid.innerHTML = "";
+  list.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.innerHTML = `
+      <div class="product-image">
+      <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
+      </div>
+      <div class="product-info">
+        <div class="brand">${p.brand}</div>
+        <div class="name">${p.title}</div>
+        <div class="price">${p.price}</div>
+      </div>
+      <div class="stock ${p.stock > 0 ? "" : "agotado"}">${p.stock > 0 ? p.stock + " en Stock" : "Agotado"}</div>
+    `;
+    card.onclick = () => openProductDetail(p);
+    productsGrid.appendChild(card);
+  });
+}
     renderProducts(products);
 
 const searchInput = document.getElementById("searchInput");
@@ -1440,12 +1434,25 @@ function openProductDetail(p) {
     stockEl.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
     p.stock > 0 ? stockEl.classList.remove('agotado') : stockEl.classList.add('agotado');
 
-    // Carrusel: Solo cargamos el array de imágenes de alta calidad
+    // --- LÓGICA DE IMAGEN AGOTADO (IZUOCHA) ---
+    const sliderContainer = document.querySelector('.glitch-canvas-wrapper');
+    // Limpiamos si quedó una imagen de un producto anterior
+    const imgPrevia = document.querySelector('.izuocha-detalle-agotado');
+    if (imgPrevia) imgPrevia.remove();
+
+    // Si no hay stock, creamos y pegamos la imagen
+    if (p.stock === 0) {
+        const imgIzuocha = document.createElement("img");
+        imgIzuocha.src = "images/izuochaAgotado.jpg";
+        imgIzuocha.className = "izuocha-detalle-agotado";
+        sliderContainer.appendChild(imgIzuocha);
+    }
+    // ------------------------------------------
+
     glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
     
-    // Generamos el carrusel (sin la miniatura .webp)
     slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="product">`).join('');
     
     updateSlider();
