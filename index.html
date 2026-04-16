@@ -828,22 +828,21 @@ body {
     border-radius: 2px;
 }
 
-    /* Contenedor de la tarjeta */
-.product-card {
-    position: relative; /* CRÍTICO para que la imagen no flote a cualquier lado */
-    display: flex;
-    flex-direction: column;
-}
-
-/* La imagen de Izuocha sobre la barra de stock */
-.izuocha-agotado-img {
+  /* Posicionamiento del sello junto al botón */
+.izuocha-stock-sello {
+    display: none; 
     position: absolute;
-    bottom: 35px; /* Ajusta este número para subir o bajar la imagen sobre la línea */
-    right: 5px;   /* Alineado a la derecha */
-    width: 70px;  /* Tamaño similar al "Deku cordero" */
+    top: 50%; 
+    right: -75px; /* Ajusta este número si quieres que estén más cerca o lejos del botón */
+    transform: translateY(-50%);
+    width: 65px; 
     height: auto;
     z-index: 10;
-    pointer-events: none; /* Evita que la imagen bloquee el clic del producto */
+}
+
+.izuocha-stock-sello img {
+    width: 100%;
+    height: auto;
 }
     
   </style>
@@ -932,7 +931,10 @@ body {
         <h2 id="glitchName">Nombre del Producto</h2>
         <p id="glitchBrand" style="color:var(--muted)"></p>
         <div id="glitchPrice" class="price" style="font-size:2rem; margin:15px 0;"></div>
-        <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
+       <div style="position: relative; display: inline-block;">
+    <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
+    <div id="izuochaStockSello" class="izuocha-stock-sello"></div>
+</div>
         <div class="separator" style="height:2px; background:#eee; margin:20px 0;"></div>
         <h3>Descripción</h3>
        <p id="glitchDesc"></p>
@@ -1447,19 +1449,32 @@ function openProductDetail(p) {
     document.getElementById('glitchDesc').textContent = p.description;
     
     const stockEl = document.getElementById('glitchStock');
-    stockEl.textContent = p.stock > 0 ? p.stock + " en Stock" : "Agotado";
-    p.stock > 0 ? stockEl.classList.remove('agotado') : stockEl.classList.add('agotado');
+    const izuochaSelloContainer = document.getElementById('izuochaStockSello');
+    
+    // Limpieza previa
+    izuochaSelloContainer.innerHTML = '';
+    izuochaSelloContainer.style.display = 'none';
 
-    // Carrusel: Solo cargamos el array de imágenes de alta calidad
+    if (p.stock === 0) {
+        stockEl.textContent = "Agotado";
+        stockEl.classList.add('agotado');
+        
+        // Creamos y mostramos el sello de Izuocha
+        const imgIzuocha = document.createElement("img");
+        imgIzuocha.src = "images/izuochaAgotado.jpg";
+        izuochaSelloContainer.appendChild(imgIzuocha);
+        izuochaSelloContainer.style.display = 'block';
+    } else {
+        stockEl.textContent = p.stock + " en Stock";
+        stockEl.classList.remove('agotado');
+    }
+
     glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
-    
-    // Generamos el carrusel (sin la miniatura .webp)
     slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="product">`).join('');
     
     updateSlider();
-    
     window.history.pushState({}, '', `#product/${p.id}`);
     window.scrollTo(0,0);
 }
