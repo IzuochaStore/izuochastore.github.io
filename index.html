@@ -859,6 +859,91 @@ body {
         transform: translateY(0) scale(1); 
     }
 }
+
+
+/* =========================================================
+   ESTILOS ESPECÍFICOS DE PAGINACIÓN (Bordes & Colores)
+========================================================= */
+
+/* Contenedor principal de los controles */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 1000px; /* Limita ancho en PC */
+    padding: 0 15px;
+    color: white; /* Texto blanco por defecto */
+    font-family: "Montserrat", sans-serif !important;
+}
+
+/* Botones "Anterior" y "Siguiente" - Borde Verde Deku */
+.pagination-btn {
+    padding: 10px 20px;
+    background-color: transparent !important; /* Fondo transparente */
+    border: 2px solid #01744b !important; /* Borde Verde Deku */
+    border-radius: 8px;
+    color: white !important; /* Texto blanco */
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover para Anterior/Siguiente */
+.pagination-btn:hover {
+    background-color: rgba(1, 116, 75, 0.1) !important; /* Toque de verde transparente */
+}
+
+/* Estado deshabilitado (cuando no puedes ir más atrás/adelante) */
+.pagination-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: #666 !important; /* Borde gris en deshabilitado */
+}
+
+/* Cuadrados Numerados - Borde Rosa Uraraka */
+.page-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px; /* Cuadrado perfecto */
+    height: 42px;
+    background-color: transparent !important; /* Fondo transparente */
+    border: 2px solid #ec8db0 !important; /* Borde Rosa Uraraka */
+    border-radius: 8px;
+    color: white !important; /* Número blanco */
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover para números */
+.page-number:hover {
+    background-color: rgba(236, 141, 176, 0.1) !important; /* Toque de rosa transparente */
+}
+
+/* Número de página ACTIVA */
+.page-number.active {
+    background-color: #ec8db0 !important; /* Fondo Rosa Uraraka Sólido */
+    color: white !important; /* Texto blanco (mantiene contraste) */
+}
+
+/* Los puntos suspensivos (...) */
+.pagination-dots {
+    color: #ec8db0; /* Mismo rosa Uraraka para consistencia */
+    font-weight: 900;
+    font-size: 1.2rem;
+}
+
+/* Texto de "Productos Totales" */
+.total-stock-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white; /* Blanco */
+    margin-right: 15px;
+}
     
   </style>
 </head>
@@ -922,8 +1007,15 @@ body {
     </div>
   </div>
 </div>
+
     
-    <div class="products" id="productsGrid"></div>
+    <div id="topPagination"></div>
+
+<div class="products" id="productsGrid"></div>
+
+<div id="bottomPagination"></div>
+
+    
   </div>
 </div>
 
@@ -1408,15 +1500,42 @@ body {
       }
     ];
 
+  let currentPage = 1;
+const productsPerPage = 12;
+let filteredProductsGlobal = [];
+
+function calculateTotalStock(list) {
+    return list.reduce((sum, p) => sum + (p.stock || 0), 0);
+}
+
    const productsGrid = document.getElementById("productsGrid");
-    function renderProducts(list){
-      productsGrid.innerHTML = "";
-      list.forEach(p => {
+  
+    function renderProducts(list, resetPage = true) {
+    const productsGrid = document.getElementById("productsGrid");
+    filteredProductsGlobal = list;
+
+    if (resetPage) currentPage = 1;
+
+    productsGrid.innerHTML = "";
+    
+    if (list.length === 0) {
+        productsGrid.innerHTML = `<p style="color:white; grid-column:1/-1; text-align:center;">No hay resultados.</p>`;
+        document.getElementById("topPagination").innerHTML = "";
+        document.getElementById("bottomPagination").innerHTML = "";
+        return;
+    }
+
+    // Lógica de rebanado de productos (12 por página)
+    const start = (currentPage - 1) * productsPerPage;
+    const end = start + productsPerPage;
+    const productsToDisplay = list.slice(start, end);
+
+    productsToDisplay.forEach(p => {
         const card = document.createElement("div");
         card.className = "product-card";
         card.innerHTML = `
           <div class="product-image">
-          <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
+            <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
           </div>
           <div class="product-info">
             <div class="brand">${p.brand}</div>
@@ -1427,8 +1546,40 @@ body {
         `;
         card.onclick = () => openProductDetail(p);
         productsGrid.appendChild(card);
-      });
-    }
+    });
+
+    renderPaginationControls(list);
+}
+
+  function renderPaginationControls(fullList) {
+    const totalStock = calculateTotalStock(fullList);
+    const totalPages = Math.ceil(fullList.length / productsPerPage);
+    
+    const controlsHTML = `
+        <div class="pagination-controls">
+            <span class="total-stock-label">Productos totales: ${totalStock}</span>
+            <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')">Anterior</button>
+            ${Array.from({length: totalPages}, (_, i) => i + 1).map(num => `
+                <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
+            `).join('')}
+            <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('next')">Siguiente</button>
+        </div>
+    `;
+
+    document.getElementById("topPagination").innerHTML = controlsHTML;
+    document.getElementById("bottomPagination").innerHTML = controlsHTML;
+}
+
+function changePage(target) {
+    const totalPages = Math.ceil(filteredProductsGlobal.length / productsPerPage);
+    if (target === 'prev' && currentPage > 1) currentPage--;
+    else if (target === 'next' && currentPage < totalPages) currentPage++;
+    else if (typeof target === 'number') currentPage = target;
+
+    renderProducts(filteredProductsGlobal, false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+  
     renderProducts(products);
 
 const searchInput = document.getElementById("searchInput");
@@ -1513,7 +1664,7 @@ const searchInput = document.getElementById("searchInput");
     });
 
     // 4. Renderizamos los resultados encontrados
-    renderProducts(filtered);
+    renderProducts(filtered, true);
     
     // 5. Limpieza de URL y scroll
     window.history.pushState({}, '', window.location.pathname);
@@ -1692,7 +1843,7 @@ function ordenarProductosBase(orden) {
     }
 
     // 4. Renderizamos los cambios
-    renderProducts(listaParaOrdenar);
+    renderProducts(listaParaOrdenar, true);
 }
 
 // 4. Cerrar el menú custom si haces clic afuera
