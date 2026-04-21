@@ -1557,7 +1557,7 @@ function calculateTotalStock(list) {
     
     const controlsHTML = `
         <div class="pagination-controls">
-            <span class="total-stock-label">Productos disponibles: ${totalStock}</span>
+            <span class="total-stock-label">Productos en stock: ${totalStock}</span>
             <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')">Anterior</button>
             ${Array.from({length: totalPages}, (_, i) => i + 1).map(num => `
                 <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
