@@ -861,88 +861,70 @@ body {
 }
 
 
-/* =========================================================
-   ESTILOS ESPECÍFICOS DE PAGINACIÓN (Bordes & Colores)
-========================================================= */
+/* --- NUEVOS ESTILOS DE PAGINACIÓN --- */
 
-/* Contenedor principal de los controles */
+/* Contenedor principal: ahora es una columna para centrar el stock arriba */
 .pagination-controls {
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Cambiado a columna */
     align-items: center;
-    gap: 12px;
-    margin: 30px auto;
+    gap: 15px;
+    margin: 20px auto;
     width: 100%;
-    max-width: 1000px; /* Limita ancho en PC */
-    padding: 0 15px;
-    color: white; /* Texto blanco por defecto */
-    font-family: "Montserrat", sans-serif !important;
+    color: white;
 }
 
-/* Botones "Anterior" y "Siguiente" - Borde Verde Deku */
-.pagination-btn {
-    padding: 10px 20px;
-    background-color: transparent !important; /* Fondo transparente */
-    border: 2px solid #01744b !important; /* Borde Verde Deku */
-    border-radius: 8px;
-    color: white !important; /* Texto blanco */
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-/* Hover para Anterior/Siguiente */
-.pagination-btn:hover {
-    background-color: rgba(1, 116, 75, 0.1) !important; /* Toque de verde transparente */
-}
-
-/* Estado deshabilitado (cuando no puedes ir más atrás/adelante) */
-.pagination-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    border-color: #666 !important; /* Borde gris en deshabilitado */
-}
-
-/* Cuadrados Numerados - Borde Rosa Uraraka */
-.page-number {
+/* Contenedor interno para los botones (Anterior, Números, Siguiente) */
+.pagination-row {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 42px; /* Cuadrado perfecto */
-    height: 42px;
-    background-color: transparent !important; /* Fondo transparente */
-    border: 2px solid #ec8db0 !important; /* Borde Rosa Uraraka */
-    border-radius: 8px;
-    color: white !important; /* Número blanco */
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    gap: 10px;
 }
 
-/* Hover para números */
-.page-number:hover {
-    background-color: rgba(236, 141, 176, 0.1) !important; /* Toque de rosa transparente */
-}
-
-/* Número de página ACTIVA */
-.page-number.active {
-    background-color: #ec8db0 !important; /* Fondo Rosa Uraraka Sólido */
-    color: white !important; /* Texto blanco (mantiene contraste) */
-}
-
-/* Los puntos suspensivos (...) */
-.pagination-dots {
-    color: #ec8db0; /* Mismo rosa Uraraka para consistencia */
-    font-weight: 900;
-    font-size: 1.2rem;
-}
-
-/* Texto de "Productos Totales" */
+/* Texto de Stock Total: Blanco y centrado */
 .total-stock-label {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: white; /* Blanco */
-    margin-right: 15px;
+    font-weight: bold;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Botones Anterior y Siguiente: Verde Deku Sólido */
+.pagination-btn {
+    padding: 8px 16px;
+    background-color: #01744b !important; /* Verde Deku Sólido */
+    border: 2px solid #01744b !important;
+    border-radius: 8px;
+    color: white !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Cuadrados de números: Rosa Uraraka Sólido (Donde no estás) */
+.page-number {
+    width: 40px;
+    height: 40px;
+    background-color: #ec8db0 !important; /* Rosa Uraraka Sólido */
+    border: 2px solid #ec8db0 !important;
+    border-radius: 8px;
+    color: white !important;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Cuadrado de número ACTIVO: Verde Deku Sólido (Donde estás) */
+.page-number.active {
+    background-color: #01744b !important; /* Verde Deku Sólido */
+    border: 2px solid #01744b !important;
 }
     
   </style>
@@ -1555,19 +1537,29 @@ function calculateTotalStock(list) {
     const totalStock = calculateTotalStock(fullList);
     const totalPages = Math.ceil(fullList.length / productsPerPage);
     
+    // Nueva estructura: El stock va en un div propio arriba de la fila de botones
     const controlsHTML = `
         <div class="pagination-controls">
-            <span class="total-stock-label">Productos en stock: ${totalStock}</span>
-            <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')">Anterior</button>
-            ${Array.from({length: totalPages}, (_, i) => i + 1).map(num => `
-                <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
-            `).join('')}
-            <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('next')">Siguiente</button>
+            <div class="total-stock-label">Productos en stock: ${totalStock}</div>
+            
+            <div class="pagination-row">
+                <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')">Anterior</button>
+                
+                ${Array.from({length: totalPages}, (_, i) => i + 1).map(num => `
+                    <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
+                `).join('')}
+                
+                <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('next')">Siguiente</button>
+            </div>
         </div>
     `;
 
-    document.getElementById("topPagination").innerHTML = controlsHTML;
-    document.getElementById("bottomPagination").innerHTML = controlsHTML;
+    // Se inyecta en los contenedores superior e inferior
+    const topContainer = document.getElementById("topPagination");
+    const bottomContainer = document.getElementById("bottomPagination");
+    
+    if(topContainer) topContainer.innerHTML = controlsHTML;
+    if(bottomContainer) bottomContainer.innerHTML = controlsHTML;
 }
 
 function changePage(target) {
