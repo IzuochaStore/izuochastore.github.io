@@ -1016,14 +1016,14 @@ body {
         <div class="glitch-dots" id="glitchDots"></div>
       </div>
 
-      <div class="glitch-info">
-        <h2 id="glitchName">Nombre del Producto</h2>
-        <p id="glitchBrand" style="color:var(--muted)"></p>
-        <div id="glitchPrice" class="price" style="font-size:2rem; margin:15px 0;"></div>
-        
-        <div class="contenedor-stock-sello">
-    <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
-    <img id="glitchSello" src="images/izuochaAgotado.webp" class="sello-izuocha-detalle" alt="Sello Agotado">
+     <div class="glitch-info">
+    <h2 id="glitchName">Nombre del Producto</h2>
+    <p id="glitchBrand" style="color:var(--muted); margin-bottom: 15px;"></p>
+    
+    <div id="glitchInfoEspecial"></div>
+    
+    <h3>Descripción</h3>
+    <p id="glitchDesc" style="white-space: pre-line;"></p>
 </div>
         
         <div class="separator" style="height:2px; background:#eee; margin:20px 0;"></div>
@@ -1730,45 +1730,44 @@ updateCategories();
 
   
 function openProductDetail(p) {
-    // 1. Manejo de vistas
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
 
-    // 2. Datos básicos
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
     document.getElementById('glitchDesc').textContent = p.description;
     
-    // 3. Lógica del Sello de Agotado (Sobre la imagen principal)
+    // Sello de "Agotado" sobre el carrusel principal
     const selloEl = document.getElementById('glitchSello');
     if (selloEl) {
         selloEl.style.display = p.stock > 0 ? 'none' : 'block';
     }
 
-    // 4. NUEVA ESTRUCTURA: Stock, Precio e Imagen Detalle alineados
-    // Buscamos el contenedor donde van estos datos (asegúrate de que el ID coincida o usa el contenedor de info)
-    const infoContainer = document.getElementById('glitchInfoEspecial'); 
+    // Inyectar el grupo de Precio, Stock e Imagen Detalle
+    const infoEspecial = document.getElementById('glitchInfoEspecial');
     
-    // Inyectamos el HTML dinámico con los estilos de alineación
-    infoContainer.innerHTML = `
+    // Importante: añadimos "images/" a la ruta si tus imágenes de detalle están en esa carpeta
+    const rutaImagenDetalle = p.detalleImg.startsWith('images/') ? p.detalleImg : `images/${p.detalleImg}`;
+
+    infoEspecial.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
             <div style="display: flex; flex-direction: column; gap: 2px;">
-                <div id="glitchStock" class="${p.stock > 0 ? '' : 'agotado'}" style="font-size: 0.9rem; font-weight: bold;">
+                <div class="${p.stock > 0 ? '' : 'agotado'}" style="font-size: 0.9rem; font-weight: bold; color: ${p.stock > 0 ? '#d81b60' : '#ff0000'};">
                     ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
                 </div>
-                <div id="glitchPrice" style="font-size: clamp(1.1rem, 5vw, 1.6rem); font-weight: 800; color: #fff; line-height: 1;">
+                <div style="font-size: clamp(1.1rem, 5vw, 1.8rem); font-weight: 800; color: white; line-height: 1;">
                     ${p.price}
                 </div>
             </div>
 
-            <div class="extra-detail-img">
-                <img src="${p.detalleImg}" alt="detalle" style="max-width: 85px; height: auto; display: block;">
+            <div style="margin-left: 10px;">
+                <img src="${rutaImagenDetalle}" alt="detalle" style="max-width: 90px; height: auto; display: block;">
             </div>
         </div>
-        <hr style="border: 0; height: 2px; background-color: #2e7d32; margin: 0 0 15px 0;">
+        <hr style="border: 0; height: 2px; background-color: #01744b; margin: 0 0 20px 0;">
     `;
 
-    // 5. Configuración del Carrusel
+    // Configuración del Carrusel
     glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
