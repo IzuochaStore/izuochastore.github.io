@@ -1679,19 +1679,19 @@ const searchInput = document.getElementById("searchInput");
 
     const q = (searchInput.value || "").toLowerCase().trim();
     const selectedCat = categorySelect.value;
+
+     
+   let filtered = products.filter(p => {
+    const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
     
-    // 3. Filtrado lógico (Asegúrate de usar la lista 'products' global)
-    let filtered = products.filter(p => {
-        // Filtro por categoría (Si es 'Animes' pasa siempre, si no, debe coincidir)
-        const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
+    // Ahora busca en Título, Anime y Etiquetas
+    const matchText = !q || 
+        p.title.toLowerCase().includes(q) || 
+        (p.anime && p.anime.toLowerCase().includes(q)) ||
+        (p.etiquetas && p.etiquetas.toLowerCase().includes(q)); // <-- Nueva condición
         
-        // Filtro por texto (Si no hay texto pasa siempre, si hay, busca en título o anime)
-        const matchText = !q || 
-            p.title.toLowerCase().includes(q) || 
-            (p.anime && p.anime.toLowerCase().includes(q));
-            
-        return matchCategory && matchText;
-    });
+    return matchCategory && matchText;
+});
 
     // 4. Renderizamos los resultados encontrados
     renderProducts(filtered, true);
@@ -1728,34 +1728,50 @@ updateCategories();
     let glitchCurrentIndex = 0;
     let glitchImages = [];
 
+  
 function openProductDetail(p) {
+    // 1. Manejo de vistas
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
 
+    // 2. Datos básicos
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
-    document.getElementById('glitchPrice').textContent = p.price;
     document.getElementById('glitchDesc').textContent = p.description;
     
-    const stockEl = document.getElementById('glitchStock');
-const selloEl = document.getElementById('glitchSello'); // Referencia al sello
+    // 3. Lógica del Sello de Agotado (Sobre la imagen principal)
+    const selloEl = document.getElementById('glitchSello');
+    if (selloEl) {
+        selloEl.style.display = p.stock > 0 ? 'none' : 'block';
+    }
 
-if (p.stock > 0) {
-    stockEl.textContent = p.stock + " en Stock";
-    stockEl.classList.remove('agotado');
-    selloEl.style.display = 'none'; // Escondemos el sello si hay stock
-} else {
-    stockEl.textContent = "Agotado";
-    stockEl.classList.add('agotado');
-    selloEl.style.display = 'block'; // Mostramos el sello si está agotado
-}
+    // 4. NUEVA ESTRUCTURA: Stock, Precio e Imagen Detalle alineados
+    // Buscamos el contenedor donde van estos datos (asegúrate de que el ID coincida o usa el contenedor de info)
+    const infoContainer = document.getElementById('glitchInfoEspecial'); 
+    
+    // Inyectamos el HTML dinámico con los estilos de alineación
+    infoContainer.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div id="glitchStock" class="${p.stock > 0 ? '' : 'agotado'}" style="font-size: 0.9rem; font-weight: bold;">
+                    ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
+                </div>
+                <div id="glitchPrice" style="font-size: clamp(1.1rem, 5vw, 1.6rem); font-weight: 800; color: #fff; line-height: 1;">
+                    ${p.price}
+                </div>
+            </div>
 
-    // Carrusel: Solo cargamos el array de imágenes de alta calidad
+            <div class="extra-detail-img">
+                <img src="${p.detalleImg}" alt="detalle" style="max-width: 85px; height: auto; display: block;">
+            </div>
+        </div>
+        <hr style="border: 0; height: 2px; background-color: #2e7d32; margin: 0 0 15px 0;">
+    `;
+
+    // 5. Configuración del Carrusel
     glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
-    
-    // Generamos el carrusel (sin la miniatura .webp)
     slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="product">`).join('');
     
     updateSlider();
@@ -1764,6 +1780,7 @@ if (p.stock > 0) {
     window.scrollTo(0,0);
 }
 
+  
   function closeProductDetail() {
     document.querySelector('.background').style.display = 'block';
     document.getElementById('productDetailSection').style.display = 'none';
@@ -1894,10 +1911,11 @@ listaParaOrdenar = listaParaOrdenar.filter(p => {
     
     // El buscador ahora mira: Título, Anime y ETIQUETAS
     const q = (searchInput.value || "").toLowerCase().trim();
-    const matchText = !q || 
-                      p.title.toLowerCase().includes(q) || 
-                      (p.anime && p.anime.toLowerCase().includes(q)) ||
-                      (p.etiquetas && p.etiquetas.toLowerCase().includes(q)); // <--- NUEVO
+    
+const matchText = !q || 
+                  p.title.toLowerCase().includes(q) || 
+                  (p.anime && p.anime.toLowerCase().includes(q)) ||
+                  (p.etiquetas && p.etiquetas.toLowerCase().includes(q)); // <-- Aquí está el truco
 
     return matchCategory && matchText;
 });
