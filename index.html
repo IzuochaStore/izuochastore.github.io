@@ -1735,36 +1735,37 @@ function openProductDetail(p) {
 
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
+    
+    // 1. LIMPIEZA DE DESCRIPCIÓN: Solo una vez y con formato
+    document.getElementById('glitchDesc').style.whiteSpace = 'pre-line';
     document.getElementById('glitchDesc').textContent = p.description;
     
-    // Sello de "Agotado" sobre el carrusel principal
     const selloEl = document.getElementById('glitchSello');
     if (selloEl) {
         selloEl.style.display = p.stock > 0 ? 'none' : 'block';
     }
 
-    // Inyectar el grupo de Precio, Stock e Imagen Detalle
     const infoEspecial = document.getElementById('glitchInfoEspecial');
-    
-    // Importante: añadimos "images/" a la ruta si tus imágenes de detalle están en esa carpeta
     const rutaImagenDetalle = p.detalleImg.startsWith('images/') ? p.detalleImg : `images/${p.detalleImg}`;
 
+    // 2. INYECCIÓN DE PRECIO, STOCK E IMAGEN (Ajustado)
     infoEspecial.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
-            <div style="display: flex; flex-direction: column; gap: 2px;">
-                <div class="${p.stock > 0 ? '' : 'agotado'}" style="font-size: 0.9rem; font-weight: bold; color: ${p.stock > 0 ? '#d81b60' : '#ff0000'};">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <div style="background: ${p.stock > 0 ? '#e91e63' : '#777'}; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; width: fit-content;">
                     ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
                 </div>
-                <div style="font-size: clamp(1.1rem, 5vw, 1.8rem); font-weight: 800; color: white; line-height: 1;">
-                    ${p.price}
+                
+                <div style="font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 800; color: #333; line-height: 1;">
+                    $${p.price.toLocaleString('es-CL')} CLP
                 </div>
             </div>
 
             <div style="margin-left: 10px;">
-                <img src="${rutaImagenDetalle}" alt="detalle" style="max-width: 90px; height: auto; display: block;">
+                <img src="${rutaImagenDetalle}" alt="detalle" style="width: 130px; height: auto; display: block; margin-bottom: -5px;">
             </div>
         </div>
-        <hr style="border: 0; height: 2px; background-color: #01744b; margin: 0 0 20px 0;">
+        <hr style="border: 0; height: 3px; background-color: #01744b; margin: 0 0 20px 0;">
     `;
 
     // Configuración del Carrusel
