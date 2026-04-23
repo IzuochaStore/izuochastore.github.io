@@ -11,7 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   
   <style>
-  
+/*inicio bloque estilos*/
+    
     /* =========================================================
                         Reset y variables
        ========================================================= */
@@ -921,12 +922,30 @@ body {
     align-items: center;
 }
 
-/* Cuadrado de número ACTIVO: Verde Deku Sólido (Donde estás) */
+/* Cuadrado de número ACTIVO: Verde Deku Sólido */
 .page-number.active {
     background-color: #01744b !important; /* Verde Deku Sólido */
     border: 2px solid #01744b !important;
 }
+
+
+.stock-badge.agotado {
+    background-color: #757575 !important; /* Gris para productos agotados */
+    color: white;
+}
+
+.price-tag {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-top: 5px;
+    color: #333;
+}
+
+.price-tag.small-text {
+    font-size: 1.1rem; /* Tamaño reducido para el "c/u" */
+}
     
+    /*final bloque estilos*/
   </style>
 </head>
 
@@ -1699,27 +1718,39 @@ function openProductDetail(p) {
     // Asegurar ruta de imagen de detalle
     const rutaImagenDetalle = p.detalleImg.startsWith('images/') ? p.detalleImg : `images/${p.detalleImg}`;
 
-    const infoEspecial = document.getElementById('glitchInfoEspecial');
-    
-    // Inyección de diseño: Precio arriba, Stock abajo, Imagen a la derecha
-    infoEspecial.innerHTML = `
-        <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: flex-start;">
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div style="font-size: 2.2rem; font-weight: 500; color: #333; line-height: 1; font-family: sans-serif;">
-                    ${p.price}
-                </div>
+    // BUSCA ESTA LÍNEA DENTRO DE openProductDetail:
+const infoEspecial = document.getElementById('glitchInfoEspecial');
 
-                <div style="background-color: #e57399; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; width: fit-content;">
-                    ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
-                </div>
+// REEMPLAZA TODO LO QUE SIGUE POR ESTO:
+const esAgotado = p.stock <= 0;
+const stockClase = esAgotado ? "stock-badge agotado" : "stock-badge";
+const stockTexto = esAgotado ? "Agotado" : `${p.stock} en Stock`;
+
+// Lógica de tamaño para el "c/u"
+const esPorUnidad = p.price.toLowerCase().includes("c/u");
+const precioClase = esPorUnidad ? "price-tag small-text" : "price-tag";
+
+// EL ORDEN REAL: Stock ARRIBA, Precio ABAJO
+infoEspecial.innerHTML = `
+    <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            
+            <div class="${stockClase}" style="background-color: #e57399; color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 1rem; width: fit-content;">
+                ${stockTexto}
             </div>
 
-            <div style="margin-right: 10px;">
-                <img src="${rutaImagenDetalle}" alt="detalle" style="width: 100px; height: auto; display: block;">
+            <div class="${precioClase}" style="font-family: sans-serif; line-height: 1;">
+                ${p.price}
             </div>
         </div>
-        <hr style="border: 0; height: 2px; background-color: #01744b; margin: 25px 0 15px 0;">
-    `;
+
+        <div style="margin-right: 10px;">
+            <img src="images/${p.detalleImg}" alt="detalle" style="width: 100px; height: auto; display: block;">
+        </div>
+    </div>
+    
+    <hr style="border: 0; height: 2px; background-color: #01744b; margin: 20px 0 15px 0;">
+`;
 
     // Carrusel
     glitchImages = p.images; 
