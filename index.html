@@ -859,6 +859,73 @@ body {
         transform: translateY(0) scale(1); 
     }
 }
+
+
+/* --- NUEVOS ESTILOS DE PAGINACIÓN --- */
+
+/* Contenedor principal: ahora es una columna para centrar el stock arriba */
+.pagination-controls {
+    display: flex;
+    flex-direction: column; /* Cambiado a columna */
+    align-items: center;
+    gap: 15px;
+    margin: 20px auto;
+    width: 100%;
+    color: white;
+}
+
+/* Contenedor interno para los botones (Anterior, Números, Siguiente) */
+.pagination-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Texto de Stock Total: Blanco y centrado */
+.total-stock-label {
+    font-weight: bold;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Botones Anterior y Siguiente: Verde Deku Sólido */
+.pagination-btn {
+    padding: 8px 16px;
+    background-color: #01744b !important; /* Verde Deku Sólido */
+    border: 2px solid #01744b !important;
+    border-radius: 8px;
+    color: white !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Cuadrados de números: Rosa Uraraka Sólido (Donde no estás) */
+.page-number {
+    width: 40px;
+    height: 40px;
+    background-color: #ec8db0 !important; /* Rosa Uraraka Sólido */
+    border: 2px solid #ec8db0 !important;
+    border-radius: 8px;
+    color: white !important;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Cuadrado de número ACTIVO: Verde Deku Sólido (Donde estás) */
+.page-number.active {
+    background-color: #01744b !important; /* Verde Deku Sólido */
+    border: 2px solid #01744b !important;
+}
     
   </style>
 </head>
@@ -922,21 +989,27 @@ body {
     </div>
   </div>
 </div>
+
     
-    <div class="products" id="productsGrid"></div>
+    <div id="topPagination"></div>
+
+<div class="products" id="productsGrid"></div>
+
+<div id="bottomPagination"></div>
+
+    
   </div>
 </div>
 
 <div id="productDetailSection" style="display: none; padding-top: 20px;">
   <div class="container">
-<button onclick="closeProductDetail()" style="background:#01744b; color:white; border: 2px solid white; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: 700; transition: all 0.2s;">
-    Volver al catálogo
-</button>
+    <button onclick="closeProductDetail()" style="background:#01744b; color:white; border: 2px solid white; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: 700; transition: all 0.2s;">
+        Volver al catálogo
+    </button>
     
     <div class="glitch-product-container">
       <div class="glitch-gallery">
-        <div class="glitch-slider" id="glitchSlider">
-          </div>
+        <div class="glitch-slider" id="glitchSlider"></div>
         <button class="slider-btn prev" onclick="moveSlider(-1)">&#10094;</button>
         <button class="slider-btn next" onclick="moveSlider(1)">&#10095;</button>
         <div class="glitch-dots" id="glitchDots"></div>
@@ -944,41 +1017,12 @@ body {
 
       <div class="glitch-info">
         <h2 id="glitchName">Nombre del Producto</h2>
-        <p id="glitchBrand" style="color:var(--muted)"></p>
-        <div id="glitchPrice" class="price" style="font-size:2rem; margin:15px 0;"></div>
+        <p id="glitchBrand" style="color:var(--muted); margin-bottom: 15px;"></p>
         
-        <div class="contenedor-stock-sello">
-    <div id="glitchStock" class="stock" style="display:inline-block; border-radius:8px;"></div>
-    <img id="glitchSello" src="images/izuochaAgotado.webp" class="sello-izuocha-detalle" alt="Sello Agotado">
-</div>
+        <div id="glitchInfoEspecial"></div>
         
-        <div class="separator" style="height:2px; background:#eee; margin:20px 0;"></div>
         <h3>Descripción</h3>
-       <p id="glitchDesc"></p>
-      </div>
-    </div>
-  </div>
-</div>
-  
-<div class="modal" id="productModal" aria-hidden="true">
-  <div class="sheet" role="dialog" aria-modal="true">
-    <div class="topbar">
-      <div class="title" id="modalTitle">Producto</div>
-      <button style="background:none; border:none; font-size:2rem; cursor:pointer;" id="modalCloseBtn">&times;</button>
-    </div>
-    <div class="content">
-      <div class="carousel" id="carousel">
-        <img id="carouselImage" src="" alt="Imagen del producto" />
-        <button class="btn left" id="prevBtn">&#10094;</button>
-        <button class="btn right" id="nextBtn">&#10095;</button>
-        <div class="dots" id="dots"></div>
-      </div>
-      <div class="detail">
-        <div class="brand" id="modalBrand">Brand</div>
-        <div class="name" id="modalName" style="font-size:1.4rem; font-weight:800;">Nombre</div>
-        <div class="price" id="modalPrice">$0</div>
-        <div class="stock" id="modalStock">0 en Stock</div>
-        <div class="desc" id="modalDesc" style="white-space: pre-wrap;">Descripción</div>
+        <p id="glitchDesc" style="white-space: pre-line;"></p>
       </div>
     </div>
   </div>
@@ -996,6 +1040,8 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/VasosMHA0.4.webp",
         images: ["images/VasosMHA1.4.jpg", "images/VasoTodoroki2.4.jpg", "images/VasoTodoroki3.4.jpg", "images/VasoTodoroki4.4.jpg"],
+        detalleImg: "Detalle3.webp",
+        etiquetas: "todoroki, shoto, vaso, boku no hero, bnha, mha, my hero academia",
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1019,6 +1065,8 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/VasosMHA0.4.webp",
         images: ["images/VasosMHA1.4.jpg", "images/VasoHawks2.4.jpg", "images/VasoHawks3.4.jpg", "images/VasoHawks4.4.jpg"],
+        detalleImg: "Detalle2.webp",
+        etiquetas: "hawks, keigo, takami, vaso, boku no hero, bnha, mha, my hero academia",
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1042,6 +1090,8 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/VasosMHA0.4.webp",
         images: ["images/VasosMHA1.4.jpg", "images/VasoBDT2.4.jpg", "images/VasoBDT3.4.jpg", "images/VasoBDT4.4.jpg"],
+        detalleImg: "Detalle3.webp",
+        etiquetas: "deku, izuku, midoriya, bakugo, bakugou, kachan, katsuki, todoroki, shoto, vaso, boku no hero, bnha, mha, my hero academia",
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1065,6 +1115,8 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/VasosMHA0.4.webp",
         images: ["images/VasosMHA1.4.jpg", "images/VasoRody2.4.jpg", "images/VasoRody3.4.jpg", "images/VasoRody4.4.jpg"],
+        detalleImg: "Detalle3.webp",
+        etiquetas: "rody, soul, vaso, boku no hero, bnha, mha, my hero academia",
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1088,6 +1140,8 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/VasosMHA0.4.webp",
         images: ["images/VasosMHA1.4.jpg", "images/VasoBakugo2.4.jpg", "images/VasoBakugo3.4.jpg", "images/VasoBakugo4.4.jpg"],
+        detalleImg: "Detalle3.webp",
+        etiquetas: "bakugo, bakugou, kachan, katsuki, vaso, boku no hero, bnha, mha, my hero academia",
         description: 
 `Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1106,11 +1160,13 @@ body {
         id: "sticker-largo-csm",
         title: "Chainsaw Man Long Sticker",
         brand: "Ensky 2024",
-        price: "$4.000 CLP",
+        price: "$4.000 CLP c/u",
         stock: 5,
         anime: "Chainsaw Man",
         thumbnail: "images/StickerLargoCSM0.6.webp",
         images: ["images/StickerLargoCSM1.6.jpg", "images/StickerLargoCSM2.6.jpg", "images/StickerLargoCSM3.6.jpg", "images/StickerLargoCSM4.6.jpg", "images/StickerLargoCSM5.6.jpg", "images/StickerLargoCSM6.6.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "denji, pochita, makima, aki, hayakawa, power, himeno, kobeni, higashiyama, kishibe, katana man, chainsaw man, csm",
         description: 
 `Stickers Largos de Chainsaw Man, ideales para pegar en cuadernos, notebook, para usar de marcapáginas o para coleccionar, set de Ensky 2024. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1130,11 +1186,13 @@ body {
         id: "photo-card-collection-mha",
         title: "My Hero Academia W Double Photo Card Collection",
         brand: "F-toys 2025",
-        price: "$5.000 CLP",
+        price: "$5.000 CLP c/u",
         stock: 2,
         anime: "My Hero Academia",
         thumbnail: "images/PhotoCardCollectionMHA0.4.webp",
         images: ["images/PhotoCardCollectionMHA1.4.jpg", "images/PhotoCardCollectionMHA2.4.jpg", "images/PhotoCardCollectionMHA3.4.jpg", "images/PhotoCardCollectionMHA4.4.jpg"],
+        detalleImg: "Detalle4.webp",
+        etiquetas: "deku, midoriya, izuku, bakugo, bakugou, kachan, katsuki, uraraka, ochaco, uravity, todoroki, shoto, eijiro, kirishima, denki, kaminari, neito, monoma, hitoshi, shinso, all might, shota, aizawa, endeavor, enji, hawks, keigo, takami, boku no hero, bnha, mha, my hero academia",
         description: 
 `Imágenes estilo Polaroid para poner detrás del teléfono o para coleccionar, set de F-toys 2025. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1159,6 +1217,8 @@ body {
         anime: "Kimetsu no Yaiba",
         thumbnail: "images/VasoCastilloInfinitoKNY0.3.webp",
         images: ["images/VasoCastilloInfinitoKNY1.3.jpg", "images/VasoCastilloInfinitoKNY2.3.jpg", "images/VasoCastilloInfinitoKNY3.3.jpg"],
+        detalleImg: "Detalle3.webp",
+        etiquetas: "tomioka, giyu, kny, kimetsu no yaiba, demon slayer",
         description: 
 `Vaso coleccionable de Tomioka Giyu del estreno de Demon Slayer Castillo Infinito, set de Cine Hoyts 2025. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1182,7 +1242,9 @@ body {
         anime: "Jujutsu Kaisen",
         thumbnail: "images/ColganteCadenaDeBolitasGetoJJK0.3.webp",
         images: ["images/ColganteCadenaDeBolitasGetoJJK1.3.jpg", "images/ColganteCadenaDeBolitasGetoJJK2.3.jpg", "images/ColganteCadenaDeBolitasGetoJJK3.3.jpg"],
-        description: 
+        detalleImg: "Detalle1.webp",
+        etiquetas: "Suguru, Geto, jjk, jujutsu kaisen",
+  description: 
 `Gashapon de Suguru Geto con cadena de bolitas, ideal para mochila y bolso, set de Takara Tomy A.R.T.S 2025. 
 • Entrega Portal Temuco o UFRO, horario conversable.
 • Pago con efectivo justo.
@@ -1203,6 +1265,8 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/ColganteCadenaDeBolitasUrarakaMHA0.3.webp",
         images: ["images/ColganteCadenaDeBolitasUrarakaMHA1.3.jpg", "images/ColganteCadenaDeBolitasUrarakaMHA2.3.jpg", "images/ColganteCadenaDeBolitasUrarakaMHA3.3.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "uraraka, ochaco, ochako, uravity, mha, bnha, my hero academia, boku no hero",
         description: 
 `Gashapon de Uraraka Ochaco con cadena de bolitas, ideal para mochila y bolso, set de Takara Tomy A.R.T.S 2022. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1224,7 +1288,9 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/AcrylicKeychainMHA0.3.webp",
         images: ["images/AcrylicKeychainMHA1.3.jpg", "images/AcrylicKeychainMHA2.3.jpg", "images/AcrylicKeychainMHA3.3.jpg"],
-        description: 
+  detalleImg: "Detalle1.webp",
+        etiquetas: "dabi, toya, todoroki, mha, my hero academia, bnha, boku no hero",      
+  description: 
 `Colgante de acrílico Keychain de Dabi (Toya) con cadena de bolitas, ideal para mochila y bolso, set de Daiso 2024. 
 • Entrega Portal Temuco o UFRO, horario conversable.
 • Pago con efectivo justo.
@@ -1246,6 +1312,8 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/ColganteCadenaDeBolitasDekuMHA0.3.webp",
         images: ["images/ColganteCadenaDeBolitasDekuMHA1.3.jpg", "images/ColganteCadenaDeBolitasDekuMHA2.3.jpg", "images/ColganteCadenaDeBolitasDekuMHA3.3.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "deku, midoriya, izuku, mha, my hero academia, bnha, boku no hero",
         description: 
 `Colgante Deku Ichiban Kuji categoría E de goma con cadena de bolitas, ideal para mochila y bolso, set de Bandai 2025. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1259,14 +1327,16 @@ body {
 `
       },
       {
-        id: "colgante-cadena-de-bolitas-deku-mha",
+        id: "posavasos-mha",
         title: "My Hero Academia Ichiban Kuji -VS- categoría I",
         brand: "Bandai 2023",
-        price: "$3.500 CLP",
+        price: "$3.500 CLP c/u",
         stock: 3,
         anime: "My Hero Academia",
         thumbnail: "images/PosavasoMHA0.3.webp",
         images: ["images/PosavasoMHA1.3.jpg", "images/PosavasoMHA2.3.jpg", "images/PosavasoMHA3.3.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "iida, tenya, kyoka, jiro, tomura, shigaraki, mha, my hero academia, bnha, boku no hero",
         description: 
 `Posavasos de goma Ichiban Kuji categoría I de Tenya Iida, Kyoka Jiro y Tomura Shigaraki , ideal para vasos, tazas, mochila y bolso si le ponen cadena de bolitas, set de Bandai 2023. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1289,6 +1359,8 @@ body {
         anime: "My Hero Academia",
         thumbnail: "images/Manga4MHA0.3.webp",
         images: ["images/Manga4MHA1.3.jpg", "images/Manga4MHA2.3.jpg", "images/Manga4MHA3.3.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "manga, mha, my hero academia, bnha, boku no hero",
         description: 
 `Continúa el festival deportivo. El siguiente evento es una competencia en equipos de “caballitos de guerra”. Inesperadamente, Ida decide no hacer equipo con Midoriya y la situación se pone precaria. La siguiente fase del festival son combates uno a uno y las emociones se ponen a flor de piel. ¿Midoriya será capaz de prevalecer en un enfrentamiento que va más allá de lo físico?Catch phrases• “Me gustaría preguntarte… ¿Cómo se cría a un heredero, a una nueva generación?” –All Might• “El mejor tipo de héroe es el que salva a las personas con una sonrisa.” –Izuku Midoriya • “Ganaré este evento usando el poder de mamá. Jamás utilizaré el tuyo en combate.” –Shoto Todoroki. 
 • Entrega Portal Temuco o UFRO, horario conversable.
@@ -1300,18 +1372,160 @@ body {
 • No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
 • Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
 `
-      }   
+      },
+       {
+      id: "clear-card-1-mha",
+        title: "My Hero Academia Metallic Card Collection",
+        brand: "Ensky 2022",
+        price: "$1.500 CLP c/u",
+        stock: 16,
+        anime: "My Hero Academia",
+        thumbnail: "images/ClearCard1MHA0.5.webp",
+        images: ["images/ClearCard1MHA1.5.jpg", "images/ClearCard1MHA2.5.jpg", "images/ClearCard1MHA3.5.jpg", "images/ClearCard1MHA4.5.jpg", "images/ClearCard1MHA5.5.jpg"],
+        detalleImg: "Detalle4.webp",
+        etiquetas: "iida, tenya, kaminari, denki, kyoka, jiro, mezo, shoji, ojiro, mashirao, hanta, sero, toru, hagakure, rikido, sato, koji, koda, neito, monoma, tetsutetsu, present, mic, endeavor, mha, my hero academia, bnha, boku no hero",
+         description: 
+`Carta metálica coleccionable de My Hero Academia, ideal para poner detrás del teléfono, en la billetera o como decoración, set de Ensky 2022. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Personajes: Iida x1, Kaminari x2, Jiro x2, Shoji x1, Ojiro x2, Sero x1, Hagakure x1, Sato x1, Koda x1, Monoma x1, Tetsutetsu x1, Present Mic x1, Endeavor x1.
+• Alto: 8.6cm.
+• Ancho: 5.4cm.
+• Traído de Japón, a elección en perfecto estado.
+• No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
+       {
+      id: "clear-card-2-mha",
+        title: "My Hero Academia Clear Card Collection Vol 6",
+        brand: "Ensky 2023",
+        price: "$1.500 CLP c/u",
+        stock: 8,
+        anime: "My Hero Academia",
+        thumbnail: "images/ClearCard2MHA0.3.webp",
+        images: ["images/ClearCard2MHA1.3.jpg", "images/ClearCard2MHA2.3.jpg", "images/ClearCard2MHA3.3.jpg"],
+        detalleImg: "Detalle4.webp",
+        etiquetas: "endeavor, hawks, takami, keigo, mt lady, mr compress, mirko, mr compress, midnight, tomura, shigaraki, mha, my hero academia, bnha, boku no hero",
+         description: 
+`Carta metálica coleccionable de My Hero Academia, ideal para poner detrás del teléfono, en la billetera o como decoración, set de Ensky 2023. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Personajes: Endeavor x1, Hawks x1, Mt. Lady x1, Mr. Compress x1, Mirko x1, Present Mic x1, Midnight x1, Shigaraki x1.
+• Alto: 8.9cm.
+• Ancho: 6.3cm.
+• Traído de Japón, a elección en perfecto estado.
+• No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
+      {
+      id: "clear-card-3-mha",
+        title: "My Hero Academia Collector's Card 6",
+        brand: "Ensky 2023",
+        price: "$2.000 CLP c/u",
+        stock: 3,
+        anime: "My Hero Academia",
+        thumbnail: "images/ClearCard3MHA0.4.webp",
+        images: ["images/ClearCard3MHA1.4.jpg", "images/ClearCard3MHA2.4.jpg", "images/ClearCard3MHA3.4.jpg", "images/ClearCard3MHA4.4.jpg"],
+        detalleImg: "Detalle4.webp",
+        etiquetas: "deku, izuku, midoriya, mirko, hawks, takami, keigo, mha, my hero academia, bnha, boku no hero",
+        description: 
+`Cartas de escena coleccionable y carta edición limitada de My Hero Academia, ideal para poner detrás del teléfono, en la billetera o como decoración, set de Ensky 2023. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Personajes: Mirko x1, Hawks x1, Deku x1.
+• Alto: 8.9cm.
+• Ancho: 6.3cm.
+• Traído de Japón, a elección en perfecto estado.
+• No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
+       {
+      id: "stcikers-largos-mha",
+        title: "My Hero Academia Long Sticker",
+        brand: "Ensky 2022",
+        price: "$1.500 CLP c/u",
+        stock: 15,
+        anime: "My Hero Academia",
+        thumbnail: "images/StickersLargosMHA0.5.webp",
+        images: ["images/StickersLargosMHA1.5.jpg", "images/StickersLargosMHA2.5.jpg", "images/StickersLargosMHA3.5.jpg", "images/StickersLargosMHA4.5.jpg", "images/StickersLargosMHA5.5.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "momo, yaoyorozu, tsuyu, asui, shinso, kendo, mina, ashido, denki, kaminari, kyoka, jiro, hanta, sero, ojiro, tetsutetsu, hagakure, pony, mha, my hero academia, bnha, boku no hero",
+         description: 
+`Stickers largos de My Hero Academia, ideales para poner en cuadernos, notebook, carpetas o usar como marcapáginas, set de Ensky 2022. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Personajes: Yaoyorozu x1, Asui x1. Shinso x1, Kendo x1, Ashido x2, Kaminari x2, Jiro x1, Sero x1, Ojiro x1, Tetsutetsu x1, Hagakure x1, Pony x2.
+• Alto: 21.3cm.
+• Ancho: 13.6cm.
+• Traído de Japón, a elección en perfecto estado.
+• No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
+       {
+      id: "stcikers-chicos-mha",
+        title: "My Hero Academia Sticker Retsuden",
+        brand: "Ensky 2024",
+        price: "$1.000 CLP c/u",
+        stock: 16,
+        anime: "My Hero Academia",
+        thumbnail: "images/StickersChicosMHA0.3.webp",
+        images: ["images/StickersChicosMHA1.3.jpg", "images/StickersChicosMHA2.3.jpg", "images/StickersChicosMHA3.3.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "bakugo, katsuki, bakugou, katsuki, iida, tenya, endeavor, asui, tsuyu, fumikage, tokoyami, ojiro, sero, all might, mirko, nana, shimura, dabi, toya, aizawa, shota, mha, my hero academia, bnha, boku no hero",
+         description: 
+`Stickers de My Hero Academia, ideales para poner en cuadernos, notebook, carpetas o teléfono, set de Ensky 2024. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Personajes: Bakugo x2, Iida x1, Endeavor x2, Asui x1, Tokoyami x1, Ojiro x1, Sero x1, All Might x1, Mirko x1, Portadores OFA x3, Dabi x1, Aizawa x1.
+• Alto: 14cm.
+• Ancho: 10cm.
+• Traído de Japón, a elección en perfecto estado.
+• No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      }
     ];
 
+  let currentPage = 1;
+const productsPerPage = 12;
+let filteredProductsGlobal = [];
+
+function calculateTotalStock(list) {
+    return list.reduce((sum, p) => sum + (p.stock || 0), 0);
+}
+
    const productsGrid = document.getElementById("productsGrid");
-    function renderProducts(list){
-      productsGrid.innerHTML = "";
-      list.forEach(p => {
+  
+    function renderProducts(list, resetPage = true) {
+    const productsGrid = document.getElementById("productsGrid");
+    filteredProductsGlobal = list;
+
+    if (resetPage) currentPage = 1;
+
+    productsGrid.innerHTML = "";
+    
+    if (list.length === 0) {
+        productsGrid.innerHTML = `<p style="color:white; grid-column:1/-1; text-align:center;">No hay resultados.</p>`;
+        document.getElementById("topPagination").innerHTML = "";
+        document.getElementById("bottomPagination").innerHTML = "";
+        return;
+    }
+
+    // Lógica de rebanado de productos (12 por página)
+    const start = (currentPage - 1) * productsPerPage;
+    const end = start + productsPerPage;
+    const productsToDisplay = list.slice(start, end);
+
+    productsToDisplay.forEach(p => {
         const card = document.createElement("div");
         card.className = "product-card";
         card.innerHTML = `
           <div class="product-image">
-          <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
+            <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
           </div>
           <div class="product-info">
             <div class="brand">${p.brand}</div>
@@ -1322,8 +1536,50 @@ body {
         `;
         card.onclick = () => openProductDetail(p);
         productsGrid.appendChild(card);
-      });
-    }
+    });
+
+    renderPaginationControls(list);
+}
+
+  function renderPaginationControls(fullList) {
+    const totalStock = calculateTotalStock(fullList);
+    const totalPages = Math.ceil(fullList.length / productsPerPage);
+    
+    // Nueva estructura: El stock va en un div propio arriba de la fila de botones
+    const controlsHTML = `
+        <div class="pagination-controls">
+            <div class="total-stock-label">Productos en stock: ${totalStock}</div>
+            
+            <div class="pagination-row">
+                <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')">Anterior</button>
+                
+                ${Array.from({length: totalPages}, (_, i) => i + 1).map(num => `
+                    <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
+                `).join('')}
+                
+                <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('next')">Siguiente</button>
+            </div>
+        </div>
+    `;
+
+    // Se inyecta en los contenedores superior e inferior
+    const topContainer = document.getElementById("topPagination");
+    const bottomContainer = document.getElementById("bottomPagination");
+    
+    if(topContainer) topContainer.innerHTML = controlsHTML;
+    if(bottomContainer) bottomContainer.innerHTML = controlsHTML;
+}
+
+function changePage(target) {
+    const totalPages = Math.ceil(filteredProductsGlobal.length / productsPerPage);
+    if (target === 'prev' && currentPage > 1) currentPage--;
+    else if (target === 'next' && currentPage < totalPages) currentPage++;
+    else if (typeof target === 'number') currentPage = target;
+
+    renderProducts(filteredProductsGlobal, false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+  
     renderProducts(products);
 
 const searchInput = document.getElementById("searchInput");
@@ -1393,22 +1649,23 @@ const searchInput = document.getElementById("searchInput");
 
     const q = (searchInput.value || "").toLowerCase().trim();
     const selectedCat = categorySelect.value;
+
+     
+   let filtered = products.filter(p => {
+    const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
     
-    // 3. Filtrado lógico (Asegúrate de usar la lista 'products' global)
-    let filtered = products.filter(p => {
-        // Filtro por categoría (Si es 'Animes' pasa siempre, si no, debe coincidir)
-        const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
+    // Normalizamos la búsqueda para evitar problemas de tildes o mayúsculas
+    const term = q.toLowerCase();
+    const matchText = !q || 
+        p.title.toLowerCase().includes(term) || 
+        (p.anime && p.anime.toLowerCase().includes(term)) ||
+        (p.etiquetas && p.etiquetas.toLowerCase().includes(term)); 
         
-        // Filtro por texto (Si no hay texto pasa siempre, si hay, busca en título o anime)
-        const matchText = !q || 
-            p.title.toLowerCase().includes(q) || 
-            (p.anime && p.anime.toLowerCase().includes(q));
-            
-        return matchCategory && matchText;
-    });
+    return matchCategory && matchText;
+});
 
     // 4. Renderizamos los resultados encontrados
-    renderProducts(filtered);
+    renderProducts(filtered, true);
     
     // 5. Limpieza de URL y scroll
     window.history.pushState({}, '', window.location.pathname);
@@ -1422,62 +1679,60 @@ categorySelect.addEventListener("change", () => irACategoria(categorySelect.valu
 
 updateCategories();
 
-    // Lógica del Modal (Se mantiene igual)
-    const modal = document.getElementById("productModal");
-    const carouselImg = document.getElementById("carouselImage");
-    const dotsEl = document.getElementById("dots");
-    let currentImages = [];
-    let currentIndex = 0;
-
-    function updateDots(){
-      dotsEl.innerHTML = "";
-      currentImages.forEach((_, i) => {
-        const dot = document.createElement("div");
-        dot.className = "dot" + (i === currentIndex ? " active" : "");
-        dot.onclick = () => { currentIndex = i; carouselImg.src = currentImages[currentIndex]; updateDots(); };
-        dotsEl.appendChild(dot);
-      });
-    }
+   
 
     let glitchCurrentIndex = 0;
     let glitchImages = [];
 
+  
 function openProductDetail(p) {
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
 
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
-    document.getElementById('glitchPrice').textContent = p.price;
-    document.getElementById('glitchDesc').textContent = p.description;
     
-    const stockEl = document.getElementById('glitchStock');
-const selloEl = document.getElementById('glitchSello'); // Referencia al sello
+    const descEl = document.getElementById('glitchDesc');
+    descEl.style.whiteSpace = 'pre-line';
+    descEl.textContent = p.description;
+    
+    // Asegurar ruta de imagen de detalle
+    const rutaImagenDetalle = p.detalleImg.startsWith('images/') ? p.detalleImg : `images/${p.detalleImg}`;
 
-if (p.stock > 0) {
-    stockEl.textContent = p.stock + " en Stock";
-    stockEl.classList.remove('agotado');
-    selloEl.style.display = 'none'; // Escondemos el sello si hay stock
-} else {
-    stockEl.textContent = "Agotado";
-    stockEl.classList.add('agotado');
-    selloEl.style.display = 'block'; // Mostramos el sello si está agotado
-}
+    const infoEspecial = document.getElementById('glitchInfoEspecial');
+    
+    // Inyección de diseño: Precio arriba, Stock abajo, Imagen a la derecha
+    infoEspecial.innerHTML = `
+        <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="font-size: 2.2rem; font-weight: 500; color: #333; line-height: 1; font-family: sans-serif;">
+                    ${p.price}
+                </div>
 
-    // Carrusel: Solo cargamos el array de imágenes de alta calidad
+                <div style="background-color: #e57399; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; width: fit-content;">
+                    ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
+                </div>
+            </div>
+
+            <div style="margin-right: 10px;">
+                <img src="${rutaImagenDetalle}" alt="detalle" style="width: 100px; height: auto; display: block;">
+            </div>
+        </div>
+        <hr style="border: 0; height: 2px; background-color: #01744b; margin: 25px 0 15px 0;">
+    `;
+
+    // Carrusel
     glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
-    
-    // Generamos el carrusel (sin la miniatura .webp)
-    slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="product">`).join('');
+    slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="${p.title}" style="width:100%; flex-shrink:0;">`).join('');
     
     updateSlider();
-    
     window.history.pushState({}, '', `#product/${p.id}`);
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
 }
 
+  
   function closeProductDetail() {
     document.querySelector('.background').style.display = 'block';
     document.getElementById('productDetailSection').style.display = 'none';
@@ -1500,18 +1755,22 @@ function updateSlider() {
 ).join('');
 }
 
-    document.getElementById("modalCloseBtn").onclick = () => modal.style.display = "none";
-    document.getElementById("nextBtn").onclick = () => { currentIndex = (currentIndex + 1) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
-    document.getElementById("prevBtn").onclick = () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
-
+   
     window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
 
-function irACategoria(valor) {
-    // 1. Limpiamos la barra de búsqueda visualmente
-    const input = document.getElementById("searchInput");
-    if(input) input.value = "";
 
-    // 2. Cerramos el detalle del producto y mostramos el catálogo
+
+  
+function irACategoria(valor) {
+    // 1. Sincronizamos el selector visual con el valor recibido
+    const categorySelect = document.getElementById("categorySelect");
+    if (categorySelect) categorySelect.value = valor;
+
+    // 2. Limpiamos la barra de búsqueda visualmente
+    const input = document.getElementById("searchInput");
+    if (input) input.value = "";
+
+    // 3. Forzamos el cierre del detalle (si estaba abierto) para volver al catálogo
     const detalle = document.getElementById('productDetailSection');
     const catalogo = document.querySelector('.background');
     
@@ -1520,14 +1779,15 @@ function irACategoria(valor) {
         catalogo.style.display = 'block';
     }
 
-    // 3. Si eliges "Animes", mostramos todo. Si no, filtramos.
+    // 4. Ejecutamos la lógica de filtrado
     if (valor === "Animes") {
-        renderProducts(products); 
+        renderProducts(products); // Muestra todo el array original
     } else {
-        doSearch(true); // El 'true' que añadimos en tu Paso 1 limpia el filtro
+        // doSearch(true) ya contiene la lógica para filtrar por categorySelect.value
+        doSearch(true); 
     }
 
-    // 4. Reset de URL y scroll al inicio
+    // 5. Limpieza cosmética: URL limpia y scroll suave al inicio del catálogo
     window.history.pushState({}, '', window.location.pathname);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1564,11 +1824,20 @@ function ordenarProductosBase(orden) {
     const q = (searchInput.value || "").toLowerCase().trim();
     const selectedCat = categorySelect.value;
 
-    listaParaOrdenar = listaParaOrdenar.filter(p => {
-        const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
-        const matchText = !q || p.title.toLowerCase().includes(q) || (p.anime && p.anime.toLowerCase().includes(q));
-        return matchCategory && matchText;
-    });
+    // Dentro de ordenarProductosBase:
+listaParaOrdenar = listaParaOrdenar.filter(p => {
+    const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
+    
+    // El buscador ahora mira: Título, Anime y ETIQUETAS
+    const q = (searchInput.value || "").toLowerCase().trim();
+    
+const matchText = !q || 
+                  p.title.toLowerCase().includes(q) || 
+                  (p.anime && p.anime.toLowerCase().includes(q)) ||
+                  (p.etiquetas && p.etiquetas.toLowerCase().includes(q)); // <-- Aquí está el truco
+
+    return matchCategory && matchText;
+});
 
     // 3. LÓGICA DE ORDENAMIENTO
     if (orden === 'az') {
@@ -1587,7 +1856,7 @@ function ordenarProductosBase(orden) {
     }
 
     // 4. Renderizamos los cambios
-    renderProducts(listaParaOrdenar);
+    renderProducts(listaParaOrdenar, true);
 }
 
 // 4. Cerrar el menú custom si haces clic afuera
