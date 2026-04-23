@@ -763,7 +763,7 @@ body {
 }
 
 .glitch-gallery {
-  flex: 1.2;
+  flex: 1.8;
   position: relative;
   overflow: hidden;
   border-radius: 15px;
@@ -811,6 +811,11 @@ body {
 
 @media (max-width: 850px) {
   .glitch-product-container { flex-direction: column; padding: 15px; }
+  .glitch-gallery {
+      width: 100%; /* Fuerza a la imagen a ocupar todo el ancho en móvil */
+      max-height: 80vh; /* Opcional: limita la altura para que no ocupe toda la pantalla */
+      margin-bottom: 20px; /* Separa la imagen del texto que viene abajo */
+  }
   .glitch-info { padding: 10px; }
 }
 
