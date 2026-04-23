@@ -1684,11 +1684,12 @@ const searchInput = document.getElementById("searchInput");
    let filtered = products.filter(p => {
     const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
     
-    // Ahora busca en Título, Anime y Etiquetas
+    // Normalizamos la búsqueda para evitar problemas de tildes o mayúsculas
+    const term = q.toLowerCase();
     const matchText = !q || 
-        p.title.toLowerCase().includes(q) || 
-        (p.anime && p.anime.toLowerCase().includes(q)) ||
-        (p.etiquetas && p.etiquetas.toLowerCase().includes(q)); // <-- Nueva condición
+        p.title.toLowerCase().includes(term) || 
+        (p.anime && p.anime.toLowerCase().includes(term)) ||
+        (p.etiquetas && p.etiquetas.toLowerCase().includes(term)); 
         
     return matchCategory && matchText;
 });
@@ -1730,54 +1731,56 @@ updateCategories();
 
   
 function openProductDetail(p) {
+    // Ocultar catálogo y mostrar sección de detalle
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
 
+    // Llenar textos básicos
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
     
-    // 1. LIMPIEZA DE DESCRIPCIÓN: Solo una vez y con formato
-    document.getElementById('glitchDesc').style.whiteSpace = 'pre-line';
-    document.getElementById('glitchDesc').textContent = p.description;
+    // Formatear descripción
+    const descEl = document.getElementById('glitchDesc');
+    descEl.style.whiteSpace = 'pre-line';
+    descEl.textContent = p.description;
     
+    // Sello de agotado
     const selloEl = document.getElementById('glitchSello');
-    if (selloEl) {
-        selloEl.style.display = p.stock > 0 ? 'none' : 'block';
-    }
+    if (selloEl) selloEl.style.display = p.stock > 0 ? 'none' : 'block';
 
-    const infoEspecial = document.getElementById('glitchInfoEspecial');
+    // Imagen de detalle (asegura ruta correcta)
     const rutaImagenDetalle = p.detalleImg.startsWith('images/') ? p.detalleImg : `images/${p.detalleImg}`;
 
-    // 2. INYECCIÓN DE PRECIO, STOCK E IMAGEN (Ajustado)
+    // Inyectar Precio y Stock
+    const infoEspecial = document.getElementById('glitchInfoEspecial');
     infoEspecial.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
             <div style="display: flex; flex-direction: column; gap: 5px;">
                 <div style="background: ${p.stock > 0 ? '#e91e63' : '#777'}; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; width: fit-content;">
                     ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
                 </div>
-                
                 <div style="font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 800; color: #333; line-height: 1;">
-                    $${p.price.toLocaleString('es-CL')} CLP
+                    ${p.price}
                 </div>
             </div>
-
             <div style="margin-left: 10px;">
-                <img src="${rutaImagenDetalle}" alt="detalle" style="width: 130px; height: auto; display: block; margin-bottom: -5px;">
+                <img src="${rutaImagenDetalle}" alt="detalle" style="width: 100px; height: auto; display: block; margin-bottom: -5px;">
             </div>
         </div>
         <hr style="border: 0; height: 3px; background-color: #01744b; margin: 0 0 20px 0;">
     `;
 
-    // Configuración del Carrusel
+    // Configurar Carrusel (GlitchSlider)
     glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
-    slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="product">`).join('');
+    slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="${p.title}" style="width:100%; flex-shrink:0;">`).join('');
     
     updateSlider();
     
+    // URL y Scroll
     window.history.pushState({}, '', `#product/${p.id}`);
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
 }
 
   
@@ -1803,56 +1806,22 @@ function updateSlider() {
 ).join('');
 }
 
-    document.getElementById("modalCloseBtn").onclick = () => modal.style.display = "none";
-    document.getElementById("nextBtn").onclick = () => { currentIndex = (currentIndex + 1) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
-    document.getElementById("prevBtn").onclick = () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; carouselImg.src = currentImages[currentIndex]; updateDots(); };
-
+   
     window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
 
 
-function renderizarDetalleProducto(p) {
-    const detalle = document.getElementById('productDetailSection');
-    const catalogo = document.querySelector('.background');
-    const detalleContent = document.getElementById('productDetailContent'); // Asegúrate de tener este ID en tu HTML
 
-    // Ocultamos catálogo, mostramos detalle
-    catalogo.style.display = 'none';
-    detalle.style.display = 'block';
-
-    detalleContent.innerHTML = `
-        <h2 class="detail-title">${p.title}</h2>
-        <p class="detail-brand">${p.brand}</p>
-        
-        <div class="info-action-wrapper" style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px;">
-            <div class="price-group">
-                <div class="stock-label" style="font-size: 0.9rem; color: #d81b60; margin-bottom: 5px;">
-                    ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
-                </div>
-                <div class="price-label" style="font-size: 1.5rem; font-weight: bold;">
-                    ${p.price}
-                </div>
-            </div>
-            
-            <div class="extra-detail-img">
-                <img src="${p.detalleImg}" alt="decor" style="max-width: 90px; height: auto; display: block;">
-            </div>
-        </div>
-
-        <hr style="border: 0; height: 2px; background-color: #2e7d32; margin: 10px 0;">
-        
-        <div class="detail-description" style="white-space: pre-line;">
-            ${p.description}
-        </div>
-    `;
-    window.scrollTo(0, 0);
-}
   
 function irACategoria(valor) {
-    // 1. Limpiamos la barra de búsqueda visualmente
-    const input = document.getElementById("searchInput");
-    if(input) input.value = "";
+    // 1. Sincronizamos el selector visual con el valor recibido
+    const categorySelect = document.getElementById("categorySelect");
+    if (categorySelect) categorySelect.value = valor;
 
-    // 2. Cerramos el detalle del producto y mostramos el catálogo
+    // 2. Limpiamos la barra de búsqueda visualmente
+    const input = document.getElementById("searchInput");
+    if (input) input.value = "";
+
+    // 3. Forzamos el cierre del detalle (si estaba abierto) para volver al catálogo
     const detalle = document.getElementById('productDetailSection');
     const catalogo = document.querySelector('.background');
     
@@ -1861,14 +1830,15 @@ function irACategoria(valor) {
         catalogo.style.display = 'block';
     }
 
-    // 3. Si eliges "Animes", mostramos todo. Si no, filtramos.
+    // 4. Ejecutamos la lógica de filtrado
     if (valor === "Animes") {
-        renderProducts(products); 
+        renderProducts(products); // Muestra todo el array original
     } else {
-        doSearch(true); // El 'true' que añadimos en tu Paso 1 limpia el filtro
+        // doSearch(true) ya contiene la lógica para filtrar por categorySelect.value
+        doSearch(true); 
     }
 
-    // 4. Reset de URL y scroll al inicio
+    // 5. Limpieza cosmética: URL limpia y scroll suave al inicio del catálogo
     window.history.pushState({}, '', window.location.pathname);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
