@@ -1003,56 +1003,26 @@ body {
 
 <div id="productDetailSection" style="display: none; padding-top: 20px;">
   <div class="container">
-<button onclick="closeProductDetail()" style="background:#01744b; color:white; border: 2px solid white; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: 700; transition: all 0.2s;">
-    Volver al catálogo
-</button>
+    <button onclick="closeProductDetail()" style="background:#01744b; color:white; border: 2px solid white; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: 700; transition: all 0.2s;">
+        Volver al catálogo
+    </button>
     
     <div class="glitch-product-container">
       <div class="glitch-gallery">
-        <div class="glitch-slider" id="glitchSlider">
-          </div>
+        <div class="glitch-slider" id="glitchSlider"></div>
         <button class="slider-btn prev" onclick="moveSlider(-1)">&#10094;</button>
         <button class="slider-btn next" onclick="moveSlider(1)">&#10095;</button>
         <div class="glitch-dots" id="glitchDots"></div>
       </div>
 
-     <div class="glitch-info">
-    <h2 id="glitchName">Nombre del Producto</h2>
-    <p id="glitchBrand" style="color:var(--muted); margin-bottom: 15px;"></p>
-    
-    <div id="glitchInfoEspecial"></div>
-    
-    <h3>Descripción</h3>
-    <p id="glitchDesc" style="white-space: pre-line;"></p>
-</div>
+      <div class="glitch-info">
+        <h2 id="glitchName">Nombre del Producto</h2>
+        <p id="glitchBrand" style="color:var(--muted); margin-bottom: 15px;"></p>
         
- 
+        <div id="glitchInfoEspecial"></div>
         
-       
-      </div>
-    </div>
-  </div>
-</div>
-  
-<div class="modal" id="productModal" aria-hidden="true">
-  <div class="sheet" role="dialog" aria-modal="true">
-    <div class="topbar">
-      <div class="title" id="modalTitle">Producto</div>
-      <button style="background:none; border:none; font-size:2rem; cursor:pointer;" id="modalCloseBtn">&times;</button>
-    </div>
-    <div class="content">
-      <div class="carousel" id="carousel">
-        <img id="carouselImage" src="" alt="Imagen del producto" />
-        <button class="btn left" id="prevBtn">&#10094;</button>
-        <button class="btn right" id="nextBtn">&#10095;</button>
-        <div class="dots" id="dots"></div>
-      </div>
-      <div class="detail">
-        <div class="brand" id="modalBrand">Brand</div>
-        <div class="name" id="modalName" style="font-size:1.4rem; font-weight:800;">Nombre</div>
-        <div class="price" id="modalPrice">$0</div>
-        <div class="stock" id="modalStock">0 en Stock</div>
-        <div class="desc" id="modalDesc" style="white-space: pre-wrap;">Descripción</div>
+        <h3>Descripción</h3>
+        <p id="glitchDesc" style="white-space: pre-line;"></p>
       </div>
     </div>
   </div>
@@ -1709,79 +1679,55 @@ categorySelect.addEventListener("change", () => irACategoria(categorySelect.valu
 
 updateCategories();
 
-    // Lógica del Modal (Se mantiene igual)
-    const modal = document.getElementById("productModal");
-    const carouselImg = document.getElementById("carouselImage");
-    const dotsEl = document.getElementById("dots");
-    let currentImages = [];
-    let currentIndex = 0;
-
-    function updateDots(){
-      dotsEl.innerHTML = "";
-      currentImages.forEach((_, i) => {
-        const dot = document.createElement("div");
-        dot.className = "dot" + (i === currentIndex ? " active" : "");
-        dot.onclick = () => { currentIndex = i; carouselImg.src = currentImages[currentIndex]; updateDots(); };
-        dotsEl.appendChild(dot);
-      });
-    }
+   
 
     let glitchCurrentIndex = 0;
     let glitchImages = [];
 
   
 function openProductDetail(p) {
-    // Ocultar catálogo y mostrar sección de detalle
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
 
-    // Llenar textos básicos
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
     
-    // Formatear descripción
     const descEl = document.getElementById('glitchDesc');
     descEl.style.whiteSpace = 'pre-line';
     descEl.textContent = p.description;
     
-    // Sello de agotado
-    const selloEl = document.getElementById('glitchSello');
-    if (selloEl) selloEl.style.display = p.stock > 0 ? 'none' : 'block';
-
-    // Imagen de detalle (asegura ruta correcta)
+    // Asegurar ruta de imagen de detalle
     const rutaImagenDetalle = p.detalleImg.startsWith('images/') ? p.detalleImg : `images/${p.detalleImg}`;
 
-    // Inyectar Precio y Stock
     const infoEspecial = document.getElementById('glitchInfoEspecial');
-    // 2. INYECCIÓN DE PRECIO, STOCK E IMAGEN (Diseño corregido)
+    
+    // Inyección de diseño: Precio arriba, Stock abajo, Imagen a la derecha
     infoEspecial.innerHTML = `
-        <div style="margin-top: 15px;">
-            <div style="font-size: 2.2rem; font-weight: 500; color: #333; margin-bottom: 20px; font-family: sans-serif;">
-                $${p.price.toLocaleString('es-CL')} CLP
-            </div>
+        <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="font-size: 2.2rem; font-weight: 500; color: #333; line-height: 1; font-family: sans-serif;">
+                    ${p.price}
+                </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="background-color: #e57399; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;">
+                <div style="background-color: #e57399; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; width: fit-content;">
                     ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
                 </div>
+            </div>
 
-                <div style="margin-right: 10px;">
-                    <img src="${rutaImagenDetalle}" alt="detalle" style="width: 100px; height: auto; display: block;">
-                </div>
+            <div style="margin-right: 10px;">
+                <img src="${rutaImagenDetalle}" alt="detalle" style="width: 100px; height: auto; display: block;">
             </div>
         </div>
         <hr style="border: 0; height: 2px; background-color: #01744b; margin: 25px 0 15px 0;">
     `;
 
-    // Configurar Carrusel (GlitchSlider)
+    // Carrusel
     glitchImages = p.images; 
     glitchCurrentIndex = 0;
     const slider = document.getElementById('glitchSlider');
     slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="${p.title}" style="width:100%; flex-shrink:0;">`).join('');
     
     updateSlider();
-    
-    // URL y Scroll
     window.history.pushState({}, '', `#product/${p.id}`);
     window.scrollTo(0, 0);
 }
