@@ -1026,9 +1026,9 @@ body {
     <p id="glitchDesc" style="white-space: pre-line;"></p>
 </div>
         
-        <div class="separator" style="height:2px; background:#eee; margin:20px 0;"></div>
-        <h3>Descripción</h3>
-       <p id="glitchDesc"></p>
+ 
+        
+       
       </div>
     </div>
   </div>
@@ -1753,21 +1753,24 @@ function openProductDetail(p) {
 
     // Inyectar Precio y Stock
     const infoEspecial = document.getElementById('glitchInfoEspecial');
+    // 2. INYECCIÓN DE PRECIO, STOCK E IMAGEN (Diseño corregido)
     infoEspecial.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
-            <div style="display: flex; flex-direction: column; gap: 5px;">
-                <div style="background: ${p.stock > 0 ? '#e91e63' : '#777'}; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; width: fit-content;">
+        <div style="margin-top: 15px;">
+            <div style="font-size: 2.2rem; font-weight: 500; color: #333; margin-bottom: 20px; font-family: sans-serif;">
+                $${p.price.toLocaleString('es-CL')} CLP
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="background-color: #e57399; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;">
                     ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
                 </div>
-                <div style="font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 800; color: #333; line-height: 1;">
-                    ${p.price}
+
+                <div style="margin-right: 10px;">
+                    <img src="${rutaImagenDetalle}" alt="detalle" style="width: 100px; height: auto; display: block;">
                 </div>
             </div>
-            <div style="margin-left: 10px;">
-                <img src="${rutaImagenDetalle}" alt="detalle" style="width: 100px; height: auto; display: block; margin-bottom: -5px;">
-            </div>
         </div>
-        <hr style="border: 0; height: 3px; background-color: #01744b; margin: 0 0 20px 0;">
+        <hr style="border: 0; height: 2px; background-color: #01744b; margin: 25px 0 15px 0;">
     `;
 
     // Configurar Carrusel (GlitchSlider)
