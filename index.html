@@ -236,6 +236,7 @@ body {
 
 /* =========================================================
  /* BOTÓN NOTEBOOK: Ahora es proporcional al 100% de su columna */
+/* BOTÓN ESTILO ANDROID PARA NOTEBOOK */
 .filter-btn-custom {
     font-family: "Montserrat", sans-serif !important;
     background-color: #01744b;
@@ -253,14 +254,16 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transition: all 0.2s ease;
     
-    /* Ocupa todo el ancho de la columna 2 */
+    /* Ajuste de tamaño para que se vea como en la imagen */
     width: 100%; 
-    margin: 0;
+    max-width: 280px; /* Tamaño similar al de Android */
+    margin: 0 auto;   /* Centrado automático */
+    padding: 0 20px;
 }
 
 .filter-btn-custom:hover {
     background-color: #015d3c;
-    transform: translateY(-1px);
+    transform: translateY(-2px); /* Un poco más de "vida" */
 }
 
 /* Icono en blanco */
@@ -1080,11 +1083,11 @@ body {
         Ordenar y Filtrar
       </button>
       <div id="filterMenuCustom" class="filter-content-custom">
-        <a href="javascript:void(0)" onclick="ordenarProductosCustom('default')">Orden Predeterminado</a>
-        <a href="javascript:void(0)" onclick="ordenarProductosCustom('az')">Letra: A - Z</a>
-        <a href="javascript:void(0)" onclick="ordenarProductosCustom('menor')">Precio: Menor a mayor</a>
-        <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor')">Precio: Mayor a menor</a>
-      </div>
+    <a href="javascript:void(0)" onclick="ordenarProductosCustom('default', this)">Orden Predeterminado</a>
+    <a href="javascript:void(0)" onclick="ordenarProductosCustom('az', this)">Letra: A - Z</a>
+    <a href="javascript:void(0)" onclick="ordenarProductosCustom('menor', this)">Precio: Menor a mayor</a>
+    <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor', this)">Precio: Mayor a menor</a>
+</div>
     </div>
   </div>
 </div>
@@ -1915,11 +1918,21 @@ function toggleFilterCustom() {
 }
 
 
-function ordenarProductosCustom(orden) {
+function ordenarProductosCustom(orden, elemento) {
+    // 1. Ejecutamos el ordenamiento
     ordenarProductosBase(orden);
+    
+    // 2. Cambiamos el texto del botón según lo que eligió el usuario
+    const boton = document.querySelector(".filter-btn-custom");
+    if (boton && elemento) {
+        // Mantiene el icono y actualiza solo el texto
+        boton.innerHTML = `<span class="filter-icon-custom"></span> ${elemento.innerText}`;
+    }
+
+    // 3. Cerramos el menú
     const menu = document.getElementById("filterMenuCustom");
     if (menu) {
-        menu.classList.remove("show-custom"); // Esto lo oculta tras elegir
+        menu.classList.remove("show-custom");
     }
 }
 
