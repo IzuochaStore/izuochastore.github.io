@@ -276,35 +276,48 @@ body {
 /* Ocultar nativo en notebook */
 .filter-native-wrapper { display: none; }
 
+/* EL CAJÓN DESPLEGABLE (Ahora blanco como en móvil) */
 .filter-content-custom {
     display: none;
     position: absolute;
-    right: 0;
-    top: 110%;
-    background: white;
-    min-width: 200px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    top: 105%; /* Justo debajo del botón */
+    left: 50%;
+    transform: translateX(-50%); /* Centrado respecto al botón */
+    background: white !important; /* Fondo blanco */
+    min-width: 250px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     border-radius: 12px;
-    z-index: 1000;
+    z-index: 10000;
     overflow: hidden;
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
 }
 
+/* Las opciones dentro del menú */
 .filter-content-custom a {
-    font-family: "Montserrat", sans-serif !important;
-    color: #333;
-    padding: 12px 16px;
+    color: #333 !important; /* Texto oscuro para que se vea en el blanco */
+    padding: 14px 20px;
     text-decoration: none;
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+    text-align: left;
+}
+
+.filter-content-custom a:last-child {
+    border-bottom: none;
 }
 
 .filter-content-custom a:hover {
-    background: #f1f1f1;
-    color: #01744b;
+    background: #f7f7f7;
+    color: #01744b !important;
 }
 
-.show-custom { display: block !important; }
+/* La clase que activa la visibilidad */
+.show-custom {
+    display: block !important;
+}
 
 
 
@@ -346,15 +359,10 @@ body {
 
   /* 2. Estilo del menú para que no se vea comprimido */
   #filterMenuCustom {
-    display: none; /* Oculto por defecto */
-    position: absolute;
-    min-width: 250px !important; 
-    z-index: 9999;
-    background-color: #1a1a1a;
-    border: 1px solid #01744b;
-    top: 100%;
-    left: 0;
-  }
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 280px !important; /* Un poco más ancho en PC */
+    }
 
   /* 3. Agrandar botones de paginación y darles "vida" */
   .pagination-btn, .page-number {
@@ -1899,26 +1907,20 @@ function irACategoria(valor) {
 // LÓGICA DE FILTRADO COMBINADO (NATIVO Y CUSTOM)
 // =========================================================
 
-// 1. Funciones para el MENÚ CUSTOM (Notebooks)
 function toggleFilterCustom() {
     const menu = document.getElementById("filterMenuCustom");
     if (menu) {
-        // Alternamos la clase para el CSS
         menu.classList.toggle("show-custom");
-        
-        // Refuerzo por JS: si la clase está, aseguramos que el display cambie
-        if (menu.classList.contains("show-custom")) {
-            menu.style.setProperty("display", "block", "important");
-        } else {
-            menu.style.setProperty("display", "none", "");
-        }
     }
 }
 
+
 function ordenarProductosCustom(orden) {
-    // Reutilizamos la lógica de ordenamiento nativa para no repetir código
     ordenarProductosBase(orden);
-    toggleFilterCustom(); // Cierra el menú al elegir
+    const menu = document.getElementById("filterMenuCustom");
+    if (menu) {
+        menu.classList.remove("show-custom"); // Esto lo oculta tras elegir
+    }
 }
 
 // 2. Función para el SELECT NATIVO (Android)
@@ -1972,15 +1974,9 @@ const matchText = !q ||
     renderProducts(listaParaOrdenar, true);
 }
 
-// 4. Cerrar el menú custom si haces clic afuera
 window.onclick = function(event) {
-    // Cerrar modal
-    if (typeof modal !== 'undefined' && event.target == modal) {
-        modal.style.display = "none";
-    }
-    
-    // Cerrar menú custom si hace clic fuera
-    if (!event.target.closest('.filter-controls')) {
+    // Cerrar menú custom si hace clic fuera del contenedor v2
+    if (!event.target.closest('.filter-controls-v2')) {
         const dropdown = document.getElementById("filterMenuCustom");
         if (dropdown && dropdown.classList.contains('show-custom')) {
             dropdown.classList.remove('show-custom');
