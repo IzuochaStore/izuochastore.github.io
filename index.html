@@ -337,44 +337,39 @@ body {
     height: 85px !important; /* Tamaño de Deku y Uraraka en PC */
   }
 
-/* --- BOTONES CON VIDA Y MÁS GRANDES (PC) --- */
+/* --- SOLUCIÓN BOTÓN FILTRAR Y PAGINACIÓN (PC) --- */
+  
+  /* 1. Hace que el menú aparezca cuando el JS activa la clase */
+  #filterMenuCustom.show-custom {
+    display: block !important;
+  }
+
+  /* 2. Estilo del menú para que no se vea comprimido */
+  #filterMenuCustom {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    min-width: 250px !important; 
+    z-index: 9999;
+    background-color: #1a1a1a;
+    border: 1px solid #01744b;
+    top: 100%;
+    left: 0;
+  }
+
+  /* 3. Agrandar botones de paginación y darles "vida" */
   .pagination-btn, .page-number {
     padding: 12px 24px !important; 
     font-size: 1.1rem !important;
-    transition: all 0.3s ease !important; /* Permite el movimiento fluido */
+    transition: all 0.3s ease !important;
     cursor: pointer;
   }
 
-  /* Efecto: Se levanta y se oscurece al pasar el cursor */
+  /* Efecto Hover: se levanta y se oscurece */
   .pagination-btn:hover:not(:disabled), 
   .page-number:hover:not(.active) {
-    transform: translateY(-5px) !important; /* Se levanta */
-    filter: brightness(85%) !important;    /* Se oscurece */
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important;
-  }
-
-  /* Arreglo para el menú de filtro comprimido */
-  .filter-controls {
-    position: relative;
-    display: inline-block;
-  }
-
-  #filterMenuCustom {
-    display: none; /* Oculto por defecto */
-    min-width: 250px !important; 
-    position: absolute;
-    z-index: 9999;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #1a1a1a;
-    border-radius: 8px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-  }
-
-  /* Esta regla hace que el JS funcione: muestra el menú */
-  #filterMenuCustom.show-custom {
-    display: block !important;
+    transform: translateY(-5px) !important; 
+    filter: brightness(85%) !important;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3) !important;
   }
   
 }
@@ -446,32 +441,31 @@ body {
         width: 100% !important; /* Sigue ocupando toda la 2da columna */
     }
 
-  /* Ajuste para que la paginación no se comprima al minimizar */
+  /* Asegurar que el menú también abra en vista reducida */
+    #filterMenuCustom.show-custom {
+        display: block !important;
+    }
+
+    #filterMenuCustom {
+        min-width: 220px !important;
+    }
+
+    /* Evitar que los botones de abajo se amontonen */
     .pagination-container {
         display: flex !important;
         flex-wrap: wrap !important;
         justify-content: center !important;
         gap: 15px !important;
-        margin: 25px 0 !important;
-        width: 100%;
     }
 
-    /* Botones proporcionales en vista reducida */
+    /* Efecto de vida en vista reducida */
     .pagination-btn, .page-number {
-        padding: 10px 18px !important;
-        font-size: 1rem !important;
         transition: all 0.3s ease !important;
     }
 
-    /* Mantenemos el efecto de vida en vista reducida */
     .pagination-btn:hover, .page-number:hover {
         transform: translateY(-3px) !important;
         filter: brightness(90%) !important;
-    }
-    
-    /* Asegurar que el menú de filtro no se rompa al minimizar */
-    #filterMenuCustom {
-        min-width: 200px !important;
     }
   
 }
@@ -1908,7 +1902,17 @@ function irACategoria(valor) {
 // 1. Funciones para el MENÚ CUSTOM (Notebooks)
 function toggleFilterCustom() {
     const menu = document.getElementById("filterMenuCustom");
-    menu.classList.toggle("show-custom");
+    if (menu) {
+        // Alternamos la clase para el CSS
+        menu.classList.toggle("show-custom");
+        
+        // Refuerzo por JS: si la clase está, aseguramos que el display cambie
+        if (menu.classList.contains("show-custom")) {
+            menu.style.setProperty("display", "block", "important");
+        } else {
+            menu.style.setProperty("display", "none", "");
+        }
+    }
 }
 
 function ordenarProductosCustom(orden) {
