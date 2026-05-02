@@ -1801,10 +1801,7 @@ function openProductDetail(p) {
     // Asegurar ruta de imagen de detalle
     const rutaImagenDetalle = p.detalleImg.startsWith('images/') ? p.detalleImg : `images/${p.detalleImg}`;
 
-    // BUSCA ESTA LÍNEA DENTRO DE openProductDetail:
 const infoEspecial = document.getElementById('glitchInfoEspecial');
-
-// REEMPLAZA TODO LO QUE SIGUE POR ESTO:
 const esAgotado = p.stock <= 0;
 const stockClase = esAgotado ? "stock-badge agotado" : "stock-badge";
 const stockTexto = esAgotado ? "Agotado" : `${p.stock} en Stock`;
@@ -1842,15 +1839,13 @@ infoEspecial.innerHTML = `
     slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="${p.title}" style="width:100%; flex-shrink:0;">`).join('');
     
     updateSlider();
-    window.history.pushState({}, '', `#product/${p.id}`);
+    window.history.pushState({ detalleAbierto: true }, '', `#product/${p.id}`);
     window.scrollTo(0, 0);
 }
 
   
-  function closeProductDetail() {
-    document.querySelector('.background').style.display = 'block';
-    document.getElementById('productDetailSection').style.display = 'none';
-    window.history.pushState({}, '', window.location.pathname);
+function closeProductDetail() {
+    window.history.back();
 }
 
   function moveSlider(step) {
@@ -1996,6 +1991,19 @@ window.onclick = function(event) {
         }
     }
 };
+
+// Detectar cuando el usuario presiona la flecha "atrás" del navegador o Android
+window.addEventListener('popstate', function(event) {
+    const detalle = document.getElementById('productDetailSection');
+    const hash = window.location.hash;
+
+    // Si el detalle está visible y el hash ya no es de producto, cerramos la vista
+    if (detalle.style.display === 'block' && !hash.includes('#product/')) {
+        // Ejecutamos la lógica de cierre pero SIN añadir más historial
+        document.querySelector('.background').style.display = 'block';
+        document.getElementById('productDetailSection').style.display = 'none';
+    }
+});
   
 </script>
 </body>
