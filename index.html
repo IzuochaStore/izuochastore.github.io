@@ -388,14 +388,13 @@ body {
         max-height: 85vh;
     }
 
- .glitch-product-container {
-        align-items: flex-start; /* Alinea el inicio del texto con el inicio de la imagen */
+    .glitch-product-container {
+        display: grid;
+        grid-template-columns: 450px 1fr; /* La imagen se queda en 450px fijo */
+        gap: 30px;
+        align-items: center;
     }
 
-.slider-btn {
-        top: calc(100% + 5px);
-    }
-  
     .glitch-gallery {
         max-width: 450px;
     }
@@ -843,103 +842,75 @@ body {
         box-shadow: 0 8px 20px rgba(42, 140, 111, 0.25);
     }
 
-    /* ESTILOS TIPO GLITCH PRODUCTIONS - CORREGIDOS */
+    /* ESTILOS TIPO GLITCH PRODUCTIONS */
 .glitch-product-container {
   display: flex;
-  gap: 20px;
+  gap: 40px;
   background: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .glitch-gallery {
-  flex: 1;
+  flex: 2;
   position: relative;
-  overflow: hidden;
+  /* Eliminamos overflow: hidden para que se vean las flechas abajo */
   border-radius: 15px;
   background: #fdfdfd;
-  /* IMPORTANTE: Esto evita que la imagen crezca infinito en móvil */
-  max-height: 450px; 
   aspect-ratio: 1/1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding-bottom: 60px; /* Añade este espacio para los botones */
 }
 
 .glitch-slider {
   display: flex;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   height: 100%;
-  width: 100%;
 }
 
 .glitch-slider img {
   min-width: 100%;
-  max-width: 100%;
-  height: 100%;
-  object-fit: contain; /* Para que no se corte el producto */
-}
-
-/* PUNTOS CENTRADOS Y ABAJO */
-.glitch-dots {
-  position: absolute;
-  bottom: 15px; /* Los baja a la parte inferior de la imagen */
-  left: 50%;
-  transform: translateX(-50%); /* Truco matemático para centrar perfecto */
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.5); /* Fondo sutil para que se vean sobre fotos blancas */
-  padding: 5px 10px;
-  border-radius: 20px;
-}
-
-.glitch-dots span {
-  width: 8px;
-  height: 8px;
-  background-color: #ccc;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-.glitch-dots span.active {
-  background-color: #01744b; /* Verde Deku */
-  transform: scale(1.2);
+  object-fit: contain;
 }
 
 .glitch-info { flex: 0.8; }
 
 .slider-btn {
     position: absolute;
-    top: calc(100% + 10px); 
+    bottom: 10px;           /* Las posiciona abajo */
+    top: auto !important;   /* Anula cualquier centrado previo */
     background: #ec8db0;    /* Rosa Uraraka */
-    color: #ffffff;         /* Blanco */
-    width: 40px;
-    height: 40px;
+    color: #01744b;         /* Verde Deku */
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
     z-index: 10;
+    transition: 0.3s;
 }
-.slider-btn.prev { left: 30px; }
-.slider-btn.next { right: 30px; }
-
-    .slider-btn:active {
-    transform: scale(0.95);
-}
+.slider-btn.prev { left: 20px; }
+.slider-btn.next { right: 20px; }
 
     .slider-btn:hover {
     transform: scale(1.1);
-    background: #ec8db0; /*Rosa Uraraka*/
-    color: #ffffff; /* < > blancos*/
+    background: #01744b;    /* Invierte colores al pasar el mouse */
+    color: #ec8db0;
 }
 
+.glitch-dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
 
 @media (max-width: 850px) {
   .glitch-product-container { flex-direction: column; padding: 15px; }
