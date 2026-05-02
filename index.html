@@ -843,40 +843,69 @@ body {
         box-shadow: 0 8px 20px rgba(42, 140, 111, 0.25);
     }
 
-    /* ESTILOS TIPO GLITCH PRODUCTIONS */
+    /* ESTILOS TIPO GLITCH PRODUCTIONS - CORREGIDOS */
 .glitch-product-container {
   display: flex;
-  gap: 40px;
+  gap: 20px;
   background: white;
-  padding: 30px;
+  padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .glitch-gallery {
-  flex: 2;
+  flex: 1;
   position: relative;
+  overflow: hidden;
   border-radius: 15px;
   background: #fdfdfd;
+  /* IMPORTANTE: Esto evita que la imagen crezca infinito en móvil */
+  max-height: 450px; 
   aspect-ratio: 1/1;
-  margin-bottom: 50px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-
-
 .glitch-slider {
-    display: flex;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    height: 100%;
-    width: 100%; /* Asegura que el riel use el 100% */
+  display: flex;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  height: 100%;
+  width: 100%;
 }
 
 .glitch-slider img {
-    width: 100%;       /* Ocupa todo el ancho del contenedor */
-    min-width: 100%;   /* Obliga a mantener el ancho */
-    flex-shrink: 0;    /* CRUCIAL: Evita que las imágenes se amontonen de lado */
-    object-fit: contain;
-    display: block;
+  min-width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain; /* Para que no se corte el producto */
+}
+
+/* PUNTOS CENTRADOS Y ABAJO */
+.glitch-dots {
+  position: absolute;
+  bottom: 15px; /* Los baja a la parte inferior de la imagen */
+  left: 50%;
+  transform: translateX(-50%); /* Truco matemático para centrar perfecto */
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.5); /* Fondo sutil para que se vean sobre fotos blancas */
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.glitch-dots span {
+  width: 8px;
+  height: 8px;
+  background-color: #ccc;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.glitch-dots span.active {
+  background-color: #01744b; /* Verde Deku */
+  transform: scale(1.2);
 }
 
 .glitch-info { flex: 0.8; }
@@ -911,17 +940,6 @@ body {
     color: #ffffff; /* < > blancos*/
 }
 
-.glitch-dots {
-    position: absolute;
-    bottom: -35px; /* Los bajamos fuera de la imagen */
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    z-index: 5;
-    height: 40px; /* Misma altura que los botones para alinear */
-}
 
 @media (max-width: 850px) {
   .glitch-product-container { flex-direction: column; padding: 15px; }
