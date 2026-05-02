@@ -393,8 +393,7 @@ body {
     }
 
 .slider-btn {
-        /* En PC las centramos un poco más bajo la imagen de 450px */
-        top: calc(100% + 15px);
+        top: calc(100% + 5px);
     }
   
     .glitch-gallery {
@@ -863,18 +862,21 @@ body {
   margin-bottom: 50px; 
 }
 
+
+
 .glitch-slider {
-  display: flex;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  height: 100%;
-  /* El recorte de imágenes se hace aquí ahora */
-  overflow: hidden; 
-  border-radius: 15px;
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    height: 100%;
+    width: 100%; /* Asegura que el riel use el 100% */
 }
 
 .glitch-slider img {
-  min-width: 100%;
-  object-fit: contain;
+    width: 100%;       /* Ocupa todo el ancho del contenedor */
+    min-width: 100%;   /* Obliga a mantener el ancho */
+    flex-shrink: 0;    /* CRUCIAL: Evita que las imágenes se amontonen de lado */
+    object-fit: contain;
+    display: block;
 }
 
 .glitch-info { flex: 0.8; }
@@ -910,12 +912,15 @@ body {
 }
 
 .glitch-dots {
-  position: absolute;
-  bottom: 15px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
+    position: absolute;
+    bottom: -35px; /* Los bajamos fuera de la imagen */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    z-index: 5;
+    height: 40px; /* Misma altura que los botones para alinear */
 }
 
 @media (max-width: 850px) {
