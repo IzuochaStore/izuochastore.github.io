@@ -382,22 +382,6 @@ body {
     filter: brightness(85%) !important;
     box-shadow: 0 8px 15px rgba(0,0,0,0.3) !important;
   }
-
-.modal .sheet {
-        width: 850px !important; 
-        max-height: 85vh;
-    }
-
-    .glitch-product-container {
-        display: grid;
-        grid-template-columns: 450px 1fr; /* La imagen se queda en 450px fijo */
-        gap: 30px;
-        align-items: center;
-    }
-
-    .glitch-gallery {
-        max-width: 450px;
-    }
   
 }
 
@@ -855,11 +839,10 @@ body {
 .glitch-gallery {
   flex: 2;
   position: relative;
-  /* Eliminamos overflow: hidden para que se vean las flechas abajo */
+  overflow: hidden;
   border-radius: 15px;
   background: #fdfdfd;
   aspect-ratio: 1/1;
-  padding-bottom: 60px; /* Añade este espacio para los botones */
 }
 
 .glitch-slider {
@@ -876,32 +859,20 @@ body {
 .glitch-info { flex: 0.8; }
 
 .slider-btn {
-    position: absolute;
-    bottom: 10px;           /* Las posiciona abajo */
-    top: auto !important;   /* Anula cualquier centrado previo */
-    background: #ec8db0;    /* Rosa Uraraka */
-    color: #01744b;         /* Verde Deku */
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 10;
-    transition: 0.3s;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.8);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 5;
+  font-size: 1.2rem;
 }
-.slider-btn.prev { left: 20px; }
-.slider-btn.next { right: 20px; }
-
-    .slider-btn:hover {
-    transform: scale(1.1);
-    background: #01744b;    /* Invierte colores al pasar el mouse */
-    color: #ec8db0;
-}
+.slider-btn.prev { left: 15px; }
+.slider-btn.next { right: 15px; }
 
 .glitch-dots {
   position: absolute;
