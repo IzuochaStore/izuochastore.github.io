@@ -11,10 +11,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   
   <style>
-  
+/*inicio bloque estilos*/
+
+    
     /* =========================================================
                         Reset y variables
        ========================================================= */
+
     
     :root{
       --text:#1a1a1a;
@@ -233,6 +236,7 @@ body {
 
 /* =========================================================
  /* BOTÓN NOTEBOOK: Ahora es proporcional al 100% de su columna */
+/* BOTÓN ESTILO ANDROID PARA NOTEBOOK */
 .filter-btn-custom {
     font-family: "Montserrat", sans-serif !important;
     background-color: #01744b;
@@ -250,14 +254,16 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transition: all 0.2s ease;
     
-    /* Ocupa todo el ancho de la columna 2 */
+    /* Ajuste de tamaño para que se vea como en la imagen */
     width: 100%; 
-    margin: 0;
+    max-width: 280px; /* Tamaño similar al de Android */
+    margin: 0 auto;   /* Centrado automático */
+    padding: 0 20px;
 }
 
 .filter-btn-custom:hover {
     background-color: #015d3c;
-    transform: translateY(-1px);
+    transform: translateY(-2px); /* Un poco más de "vida" */
 }
 
 /* Icono en blanco */
@@ -273,35 +279,48 @@ body {
 /* Ocultar nativo en notebook */
 .filter-native-wrapper { display: none; }
 
+/* EL CAJÓN DESPLEGABLE (Ahora blanco como en móvil) */
 .filter-content-custom {
     display: none;
     position: absolute;
-    right: 0;
-    top: 110%;
-    background: white;
-    min-width: 200px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    top: 105%; /* Justo debajo del botón */
+    left: 50%;
+    transform: translateX(-50%); /* Centrado respecto al botón */
+    background: white !important; /* Fondo blanco */
+    min-width: 250px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     border-radius: 12px;
-    z-index: 1000;
+    z-index: 10000;
     overflow: hidden;
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
 }
 
+/* Las opciones dentro del menú */
 .filter-content-custom a {
-    font-family: "Montserrat", sans-serif !important;
-    color: #333;
-    padding: 12px 16px;
+    color: #333 !important; /* Texto oscuro para que se vea en el blanco */
+    padding: 14px 20px;
     text-decoration: none;
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+    text-align: left;
+}
+
+.filter-content-custom a:last-child {
+    border-bottom: none;
 }
 
 .filter-content-custom a:hover {
-    background: #f1f1f1;
-    color: #01744b;
+    background: #f7f7f7;
+    color: #01744b !important;
 }
 
-.show-custom { display: block !important; }
+/* La clase que activa la visibilidad */
+.show-custom {
+    display: block !important;
+}
 
 
 
@@ -333,6 +352,37 @@ body {
   .personaje-social { 
     height: 85px !important; /* Tamaño de Deku y Uraraka en PC */
   }
+
+/* --- SOLUCIÓN BOTÓN FILTRAR Y PAGINACIÓN (PC) --- */
+  
+  /* 1. Hace que el menú aparezca cuando el JS activa la clase */
+  #filterMenuCustom.show-custom {
+    display: block !important;
+  }
+
+  /* 2. Estilo del menú para que no se vea comprimido */
+  #filterMenuCustom {
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 280px !important; /* Un poco más ancho en PC */
+    }
+
+  /* 3. Agrandar botones de paginación y darles "vida" */
+  .pagination-btn, .page-number {
+    padding: 12px 24px !important; 
+    font-size: 1.1rem !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
+  }
+
+  /* Efecto Hover: se levanta y se oscurece */
+  .pagination-btn:hover:not(:disabled), 
+  .page-number:hover:not(.active) {
+    transform: translateY(-5px) !important; 
+    filter: brightness(85%) !important;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3) !important;
+  }
+  
 }
 
         /* =========================================================
@@ -400,6 +450,33 @@ body {
 
     .filter-btn-custom {
         width: 100% !important; /* Sigue ocupando toda la 2da columna */
+    }
+
+  /* Asegurar que el menú también abra en vista reducida */
+    #filterMenuCustom.show-custom {
+        display: block !important;
+    }
+
+    #filterMenuCustom {
+        min-width: 220px !important;
+    }
+
+    /* Evitar que los botones de abajo se amontonen */
+    .pagination-container {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 15px !important;
+    }
+
+    /* Efecto de vida en vista reducida */
+    .pagination-btn, .page-number {
+        transition: all 0.3s ease !important;
+    }
+
+    .pagination-btn:hover, .page-number:hover {
+        transform: translateY(-3px) !important;
+        filter: brightness(90%) !important;
     }
   
 }
@@ -760,7 +837,7 @@ body {
 }
 
 .glitch-gallery {
-  flex: 1.2;
+  flex: 2;
   position: relative;
   overflow: hidden;
   border-radius: 15px;
@@ -808,6 +885,11 @@ body {
 
 @media (max-width: 850px) {
   .glitch-product-container { flex-direction: column; padding: 15px; }
+  .glitch-gallery {
+      width: 100%; /* Fuerza a la imagen a ocupar todo el ancho en móvil */
+      max-height: 80vh; /* Opcional: limita la altura para que no ocupe toda la pantalla */
+      margin-bottom: 20px; /* Separa la imagen del texto que viene abajo */
+  }
   .glitch-info { padding: 10px; }
 }
 
@@ -921,12 +1003,32 @@ body {
     align-items: center;
 }
 
-/* Cuadrado de número ACTIVO: Verde Deku Sólido (Donde estás) */
+/* Cuadrado de número ACTIVO: Verde Deku Sólido */
 .page-number.active {
     background-color: #01744b !important; /* Verde Deku Sólido */
     border: 2px solid #01744b !important;
 }
+
+
+.stock-badge.agotado {
+    background-color: #757575 !important; /* Gris para productos agotados */
+    color: white;
+}
+
+.price-tag {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-top: 5px;
+    color: #333;
+}
+
+.price-tag.small-text {
+    font-size: 1.1rem; /* Tamaño reducido para el "c/u" */
+}
+
+
     
+    /*final bloque estilos*/
   </style>
 </head>
 
@@ -981,11 +1083,11 @@ body {
         Ordenar y Filtrar
       </button>
       <div id="filterMenuCustom" class="filter-content-custom">
-        <a href="javascript:void(0)" onclick="ordenarProductosCustom('default')">Orden Predeterminado</a>
-        <a href="javascript:void(0)" onclick="ordenarProductosCustom('az')">Letra: A - Z</a>
-        <a href="javascript:void(0)" onclick="ordenarProductosCustom('menor')">Precio: Menor a mayor</a>
-        <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor')">Precio: Mayor a menor</a>
-      </div>
+    <a href="javascript:void(0)" onclick="ordenarProductosCustom('default', this)">Orden Predeterminado</a>
+    <a href="javascript:void(0)" onclick="ordenarProductosCustom('az', this)">Letra: A - Z</a>
+    <a href="javascript:void(0)" onclick="ordenarProductosCustom('menor', this)">Precio: Menor a mayor</a>
+    <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor', this)">Precio: Mayor a menor</a>
+</div>
     </div>
   </div>
 </div>
@@ -1057,31 +1159,6 @@ body {
 `
       },
       {
-        id: "vaso-hawks",
-        title: "Vaso Hawks My Hero Academia",
-        brand: "Bandai 2021",
-        price: "$5.000 CLP",
-        stock: 0,
-        anime: "My Hero Academia",
-        thumbnail: "images/VasosMHA0.4.webp",
-        images: ["images/VasosMHA1.4.jpg", "images/VasoHawks2.4.jpg", "images/VasoHawks3.4.jpg", "images/VasoHawks4.4.jpg"],
-        detalleImg: "Detalle2.webp",
-        etiquetas: "hawks, keigo, takami, vaso, boku no hero, bnha, mha, my hero academia",
-        description: 
-`Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
-• Entrega Portal Temuco o UFRO, horario conversable.
-• Pago con efectivo justo.
-• Personaje: Hawks.
-• Capacidad: 350ml.
-• Altura: 12cm.
-• Diámetro superior: 8cm.
-• Plástico (polipropileno).
-• Traído de Japón en perfecto estado.
-• No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes.
-• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
-`
-      },
-      {
         id: "vaso-bdt",
         title: "Vaso BDT My Hero Academia",
         brand: "Bandai 2021",
@@ -1122,31 +1199,6 @@ body {
 • Entrega Portal Temuco o UFRO, horario conversable.
 • Pago con efectivo justo.
 • Personaje: Rody.
-• Capacidad: 350ml.
-• Altura: 12cm.
-• Diámetro superior: 8cm.
-• Plástico (polipropileno).
-• Traído de Japón en perfecto estado.
-• No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes.
-• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
-`
-      },
-      {
-        id: "vaso-bakugo",
-        title: "Vaso Bakugo My Hero Academia",
-        brand: "Bandai 2021",
-        price: "$5.000 CLP",
-        stock: 1,
-        anime: "My Hero Academia",
-        thumbnail: "images/VasosMHA0.4.webp",
-        images: ["images/VasosMHA1.4.jpg", "images/VasoBakugo2.4.jpg", "images/VasoBakugo3.4.jpg", "images/VasoBakugo4.4.jpg"],
-        detalleImg: "Detalle3.webp",
-        etiquetas: "bakugo, bakugou, kachan, katsuki, vaso, boku no hero, bnha, mha, my hero academia",
-        description: 
-`Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
-• Entrega Portal Temuco o UFRO, horario conversable.
-• Pago con efectivo justo.
-• Personaje: Katsuki Bakugo.
 • Capacidad: 350ml.
 • Altura: 12cm.
 • Diámetro superior: 8cm.
@@ -1212,7 +1264,7 @@ body {
         id: "vaso-castillo-infinito-kny",
         title: "Vaso Tomioka Giyu Castillo Infinito",
         brand: "Cine Hoyts 2025",
-        price: "$20.000 CLP",
+        price: "$18.000 CLP",
         stock: 1,
         anime: "Kimetsu no Yaiba",
         thumbnail: "images/VasoCastilloInfinitoKNY0.3.webp",
@@ -1304,29 +1356,6 @@ body {
 `
       },
       {
-        id: "colgante-cadena-de-bolitas-deku-mha",
-        title: "My Hero Academia The Power of Weaving - E Deku",
-        brand: "Bandai 2025",
-        price: "$4.000 CLP",
-        stock: 1,
-        anime: "My Hero Academia",
-        thumbnail: "images/ColganteCadenaDeBolitasDekuMHA0.3.webp",
-        images: ["images/ColganteCadenaDeBolitasDekuMHA1.3.jpg", "images/ColganteCadenaDeBolitasDekuMHA2.3.jpg", "images/ColganteCadenaDeBolitasDekuMHA3.3.jpg"],
-        detalleImg: "Detalle1.webp",
-        etiquetas: "deku, midoriya, izuku, mha, my hero academia, bnha, boku no hero",
-        description: 
-`Colgante Deku Ichiban Kuji categoría E de goma con cadena de bolitas, ideal para mochila y bolso, set de Bandai 2025. 
-• Entrega Portal Temuco o UFRO, horario conversable.
-• Pago con efectivo justo.
-• Personaje: Midoriya (Deku).
-• Ancho: 7cm.
-• Paquete sellado al vacío.
-• Traído de Japón en perfecto estado.
-• No es resistente a solventes, químicos, perfumes, calor extremo o tirones.
-• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
-`
-      },
-      {
         id: "posavasos-mha",
         title: "My Hero Academia Ichiban Kuji -VS- categoría I",
         brand: "Bandai 2023",
@@ -1347,29 +1376,6 @@ body {
 • Paquete sellado al vacío.
 • Traído de Japón en perfecto estado.
 • No es resistente a solventes, químicos, perfumes, calor extremo, rayones o tirones.
-• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
-`
-      },
-      {
-      id: "manga-4-mha",
-        title: "My Hero Academia Tomo 4 Edición Panini México",
-        brand: "Panini 2021",
-        price: "$5.000 CLP",
-        stock: 1,
-        anime: "My Hero Academia",
-        thumbnail: "images/Manga4MHA0.3.webp",
-        images: ["images/Manga4MHA1.3.jpg", "images/Manga4MHA2.3.jpg", "images/Manga4MHA3.3.jpg"],
-        detalleImg: "Detalle1.webp",
-        etiquetas: "manga, mha, my hero academia, bnha, boku no hero",
-        description: 
-`Continúa el festival deportivo. El siguiente evento es una competencia en equipos de “caballitos de guerra”. Inesperadamente, Ida decide no hacer equipo con Midoriya y la situación se pone precaria. La siguiente fase del festival son combates uno a uno y las emociones se ponen a flor de piel. ¿Midoriya será capaz de prevalecer en un enfrentamiento que va más allá de lo físico?Catch phrases• “Me gustaría preguntarte… ¿Cómo se cría a un heredero, a una nueva generación?” –All Might• “El mejor tipo de héroe es el que salva a las personas con una sonrisa.” –Izuku Midoriya • “Ganaré este evento usando el poder de mamá. Jamás utilizaré el tuyo en combate.” –Shoto Todoroki. 
-• Entrega Portal Temuco o UFRO, horario conversable.
-• Pago con efectivo justo.
-• Páginas: 192 en total.
-• Alto: 17cm.
-• Ancho: 12cm.
-• Traído de Chile en buen estado.
-• No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
 • Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
 `
       },
@@ -1443,11 +1449,11 @@ body {
 `
       },
        {
-      id: "stcikers-largos-mha",
+      id: "stickers-largos-mha",
         title: "My Hero Academia Long Sticker",
         brand: "Ensky 2022",
         price: "$1.500 CLP c/u",
-        stock: 15,
+        stock: 14,
         anime: "My Hero Academia",
         thumbnail: "images/StickersLargosMHA0.5.webp",
         images: ["images/StickersLargosMHA1.5.jpg", "images/StickersLargosMHA2.5.jpg", "images/StickersLargosMHA3.5.jpg", "images/StickersLargosMHA4.5.jpg", "images/StickersLargosMHA5.5.jpg"],
@@ -1457,7 +1463,7 @@ body {
 `Stickers largos de My Hero Academia, ideales para poner en cuadernos, notebook, carpetas o usar como marcapáginas, set de Ensky 2022. 
 • Entrega Portal Temuco o UFRO, horario conversable.
 • Pago con efectivo justo.
-• Personajes: Yaoyorozu x1, Asui x1. Shinso x1, Kendo x1, Ashido x2, Kaminari x2, Jiro x1, Sero x1, Ojiro x1, Tetsutetsu x1, Hagakure x1, Pony x2.
+• Personajes: Yaoyorozu x1, Asui x1. Shinso x1, Kendo x1, Ashido x2, Kaminari x1, Jiro x1, Sero x1, Ojiro x1, Tetsutetsu x1, Hagakure x1, Pony x2.
 • Alto: 21.3cm.
 • Ancho: 13.6cm.
 • Traído de Japón, a elección en perfecto estado.
@@ -1466,11 +1472,11 @@ body {
 `
       },
        {
-      id: "stcikers-chicos-mha",
+      id: "stickers-chicos-mha",
         title: "My Hero Academia Sticker Retsuden",
         brand: "Ensky 2024",
         price: "$1.000 CLP c/u",
-        stock: 16,
+        stock: 12,
         anime: "My Hero Academia",
         thumbnail: "images/StickersChicosMHA0.3.webp",
         images: ["images/StickersChicosMHA1.3.jpg", "images/StickersChicosMHA2.3.jpg", "images/StickersChicosMHA3.3.jpg"],
@@ -1480,11 +1486,107 @@ body {
 `Stickers de My Hero Academia, ideales para poner en cuadernos, notebook, carpetas o teléfono, set de Ensky 2024. 
 • Entrega Portal Temuco o UFRO, horario conversable.
 • Pago con efectivo justo.
-• Personajes: Bakugo x2, Iida x1, Endeavor x2, Asui x1, Tokoyami x1, Ojiro x1, Sero x1, All Might x1, Mirko x1, Portadores OFA x3, Dabi x1, Aizawa x1.
+• Personajes: Bakugo x0, Iida x1, Endeavor x2, Asui x1, Tokoyami x0, Ojiro x1, Sero x1, All Might x0, Mirko x1, Portadores OFA x3, Dabi x1, Aizawa x1.
 • Alto: 14cm.
 • Ancho: 10cm.
 • Traído de Japón, a elección en perfecto estado.
 • No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
+       {
+        id: "colgante-cadena-de-bolitas-deku-mha",
+        title: "My Hero Academia The Power of Weaving - E Deku",
+        brand: "Bandai 2025",
+        price: "$4.000 CLP",
+        stock: 0,
+        anime: "My Hero Academia",
+        thumbnail: "images/ColganteCadenaDeBolitasDekuMHA0.3.webp",
+        images: ["images/ColganteCadenaDeBolitasDekuMHA1.3.jpg", "images/ColganteCadenaDeBolitasDekuMHA2.3.jpg", "images/ColganteCadenaDeBolitasDekuMHA3.3.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "deku, midoriya, izuku, mha, my hero academia, bnha, boku no hero",
+        description: 
+`Colgante Deku Ichiban Kuji categoría E de goma con cadena de bolitas, ideal para mochila y bolso, set de Bandai 2025. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Personaje: Midoriya (Deku).
+• Ancho: 7cm.
+• Paquete sellado al vacío.
+• Traído de Japón en perfecto estado.
+• No es resistente a solventes, químicos, perfumes, calor extremo o tirones.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
+      {
+      id: "manga-4-mha",
+        title: "My Hero Academia Tomo 4 Edición Panini México",
+        brand: "Panini 2021",
+        price: "$5.000 CLP",
+        stock: 0,
+        anime: "My Hero Academia",
+        thumbnail: "images/Manga4MHA0.3.webp",
+        images: ["images/Manga4MHA1.3.jpg", "images/Manga4MHA2.3.jpg", "images/Manga4MHA3.3.jpg"],
+        detalleImg: "Detalle1.webp",
+        etiquetas: "manga, mha, my hero academia, bnha, boku no hero",
+        description: 
+`Continúa el festival deportivo. El siguiente evento es una competencia en equipos de “caballitos de guerra”. Inesperadamente, Ida decide no hacer equipo con Midoriya y la situación se pone precaria. La siguiente fase del festival son combates uno a uno y las emociones se ponen a flor de piel. ¿Midoriya será capaz de prevalecer en un enfrentamiento que va más allá de lo físico?Catch phrases• “Me gustaría preguntarte… ¿Cómo se cría a un heredero, a una nueva generación?” –All Might• “El mejor tipo de héroe es el que salva a las personas con una sonrisa.” –Izuku Midoriya • “Ganaré este evento usando el poder de mamá. Jamás utilizaré el tuyo en combate.” –Shoto Todoroki. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Páginas: 192 en total.
+• Alto: 17cm.
+• Ancho: 12cm.
+• Traído de Chile en buen estado.
+• No es resistente a líquidos, solventes, químicos, perfumes, calor extremo, rayones o tirones.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
+       {
+        id: "vaso-bakugo",
+        title: "Vaso Bakugo My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 0,
+        anime: "My Hero Academia",
+        thumbnail: "images/VasosMHA0.4.webp",
+        images: ["images/VasosMHA1.4.jpg", "images/VasoBakugo2.4.jpg", "images/VasoBakugo3.4.jpg", "images/VasoBakugo4.4.jpg"],
+        detalleImg: "Detalle3.webp",
+        etiquetas: "bakugo, bakugou, kachan, katsuki, vaso, boku no hero, bnha, mha, my hero academia",
+        description: 
+`Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Personaje: Katsuki Bakugo.
+• Capacidad: 350ml.
+• Altura: 12cm.
+• Diámetro superior: 8cm.
+• Plástico (polipropileno).
+• Traído de Japón en perfecto estado.
+• No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
+      {
+        id: "vaso-hawks",
+        title: "Vaso Hawks My Hero Academia",
+        brand: "Bandai 2021",
+        price: "$5.000 CLP",
+        stock: 0,
+        anime: "My Hero Academia",
+        thumbnail: "images/VasosMHA0.4.webp",
+        images: ["images/VasosMHA1.4.jpg", "images/VasoHawks2.4.jpg", "images/VasoHawks3.4.jpg", "images/VasoHawks4.4.jpg"],
+        detalleImg: "Detalle2.webp",
+        etiquetas: "hawks, keigo, takami, vaso, boku no hero, bnha, mha, my hero academia",
+        description: 
+`Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai 2021. 
+• Entrega Portal Temuco o UFRO, horario conversable.
+• Pago con efectivo justo.
+• Personaje: Hawks.
+• Capacidad: 350ml.
+• Altura: 12cm.
+• Diámetro superior: 8cm.
+• Plástico (polipropileno).
+• Traído de Japón en perfecto estado.
+• No apto para microondas, el grabado puede dañarse con agua caliente o detergentes fuertes.
 • Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
 `
       }
@@ -1699,27 +1801,36 @@ function openProductDetail(p) {
     // Asegurar ruta de imagen de detalle
     const rutaImagenDetalle = p.detalleImg.startsWith('images/') ? p.detalleImg : `images/${p.detalleImg}`;
 
-    const infoEspecial = document.getElementById('glitchInfoEspecial');
-    
-    // Inyección de diseño: Precio arriba, Stock abajo, Imagen a la derecha
-    infoEspecial.innerHTML = `
-        <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: flex-start;">
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div style="font-size: 2.2rem; font-weight: 500; color: #333; line-height: 1; font-family: sans-serif;">
-                    ${p.price}
-                </div>
+const infoEspecial = document.getElementById('glitchInfoEspecial');
+const esAgotado = p.stock <= 0;
+const stockClase = esAgotado ? "stock-badge agotado" : "stock-badge";
+const stockTexto = esAgotado ? "Agotado" : `${p.stock} en Stock`;
 
-                <div style="background-color: #e57399; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; width: fit-content;">
-                    ${p.stock > 0 ? p.stock + ' en Stock' : 'Agotado'}
-                </div>
+// Lógica de tamaño para el "c/u"
+const esPorUnidad = p.price.toLowerCase().includes("c/u");
+const precioClase = esPorUnidad ? "price-tag small-text" : "price-tag";
+
+// EL ORDEN REAL: Stock ARRIBA, Precio ABAJO
+infoEspecial.innerHTML = `
+    <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            
+            <div class="${stockClase}" style="background-color: #e57399; color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 1rem; width: fit-content;">
+                ${stockTexto}
             </div>
 
-            <div style="margin-right: 10px;">
-                <img src="${rutaImagenDetalle}" alt="detalle" style="width: 100px; height: auto; display: block;">
+            <div class="${precioClase}" style="font-family: sans-serif; line-height: 1;">
+                ${p.price}
             </div>
         </div>
-        <hr style="border: 0; height: 2px; background-color: #01744b; margin: 25px 0 15px 0;">
-    `;
+
+        <div style="margin-right: 10px;">
+            <img src="images/${p.detalleImg}" alt="detalle" style="width: 100px; height: auto; display: block;">
+        </div>
+    </div>
+    
+    <hr style="border: 0; height: 2px; background-color: #01744b; margin: 20px 0 15px 0;">
+`;
 
     // Carrusel
     glitchImages = p.images; 
@@ -1728,15 +1839,13 @@ function openProductDetail(p) {
     slider.innerHTML = glitchImages.map(img => `<img src="${img}" alt="${p.title}" style="width:100%; flex-shrink:0;">`).join('');
     
     updateSlider();
-    window.history.pushState({}, '', `#product/${p.id}`);
+    window.history.pushState({ detalleAbierto: true }, '', `#product/${p.id}`);
     window.scrollTo(0, 0);
 }
 
   
-  function closeProductDetail() {
-    document.querySelector('.background').style.display = 'block';
-    document.getElementById('productDetailSection').style.display = 'none';
-    window.history.pushState({}, '', window.location.pathname);
+function closeProductDetail() {
+    window.history.back();
 }
 
   function moveSlider(step) {
@@ -1796,16 +1905,30 @@ function irACategoria(valor) {
 // LÓGICA DE FILTRADO COMBINADO (NATIVO Y CUSTOM)
 // =========================================================
 
-// 1. Funciones para el MENÚ CUSTOM (Notebooks)
 function toggleFilterCustom() {
     const menu = document.getElementById("filterMenuCustom");
-    menu.classList.toggle("show-custom");
+    if (menu) {
+        menu.classList.toggle("show-custom");
+    }
 }
 
-function ordenarProductosCustom(orden) {
-    // Reutilizamos la lógica de ordenamiento nativa para no repetir código
+
+function ordenarProductosCustom(orden, elemento) {
+    // 1. Ejecutamos el ordenamiento
     ordenarProductosBase(orden);
-    toggleFilterCustom(); // Cierra el menú al elegir
+    
+    // 2. Cambiamos el texto del botón según lo que eligió el usuario
+    const boton = document.querySelector(".filter-btn-custom");
+    if (boton && elemento) {
+        // Mantiene el icono y actualiza solo el texto
+        boton.innerHTML = `<span class="filter-icon-custom"></span> ${elemento.innerText}`;
+    }
+
+    // 3. Cerramos el menú
+    const menu = document.getElementById("filterMenuCustom");
+    if (menu) {
+        menu.classList.remove("show-custom");
+    }
 }
 
 // 2. Función para el SELECT NATIVO (Android)
@@ -1859,21 +1982,28 @@ const matchText = !q ||
     renderProducts(listaParaOrdenar, true);
 }
 
-// 4. Cerrar el menú custom si haces clic afuera
 window.onclick = function(event) {
-    // Cerrar modal
-    if (typeof modal !== 'undefined' && event.target == modal) {
-        modal.style.display = "none";
-    }
-    
-    // Cerrar menú custom si hace clic fuera
-    if (!event.target.closest('.filter-controls')) {
+    // Cerrar menú custom si hace clic fuera del contenedor v2
+    if (!event.target.closest('.filter-controls-v2')) {
         const dropdown = document.getElementById("filterMenuCustom");
         if (dropdown && dropdown.classList.contains('show-custom')) {
             dropdown.classList.remove('show-custom');
         }
     }
 };
+
+// Detectar cuando el usuario presiona la flecha "atrás" del navegador o Android
+window.addEventListener('popstate', function(event) {
+    const detalle = document.getElementById('productDetailSection');
+    const hash = window.location.hash;
+
+    // Si el detalle está visible y el hash ya no es de producto, cerramos la vista
+    if (detalle.style.display === 'block' && !hash.includes('#product/')) {
+        // Ejecutamos la lógica de cierre pero SIN añadir más historial
+        document.querySelector('.background').style.display = 'block';
+        document.getElementById('productDetailSection').style.display = 'none';
+    }
+});
   
 </script>
 </body>
