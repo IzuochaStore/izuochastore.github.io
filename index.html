@@ -382,6 +382,35 @@ body {
     filter: brightness(85%) !important;
     box-shadow: 0 8px 15px rgba(0,0,0,0.3) !important;
   }
+
+.glitch-product-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px; /* Espacio entre la galería y el texto */
+  }
+
+  .glitch-gallery {
+    flex: 1; /* Distribuye espacio equitativo */
+    position: relative;
+    max-height: 500px; /*  Limita la altura máxima para que no se vaya al infinito */
+    overflow: hidden; /* Evita desbordes */
+    border-radius: 12px;
+  }
+
+  /* Controla que las imágenes del carrusel respeten esa altura máxima sin deformarse */
+  .glitch-slider img {
+    width: 100%;
+    height: 500px !important; /*  Debe coincidir con la altura máxima del contenedor */
+    object-fit: contain; /*  Centra y escala la imagen dentro del recuadro sin cortarla */
+    background-color: #1a1a1a; /* Opcional: Un fondo oscuro por si la imagen es más angosta que el contenedor */
+  }
+
+  .glitch-info {
+    flex: 1;
+    max-height: 500px; /* Hace que la descripción también tenga un límite si es muy larga */
+    overflow-y: auto; /* Si el texto es enorme, añade scroll interno solo a la descripción */
+    padding-right: 10px;
+  }
   
 }
 
