@@ -386,27 +386,31 @@ body {
 .glitch-product-container {
     display: flex;
     align-items: flex-start;
+    justify-content: center; /*  AÑADIR: Centra el cuadro entero si sobra espacio a los lados */
     gap: 30px; /* Espacio entre la galería y el texto */
+    max-width: 1000px; /*  AÑADIR: Limita el ancho total del bloque para que no se estire de más en pantallas enormes */
+    margin: 0 auto; /*  AÑADIR: Centra el bloque de manera uniforme respecto al fondo */
   }
 
   .glitch-gallery {
-    flex: 1; /* Distribuye espacio equitativo */
     position: relative;
-    max-height: 500px; /*  Limita la altura máxima para que no se vaya al infinito */
+    max-height: 500px; /* Limita la altura máxima para que no se vaya al infinito */
     overflow: hidden; /* Evita desbordes */
     border-radius: 12px;
+    display: flex; /*  AÑADIR: Ayuda a colapsar el contenedor al ancho de la imagen */
+    justify-content: center;
   }
 
   /* Controla que las imágenes del carrusel respeten esa altura máxima sin deformarse */
   .glitch-slider img {
-    width: 100%;
-    height: 500px !important; /*  Debe coincidir con la altura máxima del contenedor */
-    object-fit: contain; /*  Centra y escala la imagen dentro del recuadro sin cortarla */
-    background-color: #1a1a1a; /* Opcional: Un fondo oscuro por si la imagen es más angosta que el contenedor */
+    width: auto !important; /*  REEMPLAZAR: Cambia 100% por auto para que no fuerce el ancho del contenedor */
+    max-width: 100%; /*  AÑADIR: Evita que imágenes muy anchas rompan el diseño */
+    height: 500px !important; /* Debe coincidir con la altura máxima del contenedor */
+    object-fit: contain; /* Centra y escala la imagen dentro del recuadro sin cortarla */
   }
 
   .glitch-info {
-    flex: 1;
+    flex: 1; /* Mantiene la descripción usando el espacio restante de forma fluida */
     max-height: 500px; /* Hace que la descripción también tenga un límite si es muy larga */
     overflow-y: auto; /* Si el texto es enorme, añade scroll interno solo a la descripción */
     padding-right: 10px;
