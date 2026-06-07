@@ -2151,7 +2151,7 @@ updateCategories();
 function openProductDetail(p) {
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
-
+document.querySelector('.glitch-info').scrollTop = 0;
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
     
