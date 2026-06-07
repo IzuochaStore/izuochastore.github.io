@@ -382,6 +382,39 @@ body {
     filter: brightness(85%) !important;
     box-shadow: 0 8px 15px rgba(0,0,0,0.3) !important;
   }
+
+.glitch-product-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center; /*  AÑADIR: Centra el cuadro entero si sobra espacio a los lados */
+    gap: 30px; /* Espacio entre la galería y el texto */
+    max-width: 1000px; /*  AÑADIR: Limita el ancho total del bloque para que no se estire de más en pantallas enormes */
+    margin: 0 auto; /*  AÑADIR: Centra el bloque de manera uniforme respecto al fondo */
+  }
+
+  .glitch-gallery {
+    position: relative;
+    max-height: 500px; /* Limita la altura máxima para que no se vaya al infinito */
+    overflow: hidden; /* Evita desbordes */
+    border-radius: 12px;
+    display: flex; /*  AÑADIR: Ayuda a colapsar el contenedor al ancho de la imagen */
+    justify-content: center;
+  }
+
+  /* Controla que las imágenes del carrusel respeten esa altura máxima sin deformarse */
+  .glitch-slider img {
+    width: auto !important; /*  REEMPLAZAR: Cambia 100% por auto para que no fuerce el ancho del contenedor */
+    max-width: 100%; /*  AÑADIR: Evita que imágenes muy anchas rompan el diseño */
+    height: 500px !important; /* Debe coincidir con la altura máxima del contenedor */
+    object-fit: contain; /* Centra y escala la imagen dentro del recuadro sin cortarla */
+  }
+
+  .glitch-info {
+    flex: 1; /* Mantiene la descripción usando el espacio restante de forma fluida */
+    max-height: 500px; /* Hace que la descripción también tenga un límite si es muy larga */
+    overflow-y: auto; /* Si el texto es enorme, añade scroll interno solo a la descripción */
+    padding-right: 10px;
+  }
   
 }
 
@@ -1133,6 +1166,31 @@ body {
 <script>
     /* INGRESO PRODUCTOS */
     const products = [
+      {
+        id: "tumbler-bakugo-midoriya-todoroki-2-mha-prize-e",
+        title: "Bakugo Midoriya Todoroki - Tumbler Prize E",
+        brand: "Bandai 2021",
+        price: "$6.000 CLP",
+        stock: 1,
+        anime: "My Hero Academia",
+        thumbnail: "images/Tumbler6MHA0.6.webp",
+        images: ["images/Tumbler6MHA1.6.jpg", "images/Tumbler6MHA2.6.jpg", "images/Tumbler6MHA3.6.jpg", "images/Tumbler6MHA4.6.jpg", "images/Tumbler6MHA5.6.jpg", "images/Tumbler6MHA6.6.jpg"],
+        detalleImg: "Detalle3.webp",
+        etiquetas: "deku, izuku, midoriya, bakugo, bakugou, kachan, katsuki, todoroki, shoto, vaso, tumbler, boku no hero, bnha, mha, my hero academia",
+        description: 
+`Vaso Ichiban Kuji: My Hero Academia THE MOVIE - World Heroes' Mission (Categoría E), set de Bandai Spirits 2021. Ideal para bebestibles fríos.
+• Entrega Portal Temuco, UFRO y Almacenes Paris en el centro o envío regional, horario conversable.
+• Pago con efectivo justo.
+• Personaje: Katsuki Bakugo, Izuku Midoriya y Shoto Todoroki.
+• Capacidad: 350ml.
+• Altura: 12cm.
+• Diámetro superior: 8cm.
+• Material: Polipropileno.
+• Traído de Japón en perfecto estado y con su caaja original.
+• Cuidado: Lavar a mano con agua fría/tibia y esponja suave. No apto para microondas, congelador, líquidos hirviendo ni lavavajillas.
+• Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
+`
+      },
   {
         id: "art-tumbler-naruto-ns-prize-e",
         title: "Naruto Uzumaki - Art Tumbler Prize E",
@@ -1455,14 +1513,14 @@ body {
 • Capacidad: 350ml.
 • Altura: 12cm.
 • Diámetro superior: 8cm.
-• Plástico (polipropileno).
+• Material: Polipropileno.
 • Traído de Japón en perfecto estado.
 • Cuidado: Lavar a mano con agua fría/tibia y esponja suave. No apto para microondas, congelador, líquidos hirviendo ni lavavajillas.
 • Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
 `
       },
       {
-        id: "tumbler-bakugo-midoriya-todoroki-mha-prize-e",
+        id: "tumbler-bakugo-midoriya-todoroki-1-mha-prize-e",
         title: "Bakugo Midoriya Todoroki - Tumbler Prize E",
         brand: "Bandai 2021",
         price: "$5.000 CLP",
@@ -1480,7 +1538,7 @@ body {
 • Capacidad: 350ml.
 • Altura: 12cm.
 • Diámetro superior: 8cm.
-• Plástico (polipropileno).
+• Material: Polipropileno.
 • Traído de Japón en perfecto estado.
 • Cuidado: Lavar a mano con agua fría/tibia y esponja suave. No apto para microondas, congelador, líquidos hirviendo ni lavavajillas.
 • Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
@@ -1505,7 +1563,7 @@ body {
 • Capacidad: 350ml.
 • Altura: 12cm.
 • Diámetro superior: 8cm.
-• Plástico (polipropileno).
+• Material: Polipropileno.
 • Traído de Japón en perfecto estado.
 • Cuidado: Lavar a mano con agua fría/tibia y esponja suave. No apto para microondas, congelador, líquidos hirviendo ni lavavajillas.
 • Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
@@ -1861,7 +1919,7 @@ body {
 • Capacidad: 350ml.
 • Altura: 12cm.
 • Diámetro superior: 8cm.
-• Plástico (polipropileno).
+• Material: Polipropileno.
 • Traído de Japón en perfecto estado.
 • Cuidado: Lavar a mano con agua fría/tibia y esponja suave. No apto para microondas, congelador, líquidos hirviendo ni lavavajillas.
 • Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
@@ -1886,7 +1944,7 @@ body {
 • Capacidad: 350ml.
 • Altura: 12cm.
 • Diámetro superior: 8cm.
-• Plástico (polipropileno).
+• Material: Polipropileno.
 • Traído de Japón en perfecto estado.
 • Cuidado: Lavar a mano con agua fría/tibia y esponja suave. No apto para microondas, congelador, líquidos hirviendo ni lavavajillas.
 • Debido a la naturaleza de nuestros productos (Ediciones limitadas), no se admiten cambios ni devoluciones de dinero. Al completar tu compra, aceptas estas condiciones de venta.
@@ -2093,7 +2151,7 @@ updateCategories();
 function openProductDetail(p) {
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
-
+document.querySelector('.glitch-info').scrollTop = 0;
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
     
