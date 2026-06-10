@@ -997,6 +997,10 @@ body {
     gap: 10px;
 }
 
+    .pagination-row.extra-row {
+    margin-top: 2px;
+    }
+
 /* Texto de Stock Total: Blanco y centrado */
 .total-stock-label {
     font-weight: bold;
@@ -2370,24 +2374,55 @@ function calculateTotalStock(list) {
     const totalStock = calculateTotalStock(fullList);
     const totalPages = Math.ceil(fullList.length / productsPerPage);
     
-    // Nueva estructura: El stock va en un div propio arriba de la fila de botones
-    const controlsHTML = `
-        <div class="pagination-controls">
-            <div class="total-stock-label">Productos en stock: ${totalStock}</div>
-            
-            <div class="pagination-row">
-                <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')">Anterior</button>
-                
-                ${Array.from({length: totalPages}, (_, i) => i + 1).map(num => `
-                    <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
-                `).join('')}
-                
-                <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('next')">Siguiente</button>
-            </div>
+    if (totalPages <= 1) {
+        document.getElementById("topPagination").innerHTML = "";
+        document.getElementById("bottomPagination").innerHTML = "";
+        return;
+    }
+
+    // Array con todos los números de página disponibles
+    const allPages = Array.from({length: totalPages}, (_, i) => i + 1);
+    
+    // Fila 1: Filtrar solo los números 1, 2 y 3 que existan
+    const row1Pages = allPages.filter(num => num <= 3);
+    
+    // Fila 2 en adelante: Guardar las páginas desde la 4 en adelante
+    const extraPages = allPages.filter(num => num >= 4);
+
+    // Renderizado de la primera fila fija
+    let rowsHTML = `
+        <div class="pagination-row">
+            <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')">Anterior</button>
+            ${row1Pages.map(num => `
+                <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
+            `).join('')}
+            <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('next')">Siguiente</button>
         </div>
     `;
 
-    // Se inyecta en los contenedores superior e inferior
+    // Si existen páginas a partir de la 4, creamos sub-filas de 4 elementos máximo cada una (4-7, 8-11...)
+    if (extraPages.length > 0) {
+        for (let i = 0; i < extraPages.length; i += 4) {
+            const chunk = extraPages.slice(i, i + 4);
+            rowsHTML += `
+                <div class="pagination-row extra-row">
+                    ${chunk.map(num => `
+                        <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+    }
+
+    // Estructura contenedora final manteniendo tu diseño e inyectando las filas ordenadas
+    const controlsHTML = `
+        <div class="pagination-controls">
+            <div class="total-stock-label">Productos en stock: ${totalStock}</div>
+            ${rowsHTML}
+        </div>
+    `;
+
+    // Inyección en los contenedores correspondientes del catálogo
     const topContainer = document.getElementById("topPagination");
     const bottomContainer = document.getElementById("bottomPagination");
     
