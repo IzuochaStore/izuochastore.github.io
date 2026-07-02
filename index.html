@@ -13,7 +13,8 @@
   <style>
 /*inicio bloque estilos*/
 
-    
+/*Vista Android Fn + F12 -> Ctrl + Shift + M*/
+/**/    
     /* =========================================================
                         Reset y variables
        ========================================================= */
@@ -1076,14 +1077,15 @@ body {
   <img src="images/IzuochaIzquierda1.webp" class="img-overlay izuocha-left" alt="IzuochaIzquierda1" />
   <img src="images/IzuochaDerecha1.webp" class="img-overlay izuocha-right" alt="IzuochaDerecha1" />
   
-  <div class="search-bar">
-  <select id="categorySelect" onchange="irACategoria(this.value)" onclick="if(this.value=='Animes') irACategoria('Animes')">
+
+<form class="search-bar" onsubmit="event.preventDefault(); document.getElementById('searchBtn').click();">
+    <select id="categorySelect" onchange="irACategoria(this.value)" onclick="if(this.value=='Animes') irACategoria('Animes')">
     </select>
     <input id="searchInput" type="text" placeholder="Buscar producto..." />
-    <button id="searchBtn" type="button">
-      <img src="images/iconLupa.png" alt="Buscar" />
+    <button id="searchBtn" type="submit">
+        <img src="images/iconLupa.png" alt="Buscar" />
     </button>
-  </div>
+</form>
 
   <div class="social-icons">
     <a href="https://www.facebook.com/share/17i8tNa7iS/"target="_blank"><img src="images/iconFacebook1.webp" alt="Facebook"></a>
