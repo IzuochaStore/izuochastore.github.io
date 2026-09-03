@@ -4459,19 +4459,19 @@ function calculateTotalStock(list) {
         </div>
     `;
 
-    // Si existen páginas a partir de la 4, creamos sub-filas de 4 elementos máximo cada una (4-7, 8-11...)
-    if (extraPages.length > 0) {
-        for (let i = 0; i < extraPages.length; i += 4) {
-            const chunk = extraPages.slice(i, i + 4);
-            rowsHTML += `
-                <div class="pagination-row extra-row">
-                    ${chunk.map(num => `
-                        <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
-                    `).join('')}
-                </div>
-            `;
-        }
+  // Si existen páginas a partir de la 4, creamos sub-filas de 7 elementos máximo cada una
+if (extraPages.length > 0) {
+    for (let i = 0; i < extraPages.length; i += 7) {
+        const chunk = extraPages.slice(i, i + 7);
+        rowsHTML += `
+            <div class="pagination-row extra-row">
+                ${chunk.map(num => `
+                    <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
+                `).join('')}
+            </div>
+        `;
     }
+}
 
     // Estructura contenedora final manteniendo tu diseño e inyectando las filas ordenadas
     const controlsHTML = `
