@@ -330,7 +330,11 @@ body {
             INICIO PANTALLA COMPLETA NOTEBOOK
        ========================================================= */
 
-@media (min-width: 900px) {
+@media (min-width: 1025px) {
+  .background {
+    background-image: url('images/FondoIzuochaStoreV1.jpg');
+    background-position: center bottom;
+  }
   .banner {
     aspect-ratio: 6 / 1; 
     background-image: url("images/BannerNotebook61.jpg");
@@ -427,6 +431,10 @@ body {
 
 /* Si quieres que en pantallas Gigantes se vean aún mejor */
 @media (min-width: 1300px) {
+  .background {
+    background-image: url('images/FondoIzuochaStoreV1.jpg');
+    background-position: center bottom;
+  }
   .social-icons { margin-top: 35px; }
   .social-icons a img { width: 55px !important; height: 55px !important; }
   .personaje-social { height: 110px !important; }
@@ -438,7 +446,11 @@ body {
                   INICIO PANTALLA REDUCIDA NOTEBOOK Y TABLET
      ========================================================== */
     
-@media (max-width: 1100px) and (min-width: 601px) { /* BLOQUE MEDIA QUERY */
+@media (max-width: 1100px) and (min-width: 601px) {
+  .background {
+    background-image: url('images/FondoIzuochaStoreV2.jpg');
+    background-position: center bottom;
+  }
     .banner { overflow: hidden !important; }        /* "Una mesa" Corta cualquier cosa que intente salir de los limites del banner*/
     
     /* Ampliamos el ancho para que quepan todos los iconos */
@@ -526,10 +538,10 @@ body {
        ========================================================= */
     
     @media (max-width: 600px) {
-    /* 1. AJUSTE DE FONDO ANTI-TIRONES */
-    .background { 
-        background: transparent !important; 
-        overflow: visible !important; /* Evita que el contenedor intente 'empujar' al fondo */
+    .background {
+    background-image: url('images/FondoIzuochaStoreV3.jpg');
+    background-position: center bottom;
+  }
     }
     body {
         background: none !important; /* Quitamos el fondo del body para evitar conflictos */
