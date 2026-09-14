@@ -51,14 +51,22 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
   color: var(--text);
+  background-color: #ffffff; 
   line-height: 1.45;
-  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat center top fixed;
-  background-size: cover;
-  min-height: 100vh;
 }
 
 .fixed-bg-android {
-  display: none !important;
+  /* En PC lo mostramos con display block */
+  display: block; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: url("images/FondoIzuochaStoreV2.jpg") no-repeat top center;
+  background-size: 100% auto; 
+  z-index: -1;
+  pointer-events: none;
 }
     
     /* =========================================================
@@ -765,9 +773,8 @@ body {
     
     /* RESTO DE ESTILOS MODAL Y PRODUCTOS (RESTRICTOS) */
 .background { 
-  background: transparent !important; 
+  background: transparent !important; /* Quitamos cualquier fondo repetido aquí */
   width: 100%; 
-  min-height: 100vh;
 }
    .container { padding: 20px; background: transparent; }
   
@@ -1064,7 +1071,7 @@ body {
 </head>
 
 <body>
-
+<div class="fixed-bg-android"></div>
   
 <div class="banner">
   <img src="images/IzuochaIzquierda1.webp" class="img-overlay izuocha-left" alt="IzuochaIzquierda1" />
