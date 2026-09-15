@@ -590,8 +590,9 @@ body {
 
     /* 3. BARRA DE BÚSQUEDA */
     .search-bar {
-        width: 70% !important; 
-        height: 40px !important;
+        width: 92% !important;
+        max-width: 480px !important;
+        height: 44px !important;
         margin: 15px auto 0 auto !important;
         border-radius: 10px !important;
         display: flex !important;
@@ -600,12 +601,16 @@ body {
     }
 
     .search-bar select {
-        flex: 0 0 85px !important;
-        width: 85px !important;
-        font-size: 0.8rem !important;
-        padding: 0 18px 0 6px !important;
-        background-position: right 6px center !important;
-        background-size: 10px !important;
+        flex: 0 0 90px !important;
+        width: 90px !important;
+        font-size: 0.75rem !important;
+        padding: 0 16px 0 5px !important;
+        background-position: right 5px center !important;
+        background-size: 12px !important;
+        border-radius: 10px 0 0 10px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
         text-align: center !important;
         color: white !important;
         background-color: #01744b !important;
@@ -618,16 +623,16 @@ body {
    .search-bar input { 
     flex: 1 !important; 
     min-width: 0 !important; 
-    font-size: 0.85rem !important; 
+    font-size: 0.82rem !important;
     position: relative !important;
     z-index: 10 !important;
-    border: none !important; /* Limpieza extra */
-    padding: 0 10px !important; /* Para que el texto no pegue a los bordes */
+    border: none !important;
+    padding: 0 8px !important;
 }
 
 
       .search-bar button {
-        flex: 0 0 55px !important; /* Le damos un poco más de espacio */
+        flex: 0 0 48px !important;
         height: 100% !important;
         background-color: #01744b !important;
         display: flex !important;
