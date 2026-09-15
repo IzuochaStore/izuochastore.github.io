@@ -467,6 +467,35 @@ body {
         bottom: 0 !important; 
     }
 
+  /*---ARREGLO LUPA DE BÚSQUEDA EN VISTA REDUCIDA---*/
+.search-bar {
+    width: 85% !important;
+    max-width: 480px !important;
+    height: 44px !important;
+    overflow: hidden !important;
+}
+
+.search-bar button {
+    flex: 0 0 48px !important;
+    width: 48px !important;
+    height: 100% !important;
+    min-height: 44px !important;
+    background-color: #01744b !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border-radius: 0 12px 12px 0 !important;
+    margin-right: 0 !important;
+}
+
+.search-bar button img {
+    width: 20px !important;
+    height: 20px !important;
+    filter: brightness(0) invert(1) !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
   /* Ajuste para que al minimizar la notebook se vea proporcional en 2 columnas */
     .products {
         grid-template-columns: repeat(2, 1fr) !important;
