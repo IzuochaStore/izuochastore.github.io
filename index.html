@@ -489,7 +489,7 @@ INICIO PANTALLA REDUCIDA NOTEBOOK Y TABLET
 
     /*2.IZUOCHA DE LOS COSTADOS (detrás de la fila, como Android) */
     .img-overlay {
-        height:62% !important;
+        height:115% !important; /*62 antes*/
         bottom:0 !important;
     }
     .izuocha-left {
@@ -501,41 +501,30 @@ INICIO PANTALLA REDUCIDA NOTEBOOK Y TABLET
         margin-right:1% !important;
     }
 
-    /*3.FILA DE REDES DEBAJO DE LA BARRA (Izuocha-FB-Deku-IG-Uraraka-TT-Izuocha) */
-    .social-icons {/*"Bandeja sobre la mesa"*/
-        width:92% !important;
-        max-width:700px !important;
-        height:auto !important;
-        margin:18px auto 5px auto !important;
-        padding:0 10px;
-        display:flex !important;
-        align-items:flex-end !important;
-        justify-content:space-between !important;
-        gap:8px;
-        position:relative !important;
-        z-index:20 !important;
-    }
-    .social-icons a {
-        display:block !important;
-        z-index:30 !important;
-        flex-shrink:0;
-    }
-    .social-icons a img {
-        width:38px !important;
-        height:38px !important;
-        margin-bottom:6px !important;
-        display:block !important;
-    }
-
-    /*4.DEKU CORDERO Y URARAKA GATA (proporción media) */
-    .personaje-social {
-        height:62px !important;
-        width:auto !important;
-        position:static !important;
-        bottom:auto !important;
-        margin:0 !important;
-        flex-shrink:0;
-    }
+    /*---FILA CENTRADA COMO EN ANDROID---*/
+.social-icons {
+width:95%!important;
+max-width:650px !important;
+display:flex !important;
+justify-content:center !important;
+gap:18px !important;
+position:relative !important;
+z-index:20!important;
+}
+.social-icons a {
+display:block !important;
+z-index:30!important;
+}
+.social-icons a img {
+width:34px !important;
+height:34px !important;
+margin-bottom:25px !important;
+}
+.personaje-social {
+height:48px !important;
+position:relative !important;
+bottom:0!important;
+}
 
     /*Ajuste para que al minimizar la notebook se vea proporcional en 2 columnas*/
     .products {
