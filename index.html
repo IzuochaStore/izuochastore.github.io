@@ -1156,7 +1156,9 @@ FIN PANTALLA REDUCIDA NOTEBOOK
   
 
 <form class="search-bar" onsubmit="event.preventDefault(); document.getElementById('searchBtn').click();">
-    </select>
+   <select id="categorySelect" onchange="irACategoria(this.value)" onclick="if(this.value=='Animes') irACategoria('Animes')">
+
+</select>
     <input id="searchInput" type="text" placeholder="Buscar producto..." />
     <button id="searchBtn" type="submit">
         <img src="images/iconLupa.png" alt="Buscar" />
