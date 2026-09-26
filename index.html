@@ -317,6 +317,25 @@ body {
     color: #01744b !important;
 }
 
+/*Separador de secciones dentro del menú */
+.filter-menu-separator {
+padding:10px 20px 6px;
+font-size:0.72rem;
+font-weight:800;
+text-transform:uppercase;
+letter-spacing:1px;
+color:#01744b;
+background:#f0f7f4;
+border-top:1px solid #e0e0e0;
+pointer-events:none;
+}
+/*Resalta la opción de filtro activa */
+.filter-content-custom a.activo {
+background:#e8f5ef !important;
+color:#01744b !important;
+font-weight:700;
+}
+    
 /* La clase que activa la visibilidad */
 .show-custom {
     display: block !important;
@@ -1183,29 +1202,62 @@ FIN PANTALLA REDUCIDA NOTEBOOK
   <h1 class="catalogo-titulo-v2">Catálogo</h1>
   
   <div class="filter-controls-v2">
+    
     <div class="filter-native-wrapper">
       <span class="filter-icon-native"></span>
-      <select id="filterSelectNative" class="filter-select-native" onchange="ordenarProductosNativo(this.value)">
-        <option value="" disabled selected>Ordenar y Filtrar</option>
-        <option value="default">Orden Predeterminado</option>
-        <option value="az">Letra: A - Z</option>
-        <option value="menor">Precio: Menor a mayor</option>
-        <option value="mayor">Precio: Mayor a menor</option>
-      </select>
+      
+<select id="filterSelectNative" class="filter-select-native"
+onchange="ordenarProductosNativo(this.value)">
+<option value="" disabled selected>Ordenar y Filtrar</option>
+<optgroup label="Ordenar">
+<option value="default">Orden Predeterminado</option>
+<option value="menor">Precio: Menor a mayor</option>
+<option value="mayor">Precio: Mayor a menor</option>
+</optgroup>
+<optgroup label="Filtrar por tipo">
+<option value="tipo:todos">Todos los tipos</option>
+<option value="tipo:Gashapones">Gashapones</option>
+<option value="tipo:Botellas, Vasos y Posavasos">Botellas, Vasos y Posavasos</option>
+<option value="tipo:Posters y Carpetas">Posters y Carpetas</option>
+<option value="tipo:Cuadros y Lienzos">Cuadros y Lienzos</option>
+<option value="tipo:Stands Acrílicos">Stands Acrílicos</option>
+<option value="tipo:Llaveros Acrílicos">Llaveros Acrílicos</option>
+<option value="tipo:Llaveros de Goma">Llaveros de Goma</option>
+<option value="tipo:Accesorios para Celular">Accesorios para Celular</option>
+<option value="tipo:Toallas">Toallas</option>
+<option value="tipo:Stickers y Cartas">Stickers y Cartas</option>
+<option value="tipo:Manga">Manga</option>
+</optgroup>
+</select>
+      
     </div>
-
     <div class="filter-custom-wrapper">
       <button class="filter-btn-custom" onclick="toggleFilterCustom()">
         <span class="filter-icon-custom"></span>
         Ordenar y Filtrar
       </button>
+      
       <div id="filterMenuCustom" class="filter-content-custom">
-    <a href="javascript:void(0)" onclick="ordenarProductosCustom('default', this)">Orden Predeterminado</a>
-    <a href="javascript:void(0)" onclick="ordenarProductosCustom('az', this)">Letra: A - Z</a>
-    <a href="javascript:void(0)" onclick="ordenarProductosCustom('menor', this)">Precio: Menor a mayor</a>
-    <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor', this)">Precio: Mayor a menor</a>
+<div class="filter-menu-separator">Ordenar</div>
+<a href="javascript:void(0)" onclick="ordenarProductosCustom('default',this)">Orden Predeterminado</a>
+<a href="javascript:void(0)" onclick="ordenarProductosCustom('menor',this)">Precio: Menor a mayor</a>
+<a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor',this)">Precio: Mayor a menor</a>
+<div class="filter-menu-separator">Filtrar por tipo</div>
+<a href="javascript:void(0)" class="opt-tipo activo" onclick="filtrarPorTipo('todos',this)">Todos los tipos</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Gashapones',this)">Gashapones</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Botellas, Vasos y Posavasos',this)">Botellas, Vasos y Posavasos</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Posters y Carpetas',this)">Posters y Carpetas</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Cuadros y Lienzos',this)">Cuadros y Lienzos</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Stands Acrílicos',this)">Stands Acrílicos</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Llaveros Acrílicos',this)">Llaveros Acrílicos</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Llaveros de Goma',this)">Llaveros de Goma</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Accesorios para Celular',this)">Accesorios para Celular</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Toallas',this)">Toallas</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Stickers y Cartas',this)">Stickers y Cartas</a>
+<a href="javascript:void(0)" class="opt-tipo" onclick="filtrarPorTipo('Manga',this)">Manga</a>
 </div>
     </div>
+    
   </div>
 </div>
 
@@ -4552,7 +4604,29 @@ description:
   let currentPage = 1;
 const productsPerPage = 12;
 let filteredProductsGlobal = [];
+let filtroTipoActual = "todos";
+let ordenActual = "default";
 
+/*Detecta el tipo de producto según palabras clave del título */
+function obtenerTipoProducto(p) {
+const t = (p.title + " " + (p.etiquetas || "")).toLowerCase();
+const tiene = (...palabras) => palabras.some(x => t.includes(x));
+
+if (tiene("gashapon")) return "Gashapones";
+if (tiene("coaster", "posavasos")) return "Botellas, Vasos y Posavasos";
+if (tiene("bottle", "botella", "tumbler", "glass collection", "vaso")) return "Botellas, Vasos y Posavasos";
+if (tiene("smartphone ribbon", "strap holder")) return "Accesorios para Celular";
+if (tiene("canvas", "shikishi")) return "Cuadros y Lienzos";
+if (tiene("illustration board", "poster", "clear file", "visual sheet", "pouch", "estuche", "carpeta")) return "Posters y Carpetas";
+if (tiene("acrylic stand", "acrylic collection")) return "Stands Acrílicos";
+if (tiene("acrylic", "acritz", "acrilico")) return "Llaveros Acrílicos";
+if (tiene("rubber", "goma")) return "Llaveros de Goma";
+if (tiene("towel", "toalla")) return "Toallas";
+if (tiene("sticker", "card", "carta")) return "Stickers y Cartas";
+if (tiene("manga")) return "Manga";
+return "Otros";
+}
+  
 function calculateTotalStock(list) {
     return list.reduce((sum, p) => sum + (p.stock || 0), 0);
 }
@@ -4745,16 +4819,15 @@ const searchInput = document.getElementById("searchInput");
 
      
    let filtered = products.filter(p => {
-    const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
-    
-    // Normalizamos la búsqueda para evitar problemas de tildes o mayúsculas
-    const term = q.toLowerCase();
-    const matchText = !q || 
-        p.title.toLowerCase().includes(term) || 
-        (p.anime && p.anime.toLowerCase().includes(term)) ||
-        (p.etiquetas && p.etiquetas.toLowerCase().includes(term)); 
-        
-    return matchCategory && matchText;
+const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
+//Normalizamos la búsqueda para evitar problemas de tildes o mayúsculas
+const term = q.toLowerCase();
+const matchText = !q ||
+p.title.toLowerCase().includes(term) ||
+(p.anime && p.anime.toLowerCase().includes(term)) ||
+(p.etiquetas && p.etiquetas.toLowerCase().includes(term));
+const matchTipo = (filtroTipoActual === "todos") || obtenerTipoProducto(p) === filtroTipoActual;
+return matchCategory && matchText && matchTipo;
 });
 
     // 4. Renderizamos los resultados encontrados
@@ -4905,7 +4978,7 @@ function toggleFilterCustom() {
 
 
 function ordenarProductosCustom(orden, elemento) {
-    // 1. Ejecutamos el ordenamiento
+    ordenActual = orden;
     ordenarProductosBase(orden);
     
     // 2. Cambiamos el texto del botón según lo que eligió el usuario
@@ -4922,12 +4995,35 @@ function ordenarProductosCustom(orden, elemento) {
     }
 }
 
-// 2. Función para el SELECT NATIVO (Android)
-function ordenarProductosNativo(orden) {
-    if (!orden) return;
-    ordenarProductosBase(orden);
+function ordenarProductosNativo(valor){
+if (!valor) return;
+if (valor.startsWith("tipo:")) {
+filtroTipoActual = valor.slice(5);
+ordenarProductosBase(ordenActual);
+} else {
+ordenActual = valor;
+ordenarProductosBase(valor);
+}
 }
 
+function filtrarPorTipo(tipo, elemento) {
+filtroTipoActual = tipo;
+ordenarProductosBase(ordenActual);
+
+//Resalta la opción activa
+document.querySelectorAll("#filterMenuCustom .opt-tipo").forEach(a => a.classList.remove("activo"));
+if (elemento) elemento.classList.add("activo");
+
+//Cambia el texto del botón verde
+const boton = document.querySelector(".filter-btn-custom");
+if (boton) {
+boton.innerHTML = `<span class="filter-icon-custom"></span>${tipo === "todos" ? "Ordenar y Filtrar" : tipo}`;
+}
+
+const menu = document.getElementById("filterMenuCustom");
+if (menu) menu.classList.remove("show-custom");
+}
+  
 function ordenarProductosBase(orden) {
     // 1. Clonamos la lista original para no dañarla
     let listaParaOrdenar = [...products];
@@ -4938,26 +5034,19 @@ function ordenarProductosBase(orden) {
     const q = (searchInput.value || "").toLowerCase().trim();
     const selectedCat = categorySelect.value;
 
-    // Dentro de ordenarProductosBase:
-listaParaOrdenar = listaParaOrdenar.filter(p => {
-    const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
-    
-    // El buscador ahora mira: Título, Anime y ETIQUETAS
-    const q = (searchInput.value || "").toLowerCase().trim();
-    
-const matchText = !q || 
-                  p.title.toLowerCase().includes(q) || 
-                  (p.anime && p.anime.toLowerCase().includes(q)) ||
-                  (p.etiquetas && p.etiquetas.toLowerCase().includes(q)); // <-- Aquí está el truco
-
-    return matchCategory && matchText;
+   listaParaOrdenar = listaParaOrdenar.filter(p => {
+const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
+//El buscador ahora mira: Título, Anime y ETIQUETAS
+const matchText = !q ||
+p.title.toLowerCase().includes(q) ||
+(p.anime && p.anime.toLowerCase().includes(q)) ||
+(p.etiquetas && p.etiquetas.toLowerCase().includes(q));
+const matchTipo = (filtroTipoActual === "todos") || obtenerTipoProducto(p) === filtroTipoActual;
+return matchCategory && matchText && matchTipo;
 });
 
     // 3. LÓGICA DE ORDENAMIENTO
-    if (orden === 'az') {
-        // Orden alfabético por el título del producto
-        listaParaOrdenar.sort((a, b) => a.title.localeCompare(b.title));
-    } 
+     
     else if (orden === 'menor') {
         listaParaOrdenar.sort((a, b) => parseInt(a.price.replace(/[^0-9]/g, '')) - parseInt(b.price.replace(/[^0-9]/g, '')));
     } 
