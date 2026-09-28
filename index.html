@@ -276,8 +276,7 @@ body {
 .filter-icon-custom::before { top: -6px; }
 .filter-icon-custom::after { top: 6px; }
 
-/* Ocultar nativo en notebook */
-.filter-native-wrapper { display: none; }
+
 
 /* EL CAJÓN DESPLEGABLE (Ahora blanco como en móvil) */
 .filter-content-custom {
@@ -355,17 +354,7 @@ body {
 
 /* --- SOLUCIÓN BOTÓN FILTRAR Y PAGINACIÓN (PC) --- */
   
-  /* 1. Hace que el menú aparezca cuando el JS activa la clase */
-  #filterMenuCustom.show-custom {
-    display: block !important;
-  }
-
-  /* 2. Estilo del menú para que no se vea comprimido */
-  #filterMenuCustom {
-        left: 50%;
-        transform: translateX(-50%);
-        min-width: 280px !important; /* Un poco más ancho en PC */
-    }
+  
 
   /* 3. Agrandar botones de paginación y darles "vida" */
   .pagination-btn, .page-number {
@@ -772,74 +761,7 @@ FIN PANTALLA REDUCIDA NOTEBOOK
         width: 85% !important;
     }
 
-    .filter-native-wrapper { 
-        display: block !important; 
-        width: 100% !important;
-        position: relative;
-    }
-
-    .filter-select-native {
-        display: block !important;
-        width: 80% !important; 
-        margin: 0 auto !important;
-        background-color: #01744b !important;
-        color: white !important;
-        height: 42px !important;
-        border-radius: 10px !important;
-        font-family: "Montserrat", sans-serif !important;
-        font-size: 0.88rem !important;
-        font-weight: 700 !important;
-
-        /* --- EL TRUCO DEL EQUILIBRIO --- */
-        text-align: center !important; 
-        /* Le damos un padding izquierdo para "proteger" el espacio de las barras 
-           y un padding derecho igual para que el texto quede centrado en el espacio restante */
-        padding-left: 40px !important; 
-        padding-right: 10px !important; 
-        
-        border: none !important;
-        appearance: none !important;
-        -webkit-appearance: none !important;
-    }
-
-.filter-icon-native {
-        display: block !important;
-        position: absolute !important;
-        /* Ajustado para el botón al 80% */
-        left: 15% !important; 
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        width: 16px !important; /* Un pelín más ancho para que se note */
-        height: 2px !important;
-        background: white !important;
-        z-index: 5 !important;
-        pointer-events: none !important;
-    }
-      
-    .filter-icon-native::before, .filter-icon-native::after {
-        content: '' !important;
-        position: absolute !important;
-        width: 16px !important;
-        height: 2px !important;
-        background: white !important;
-        left: 0 !important;
-    }
-    .filter-icon-native::before { top: -5px !important; }
-    .filter-icon-native::after { top: 5px !important; }
-
-/* SOLUCIÓN AL BORDE OSCURO EN ANDROID */
-    .filter-select-native:focus, 
-    .filter-select-native:active {
-        outline: none !important;
-        -webkit-tap-highlight-color: transparent !important; /* Elimina el resaltado de tap azul */
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important; /* Mantiene la sombra normal */
-    }
-
-      /* Escondemos el botón de PC en el celular */
-    .filter-custom-wrapper { 
-        display: none !important; 
-    }
-      
+  
 }
 
     /* =========================================================
@@ -1141,7 +1063,104 @@ FIN PANTALLA REDUCIDA NOTEBOOK
     font-size: 1.1rem; /* Tamaño reducido para el "c/u" */
 }
 
-
+/* =========================================================
+3 CONTROLES INDEPENDIENTES: ORDENAR / FILTRAR / PRECIO
+========================================================= */
+.filter-controls-v2 {
+max-width: 900px;          /* antes 320px: ahora caben los 3 controles */
+display: flex;
+justify-content: center;
+align-items: stretch;
+gap: 15px;
+flex-wrap: wrap;
+}
+.control-wrapper {
+position: relative;        /* cada menú se ancla a SU botón */
+flex: 1 1 0;
+min-width: 150px;
+max-width: 220px;
+}
+.control-wrapper .filter-btn-custom {
+width: 100%;
+max-width: 100%;
+margin: 0;
+}
+/* El menú se ancla al borde en los extremos para que nunca se corte */
+.control-wrapper:first-child .filter-content-custom { left: 0; transform: none; }
+.control-wrapper:last-child .filter-content-custom { left: auto; right: 0; transform: none; }
+.control-wrapper .filter-content-custom {
+min-width: 200px;
+max-width: 80vw;
+}
+/* El menú de Filtrar puede ser largo: scroll interno */
+#menuFiltrar {
+max-height: 320px;
+overflow-y: auto;
+}
+/* Bloque PRECIO: verde como los botones */
+.precio-wrapper {
+background: #01744b;
+border-radius: 12px;
+min-height: 48px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 2px;
+padding: 5px 10px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.precio-titulo {
+color: #fff;
+font-weight: 700;
+font-size: 0.72rem;
+line-height: 1;
+letter-spacing: 1px;
+text-transform: uppercase;
+}
+.precio-fila {
+display: flex;
+align-items: center;
+gap: 4px;
+color: #fff;
+font-size: 0.8rem;
+font-weight: 600;
+white-space: nowrap;
+}
+.precio-fila input {
+width: 52px;
+border: none;
+border-radius: 6px;
+text-align: center;
+font-size: 0.8rem;
+font-weight: 700;
+padding: 2px 4px;
+outline: none;
+color: #1a1a1a;
+background: #fff;
+}
+/* El 0 y 16.000 difuminados/casi transparentes */
+.precio-fila input::placeholder {
+color: rgba(0,0,0,0.30);
+}
+/* Ajuste celular: los 3 en una fila */
+@media (max-width: 600px) {
+.filter-controls-v2 {
+width: 95% !important;
+gap: 8px;
+}
+.control-wrapper {
+min-width: 96px;
+}
+.control-wrapper .filter-btn-custom {
+height: 44px;
+font-size: 0.78rem;
+padding: 0 6px;
+gap: 6px;
+}
+.precio-fila { font-size: 0.68rem; }
+.precio-fila input { width: 42px; font-size: 0.72rem; }
+}
     
     /*final bloque estilos*/
   </style>
@@ -1181,32 +1200,49 @@ FIN PANTALLA REDUCIDA NOTEBOOK
       
 <div class="header-catalogo-v2">
   <h1 class="catalogo-titulo-v2">Catálogo</h1>
-  
-  <div class="filter-controls-v2">
-    <div class="filter-native-wrapper">
-      <span class="filter-icon-native"></span>
-      <select id="filterSelectNative" class="filter-select-native" onchange="ordenarProductosNativo(this.value)">
-        <option value="" disabled selected>Ordenar y Filtrar</option>
-        <option value="default">Orden Predeterminado</option>
-        <option value="az">Letra: A - Z</option>
-        <option value="menor">Precio: Menor a mayor</option>
-        <option value="mayor">Precio: Mayor a menor</option>
-      </select>
-    </div>
 
-    <div class="filter-custom-wrapper">
-      <button class="filter-btn-custom" onclick="toggleFilterCustom()">
-        <span class="filter-icon-custom"></span>
-        Ordenar y Filtrar
-      </button>
-      <div id="filterMenuCustom" class="filter-content-custom">
-    <a href="javascript:void(0)" onclick="ordenarProductosCustom('default', this)">Orden Predeterminado</a>
-    <a href="javascript:void(0)" onclick="ordenarProductosCustom('az', this)">Letra: A - Z</a>
-    <a href="javascript:void(0)" onclick="ordenarProductosCustom('menor', this)">Precio: Menor a mayor</a>
-    <a href="javascript:void(0)" onclick="ordenarProductosCustom('mayor', this)">Precio: Mayor a menor</a>
-</div>
+  
+ <div class="filter-controls-v2">
+
+  <!-- 1. ORDENAR -->
+  <div class="control-wrapper">
+    <button class="filter-btn-custom" id="btnOrdenar" onclick="toggleMenu('menuOrdenar')">
+      <span class="filter-icon-custom"></span>
+      <span class="btn-label">Ordenar</span>
+    </button>
+    <div id="menuOrdenar" class="filter-content-custom">
+      <a href="javascript:void(0)" onclick="elegirOrden('default', this)">Orden Predeterminado</a>
+      <a href="javascript:void(0)" onclick="elegirOrden('az', this)">Letra: A - Z</a>
+      <a href="javascript:void(0)" onclick="elegirOrden('menor', this)">Precio: Menor a mayor</a>
+      <a href="javascript:void(0)" onclick="elegirOrden('mayor', this)">Precio: Mayor a menor</a>
     </div>
   </div>
+
+  <!-- 2. FILTRAR -->
+  <div class="control-wrapper">
+    <button class="filter-btn-custom" id="btnFiltrar" onclick="toggleMenu('menuFiltrar')">
+      <span class="filter-icon-custom"></span>
+      <span class="btn-label">Filtrar</span>
+    </button>
+    <div id="menuFiltrar" class="filter-content-custom">
+      <!-- Este menú se genera solo con JavaScript, no escribas nada aquí -->
+    </div>
+  </div>
+
+  <!-- 3. PRECIO -->
+  <div class="control-wrapper precio-wrapper">
+    <span class="precio-titulo">Precio</span>
+    <div class="precio-fila">
+      <span>De: $</span>
+      <input id="precioMin" type="text" inputmode="numeric" placeholder="0" autocomplete="off">
+      <span>a $</span>
+      <input id="precioMax" type="text" inputmode="numeric" placeholder="16.000" autocomplete="off">
+    </div>
+  </div>
+
+</div>
+
+  
 </div>
 
     
@@ -4743,22 +4779,13 @@ const searchInput = document.getElementById("searchInput");
     const q = (searchInput.value || "").toLowerCase().trim();
     const selectedCat = categorySelect.value;
 
-     
-   let filtered = products.filter(p => {
-    const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
-    
-    // Normalizamos la búsqueda para evitar problemas de tildes o mayúsculas
-    const term = q.toLowerCase();
-    const matchText = !q || 
-        p.title.toLowerCase().includes(term) || 
-        (p.anime && p.anime.toLowerCase().includes(term)) ||
-        (p.etiquetas && p.etiquetas.toLowerCase().includes(term)); 
-        
-    return matchCategory && matchText;
-});
 
-    // 4. Renderizamos los resultados encontrados
-    renderProducts(filtered, true);
+     
+       // 4. Aplicamos búsqueda + los 3 controles (orden, tipo y precio)
+    aplicarControles();
+
+
+     
     
     // 5. Limpieza de URL y scroll
     window.history.pushState({}, '', window.location.pathname);
@@ -4856,7 +4883,7 @@ function updateSlider() {
 }
 
    
-    window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
+  
 
 
 
@@ -4879,13 +4906,10 @@ function irACategoria(valor) {
         catalogo.style.display = 'block';
     }
 
-    // 4. Ejecutamos la lógica de filtrado
-    if (valor === "Animes") {
-        renderProducts(products); // Muestra todo el array original
-    } else {
-        // doSearch(true) ya contiene la lógica para filtrar por categorySelect.value
-        doSearch(true); 
-    }
+        // 4. Aplicamos categoría + los 3 controles (orden, tipo y precio)
+    aplicarControles();
+
+  
 
     // 5. Limpieza cosmética: URL limpia y scroll suave al inicio del catálogo
     window.history.pushState({}, '', window.location.pathname);
@@ -4893,93 +4917,166 @@ function irACategoria(valor) {
 }
 
 // =========================================================
-// LÓGICA DE FILTRADO COMBINADO (NATIVO Y CUSTOM)
+// SISTEMA DE 3 CONTROLES INDEPENDIENTES: ORDENAR / FILTRAR / PRECIO
 // =========================================================
 
-function toggleFilterCustom() {
-    const menu = document.getElementById("filterMenuCustom");
-    if (menu) {
-        menu.classList.toggle("show-custom");
+// ---- ESTADO GLOBAL: cada control guarda lo suyo, sin depender de los otros ----
+let estadoOrden = 'default';          // 'default' | 'az' | 'menor' | 'mayor'
+let estadoTipo  = 'todos';            // 'todos' o un tipo, ej: 'Póster'
+const PRECIO_MAX_CATALOGO = 16000;    // precio del producto más caro del catálogo
+
+// ---- ABRIR/CERRAR MENÚS (solo uno abierto a la vez) ----
+function toggleMenu(idMenu) {
+    const menu = document.getElementById(idMenu);
+    if (!menu) return;
+    const estabaAbierto = menu.classList.contains("show-custom");
+    document.querySelectorAll('.filter-content-custom').forEach(m => m.classList.remove('show-custom'));
+    if (!estabaAbierto) {
+        if (idMenu === 'menuFiltrar') construirMenuTipos(); // recalcula los conteos justo antes de mostrar
+        menu.classList.add("show-custom");
     }
 }
 
-
-function ordenarProductosCustom(orden, elemento) {
-    // 1. Ejecutamos el ordenamiento
-    ordenarProductosBase(orden);
-    
-    // 2. Cambiamos el texto del botón según lo que eligió el usuario
-    const boton = document.querySelector(".filter-btn-custom");
-    if (boton && elemento) {
-        // Mantiene el icono y actualiza solo el texto
-        boton.innerHTML = `<span class="filter-icon-custom"></span> ${elemento.innerText}`;
+// ---- TIPO DE PRODUCTO: se deduce del id, no editas tus productos ----
+function obtenerTipo(p) {
+    const id = (p.id || "").toLowerCase();
+    const reglas = [
+        ["Gashapon",  ["gashapon"]],
+        ["Póster",    ["poster"]],
+        ["Carpeta",   ["visual-sheet", "clear-file"]],
+        ["Posavasos", ["coaster"]],
+        ["Toalla",    ["towel"]],
+        ["Vaso",      ["tumbler", "vaso"]],
+        ["Botella",   ["bottle"]],
+        ["Estuche",   ["pouch", "clear-case", "clear-multi"]],
+        ["Cuadro",    ["canvas", "shikishi", "illustration-board"]],
+        ["Llavero",   ["charm", "keychain", "key-holder", "strap", "colgante", "rubber-collection"]],
+        ["Acrílico",  ["acrylic", "acritz"]],
+        ["Tarjeta",   ["card"]],
+        ["Sticker",   ["sticker"]],
+        ["Cinta",     ["ribbon"]],
+        ["Manga",     ["manga"]]
+    ];
+    for (const [tipo, claves] of reglas) {
+        if (claves.some(c => id.includes(c))) return tipo;
     }
-
-    // 3. Cerramos el menú
-    const menu = document.getElementById("filterMenuCustom");
-    if (menu) {
-        menu.classList.remove("show-custom");
-    }
+    return "Otros"; // cualquier producto futuro que no calce cae aquí
 }
 
-// 2. Función para el SELECT NATIVO (Android)
-function ordenarProductosNativo(orden) {
-    if (!orden) return;
-    ordenarProductosBase(orden);
+// ---- PRECIO: "$12.000 CLP" -> 12000 ----
+function obtenerPrecioNumerico(p) {
+    return parseInt(p.price.replace(/[^0-9]/g, ''), 10) || 0;
 }
 
-function ordenarProductosBase(orden) {
-    // 1. Clonamos la lista original para no dañarla
-    let listaParaOrdenar = [...products];
-
-    // 2. Aplicamos filtros de búsqueda/categoría actuales
+// ---- LISTA BASE: lo que ya filtraban tu buscador y tu selector de anime ----
+function obtenerListaBase() {
     const searchInput = document.getElementById("searchInput");
     const categorySelect = document.getElementById("categorySelect");
     const q = (searchInput.value || "").toLowerCase().trim();
     const selectedCat = categorySelect.value;
-
-    // Dentro de ordenarProductosBase:
-listaParaOrdenar = listaParaOrdenar.filter(p => {
-    const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
-    
-    // El buscador ahora mira: Título, Anime y ETIQUETAS
-    const q = (searchInput.value || "").toLowerCase().trim();
-    
-const matchText = !q || 
-                  p.title.toLowerCase().includes(q) || 
-                  (p.anime && p.anime.toLowerCase().includes(q)) ||
-                  (p.etiquetas && p.etiquetas.toLowerCase().includes(q)); // <-- Aquí está el truco
-
-    return matchCategory && matchText;
-});
-
-    // 3. LÓGICA DE ORDENAMIENTO
-    if (orden === 'az') {
-        // Orden alfabético por el título del producto
-        listaParaOrdenar.sort((a, b) => a.title.localeCompare(b.title));
-    } 
-    else if (orden === 'menor') {
-        listaParaOrdenar.sort((a, b) => parseInt(a.price.replace(/[^0-9]/g, '')) - parseInt(b.price.replace(/[^0-9]/g, '')));
-    } 
-    else if (orden === 'mayor') {
-        listaParaOrdenar.sort((a, b) => parseInt(b.price.replace(/[^0-9]/g, '')) - parseInt(a.price.replace(/[^0-9]/g, '')));
-    }
-    else if (orden === 'default') {
-        // El 'Orden Predeterminado' simplemente no aplica sort, 
-        // pero como filtramos arriba, se mantiene el orden original de tu array de código.
-    }
-
-    // 4. Renderizamos los cambios
-    renderProducts(listaParaOrdenar, true);
+    return products.filter(p => {
+        const matchCategory = (selectedCat === "Animes" || p.anime === selectedCat);
+        const matchText = !q ||
+            p.title.toLowerCase().includes(q) ||
+            (p.anime && p.anime.toLowerCase().includes(q)) ||
+            (p.etiquetas && p.etiquetas.toLowerCase().includes(q));
+        return matchCategory && matchText;
+    });
 }
 
+// ---- FUNCIÓN CENTRAL: aplica los 3 controles a la vez ----
+function aplicarControles() {
+    let lista = obtenerListaBase();
+
+    // 1) FILTRAR por tipo
+    if (estadoTipo !== 'todos') {
+        lista = lista.filter(p => obtenerTipo(p) === estadoTipo);
+    }
+
+    // 2) FILTRAR por rango de precio
+    const minCrudo = parseInt((document.getElementById("precioMin").value || "").replace(/[^0-9]/g, ''), 10);
+    const maxCrudo = parseInt((document.getElementById("precioMax").value || "").replace(/[^0-9]/g, ''), 10);
+    let minVal = isNaN(minCrudo) ? 0 : minCrudo;                   // vacío = sin límite inferior
+    let maxVal = isNaN(maxCrudo) ? PRECIO_MAX_CATALOGO : maxCrudo; // vacío = sin límite superior
+    if (minVal > maxVal) { const tmp = minVal; minVal = maxVal; maxVal = tmp; } // si se invierten, se corrige solo
+    lista = lista.filter(p => {
+        const precio = obtenerPrecioNumerico(p);
+        return precio >= minVal && precio <= maxVal;
+    });
+
+    // 3) ORDENAR
+    if (estadoOrden === 'az') {
+        lista.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (estadoOrden === 'menor') {
+        lista.sort((a, b) => obtenerPrecioNumerico(a) - obtenerPrecioNumerico(b));
+    } else if (estadoOrden === 'mayor') {
+        lista.sort((a, b) => obtenerPrecioNumerico(b) - obtenerPrecioNumerico(a));
+    }
+
+    renderProducts(lista, true);
+}
+
+// ---- CONTROL 1: ORDENAR ----
+function elegirOrden(orden, elemento) {
+    estadoOrden = orden;
+    const label = document.querySelector('#btnOrdenar .btn-label');
+    if (label && elemento) label.textContent = elemento.innerText; // el botón cambia de nombre
+    document.getElementById('menuOrdenar').classList.remove('show-custom');
+    aplicarControles();
+}
+
+// ---- CONTROL 2: FILTRAR (menú generado solo, de mayor a menor cantidad) ----
+function construirMenuTipos() {
+    const base = obtenerListaBase();
+    const conteo = {};
+    base.forEach(p => {
+        const t = obtenerTipo(p);
+        conteo[t] = (conteo[t] || 0) + 1;
+    });
+    const ordenados = Object.entries(conteo)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])); // más productos primero
+    const menu = document.getElementById('menuFiltrar');
+    menu.innerHTML =
+        `<a href="javascript:void(0)" onclick="elegirTipo('todos', this)">Todos (${base.length})</a>` +
+        ordenados.map(([t, n]) =>
+            `<a href="javascript:void(0)" onclick="elegirTipo('${t}', this)">${t} (${n})</a>`
+        ).join('');
+}
+
+function elegirTipo(tipo, elemento) {
+    estadoTipo = tipo;
+    const label = document.querySelector('#btnFiltrar .btn-label');
+    if (label) {
+        label.textContent = (tipo === 'todos')
+            ? 'Filtrar'
+            : elemento.innerText.replace(/\s*\(\d+\)\s*$/, ''); // "Póster (8)" -> "Póster"
+    }
+    document.getElementById('menuFiltrar').classList.remove('show-custom');
+    aplicarControles();
+}
+
+// ---- CONTROL 3: PRECIO (solo dígitos 0-9, formato miles, tope 16.000) ----
+function limpiarPrecioInput(input) {
+    let digitos = input.value.replace(/[^0-9]/g, ''); // elimina -, letras, puntos, comas, etc.
+    if (digitos === '') return '';                     // si queda vacío, vuelve el placeholder
+    let num = parseInt(digitos, 10);
+    if (num > PRECIO_MAX_CATALOGO) num = PRECIO_MAX_CATALOGO;
+    return num.toLocaleString('es-CL'); // 16000 -> "16.000"
+}
+
+['precioMin', 'precioMax'].forEach(id => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.addEventListener('input', () => {
+        input.value = limpiarPrecioInput(input);
+        aplicarControles();
+    });
+});
+
+// ---- CERRAR MENÚS AL HACER CLIC FUERA ----
 window.onclick = function(event) {
-    // Cerrar menú custom si hace clic fuera del contenedor v2
     if (!event.target.closest('.filter-controls-v2')) {
-        const dropdown = document.getElementById("filterMenuCustom");
-        if (dropdown && dropdown.classList.contains('show-custom')) {
-            dropdown.classList.remove('show-custom');
-        }
+        document.querySelectorAll('.filter-content-custom').forEach(m => m.classList.remove('show-custom'));
     }
 };
 
