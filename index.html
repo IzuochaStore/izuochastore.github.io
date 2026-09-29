@@ -1147,37 +1147,50 @@ color: rgba(0,0,0,0.30);
 
 
     
-/* Ajuste celular: los 3 en una fila */
-@media (max-width: 600px) {
-.filter-controls-v2 {
-width: 96% !important;
-gap: 6px;
-justify-content: flex-start; /* Ordenar y Filtrar se pegan a la izquierda */
-}
-.control-wrapper {
-flex: 0 0 auto;   /* Ordenar/Filtrar: solo el ancho que necesitan */
-min-width: 0;
-max-width: none;
-}
-.control-wrapper .filter-btn-custom {
-height: 44px;
-font-size: 0.78rem;
-padding: 0 10px;
-gap: 6px;
-}
-/* Precio: se estira hacia los lados ocupando todo el espacio sobrante */
-.control-wrapper.precio-wrapper {
-flex: 1 1 auto;
-min-width: 140px;
-}
-/* La palabra PRECIO queda centrada en el eje Y entre el borde verde y los recuadros blancos */
-.precio-wrapper {
-justify-content: space-evenly;
-gap: 0;
-padding: 3px 8px;
-}
-.precio-fila { font-size: 0.68rem; }
-.precio-fila input { width: 42px; font-size: 0.72rem; }
+/*Ajuste celular:los 3 EN LA MISMA FILA, alineados al eje Y*/
+@media (max-width:600px){
+  .filter-controls-v2{
+    width:96%!important;
+    gap:6px!important;
+    flex-wrap:nowrap!important; /*CLAVE:nunca se cae a la fila de abajo */
+    justify-content:flex-start!important;
+    align-items:stretch!important; /*CLAVE:todos miden lo mismo en el eje Y */
+  }
+  .control-wrapper{
+    flex:0 0 auto!important;/*Ordenar/Filtrar:solo el ancho que necesitan */
+    min-width:0!important;
+    max-width:none!important;
+  }
+  .control-wrapper .filter-btn-custom{
+    height:44px!important;
+    font-size:0.75rem!important;
+    padding:0 10px!important;
+    gap:6px!important;
+    white-space:nowrap!important;
+  }
+  /*Precio:ocupa solo el espacio que sobra, a la derecha de Filtrar */
+  .control-wrapper.precio-wrapper{
+    flex:1 1 auto!important;
+    min-width:0!important;/*ELIMINA el 140px que lo largaba */
+    min-height:44px!important;/*misma altura que los botones */
+    justify-content:center!important;
+    gap:0!important;
+    padding:3px 8px!important;
+  }
+  /*Si no te importa tanto la palabra PRECIO en celular, ocúltala para ganar aire: */
+  .precio-titulo{
+    display:none;
+  }
+  .precio-fila{
+    font-size:0.62rem!important;
+    gap:2px!important;
+    white-space:nowrap!important;
+  }
+  .precio-fila input{
+    width:36px!important;
+    font-size:0.68rem!important;
+    padding:2px 2px!important;
+  }
 }
 
 
