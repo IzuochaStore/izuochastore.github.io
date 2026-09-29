@@ -1157,9 +1157,9 @@ color: rgba(0,0,0,0.30);
   .filter-controls-v2 {
     width: 100% !important;
     max-width: none !important;
-    gap: 6px;
+    gap: 5px;
     justify-content: flex-start;
-    flex-wrap: nowrap;           /* evita que se vayan abajo */
+    flex-wrap: nowrap;
   }
 
   /* Ordenar y Filtrar: tamaño fijo */
@@ -1172,16 +1172,16 @@ color: rgba(0,0,0,0.30);
   .control-wrapper .filter-btn-custom {
     height: 44px;
     font-size: 0.78rem;
-    padding: 0 10px;
-    gap: 6px;
+    padding: 0 9px;
+    gap: 5px;
     white-space: nowrap;
   }
 
-  /* Precio: un poco más ancho, pero controlado */
+  /* Precio: más ancho para que quepa "De: $ 16.000 a $ 16.000" */
   .control-wrapper.precio-wrapper {
     flex: 1 1 0;
-    min-width: 145px;            /* no se achica demasiado */
-    max-width: 175px;            /* no se estira exagerado */
+    min-width: 175px;
+    max-width: 210px;          /* subimos el tope */
   }
 
   .precio-wrapper {
@@ -1189,14 +1189,13 @@ color: rgba(0,0,0,0.30);
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 4px;
     height: 44px;
     min-height: 44px !important;
-    padding: 0 8px;
+    padding: 0 7px;
     overflow: hidden;
   }
 
-  /* Ocultar la palabra "Precio" */
   .precio-titulo {
     display: none !important;
   }
@@ -1204,18 +1203,19 @@ color: rgba(0,0,0,0.30);
   .precio-fila {
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 0.82rem;          /* letras más grandes */
+    gap: 3px;
+    font-size: 0.78rem;
     color: #fff;
     white-space: nowrap;
   }
 
   .precio-fila input {
-    width: 48px;                 /* recuadro blanco más grande */
+    width: 54px;               /* más ancho para 16.000 */
     height: 28px;
-    font-size: 0.82rem;
-    padding: 2px 4px;
-    border-radius: 6px;
+    font-size: 0.78rem;
+    padding: 2px 3px;
+    border-radius: 5px;
+    text-align: center;
   }
 }
     
