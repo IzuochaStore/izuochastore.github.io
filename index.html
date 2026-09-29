@@ -1147,52 +1147,55 @@ color: rgba(0,0,0,0.30);
 
 
     
-/*Ajuste celular:los 3 EN LA MISMA FILA, alineados al eje Y*/
+/*Ajuste celular:los 3 EN LA MISMA FILA, altura aumentada para el título PRECIO */
 @media (max-width:600px){
   .filter-controls-v2{
     width:96%!important;
     gap:6px!important;
-    flex-wrap:nowrap!important; /*CLAVE:nunca se cae a la fila de abajo */
+    flex-wrap:nowrap!important;
     justify-content:flex-start!important;
-    align-items:stretch!important; /*CLAVE:todos miden lo mismo en el eje Y */
+    align-items:stretch!important;
   }
-  .control-wrapper{
-    flex:0 0 auto!important;/*Ordenar/Filtrar:solo el ancho que necesitan */
-    min-width:0!important;
-    max-width:none!important;
-  }
+  /*MÁS ALTURA:ahora cabe el título + los recuadros */
   .control-wrapper .filter-btn-custom{
-    height:44px!important;
+    height:58px!important;
     font-size:0.75rem!important;
     padding:0 10px!important;
     gap:6px!important;
     white-space:nowrap!important;
   }
-  /*Precio:ocupa solo el espacio que sobra, a la derecha de Filtrar */
+  .control-wrapper{
+    flex:0 0 auto!important;
+    min-width:0!important;
+    max-width:none!important;
+  }
+  /*PRECIO:estirable, ocupa todo el ancho hasta el borde derecho */
   .control-wrapper.precio-wrapper{
     flex:1 1 auto!important;
-    min-width:0!important;/*ELIMINA el 140px que lo largaba */
-    min-height:44px!important;/*misma altura que los botones */
-    justify-content:center!important;
-    gap:0!important;
-    padding:3px 8px!important;
+    min-width:0!important;
+    min-height:58px!important;
+    justify-content:space-evenly!important;
+    gap:2px!important;
+    padding:4px 10px!important;
   }
-  /*Si no te importa tanto la palabra PRECIO en celular, ocúltala para ganar aire: */
+  /*EL TÍTULO VUELVE A APARECER */
   .precio-titulo{
-    display:none;
+    display:block!important;
+    font-size:0.65rem!important;
+    letter-spacing:1px!important;
   }
   .precio-fila{
-    font-size:0.62rem!important;
-    gap:2px!important;
+    font-size:0.68rem!important;
+    gap:3px!important;
     white-space:nowrap!important;
   }
+  /*Inputs un poco más anchos para llenar el bloque */
   .precio-fila input{
-    width:36px!important;
-    font-size:0.68rem!important;
-    padding:2px 2px!important;
+    width:48px!important;
+    font-size:0.72rem!important;
+    padding:3px 2px!important;
   }
 }
-
 
 
     
