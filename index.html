@@ -1147,74 +1147,54 @@ color: rgba(0,0,0,0.30);
 
 
     
-/* Ajuste celular: 3 botones en una fila, alineados con Anterior/Siguiente */
-@media (max-width: 600px) {
-  /* 1. DISTRIBUCIÓN EN EJE X: Usamos flex con stretch y sin wrap para forzar alineación */
-  .filter-controls-v2 {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    width: 100% !important;
-    padding: 0 15px !important; /* Mismo padding horizontal que el contenedor de paginación */
-    box-sizing: border-box !important;
-    gap: 6px !important;
-    align-items: center !important;
+/*Ajuste celular:3 botones en una fila, alineados con Anterior/Siguiente */
+@media (max-width:600px){
+  /*MISMO ancho útil que la fila de paginación (100% - 30px de padding) */
+  .filter-controls-v2{
+    width:100%!important;
+    padding:0 15px!important;
+    box-sizing:border-box!important;
+    gap:6px!important;
+    flex-wrap:nowrap!important;
+    justify-content:flex-start!important;
+    align-items:stretch!important;
   }
-
-  /* 2. BOTONES IZQUIERDA (Ordenar y Filtrar): Ancho fijo según su texto */
-  .control-wrapper {
-    flex: 0 0 auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
+  /*Altura normal otra vez, sin título */
+  .control-wrapper .filter-btn-custom{
+    height:44px!important;
+    font-size:0.75rem!important;
+    padding:0 10px!important;
+    gap:6px!important;
+    white-space:nowrap!important;
   }
-
-  .control-wrapper .filter-btn-custom {
-    height: 44px !important;
-    font-size: 0.75rem !important;
-    padding: 0 8px !important;
-    gap: 4px !important;
-    white-space: nowrap !important;
-    box-sizing: border-box !important;
+  .control-wrapper{
+    flex:0 0 auto!important;
+    min-width:0!important;
+    max-width:none!important;
   }
-
-  /* 3. BOTÓN PRECIO (DERECHA): Ocupa automáticamente TODO el espacio restante hasta el borde derecho */
-  .control-wrapper.precio-wrapper {
-    flex: 1 1 0px !important; /* Fuerza a estirarse exactamente para llenar el hueco sobrante */
-    min-width: 0 !important;
-    height: 44px !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    padding: 0 6px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important; /* Previene desbordamiento si la pantalla es muy chica */
+  /*PRECIO:se estira hasta el borde derecho, paralelo a "Siguiente" */
+  .control-wrapper.precio-wrapper{
+    flex:1 1 auto!important;
+    min-width:0!important;
+    min-height:44px!important;
+    justify-content:center!important;
+    gap:4px!important;
+    padding:3px 10px!important;
   }
-
-  /* Sin la palabra PRECIO */
-  .precio-titulo {
-    display: none !important;
+  /*Sin la palabra PRECIO */
+  .precio-titulo{
+    display:none!important;
   }
-
-  .precio-fila {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 2px !important;
-    font-size: 0.68rem !important;
-    white-space: nowrap !important;
-    width: 100% !important;
+  .precio-fila{
+    font-size:0.68rem!important;
+    gap:4px!important;
+    white-space:nowrap!important;
   }
-
-  /* 4. INPUTS FLUIDOS: Ancho adaptativo para que NUNCA empujen fuera la caja de precio */
-  .precio-fila input {
-    flex: 1 1 32px !important; /* Ancho base flexible entre 32px y lo que sobre */
-    min-width: 28px !important;
-    max-width: 48px !important;
-    height: 24px !important;
-    font-size: 0.72rem !important;
-    padding: 0 2px !important;
-    text-align: center !important;
-    box-sizing: border-box !important;
+  /*Inputs más anchos para llenar el bloque estirado */
+  .precio-fila input{
+    width:56px!important;
+    font-size:0.75rem!important;
+    padding:3px 2px!important;
   }
 }
 
