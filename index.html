@@ -1147,54 +1147,64 @@ color: rgba(0,0,0,0.30);
 
 
     
-/*Ajuste celular:3 botones en una fila, alineados con Anterior/Siguiente */
-@media (max-width:600px){
-  /*MISMO ancho útil que la fila de paginación (100% - 30px de padding) */
-  .filter-controls-v2{
-    width:100%!important;
-    padding:0 15px!important;
-    box-sizing:border-box!important;
-    gap:6px!important;
-    flex-wrap:nowrap!important;
-    justify-content:flex-start!important;
-    align-items:stretch!important;
+/* Ajuste celular: 3 botones en una fila, alineados con Anterior/Siguiente */
+@media (max-width: 600px) {
+
+  /* Quitar el padding extra del header para que alinee con la paginación y los productos */
+  .header-catalogo-v2 {
+    padding: 0 15px !important;   /* mismo valor que .products { padding: 15px } */
   }
-  /*Altura normal otra vez, sin título */
-  .control-wrapper .filter-btn-custom{
-    height:44px!important;
-    font-size:0.75rem!important;
-    padding:0 10px!important;
-    gap:6px!important;
-    white-space:nowrap!important;
+
+  .filter-controls-v2 {
+    width: 100% !important;
+    max-width: none !important;
+    gap: 6px;
+    justify-content: flex-start;
   }
-  .control-wrapper{
-    flex:0 0 auto!important;
-    min-width:0!important;
-    max-width:none!important;
+
+  /* Ordenar y Filtrar: tamaño fijo, solo se mueven a la izquierda */
+  .control-wrapper {
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: none;
   }
-  /*PRECIO:se estira hasta el borde derecho, paralelo a "Siguiente" */
-  .control-wrapper.precio-wrapper{
-    flex:1 1 auto!important;
-    min-width:0!important;
-    min-height:44px!important;
-    justify-content:center!important;
-    gap:4px!important;
-    padding:3px 10px!important;
+
+  .control-wrapper .filter-btn-custom {
+    height: 44px;
+    font-size: 0.78rem;
+    padding: 0 10px;
+    gap: 6px;
+    white-space: nowrap;
   }
-  /*Sin la palabra PRECIO */
-  .precio-titulo{
-    display:none!important;
+
+  /* Precio: ocupa TODO el espacio sobrante hasta el borde derecho */
+  .control-wrapper.precio-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;          /* permite que crezca sin forzar overflow */
   }
-  .precio-fila{
-    font-size:0.68rem!important;
-    gap:4px!important;
-    white-space:nowrap!important;
+
+  .precio-wrapper {
+    justify-content: space-evenly;
+    gap: 0;
+    padding: 3px 6px;
+    overflow: hidden;      /* evita que el texto se salga */
   }
-  /*Inputs más anchos para llenar el bloque estirado */
-  .precio-fila input{
-    width:56px!important;
-    font-size:0.75rem!important;
-    padding:3px 2px!important;
+
+  .precio-titulo {
+    font-size: 0.62rem;    /* más chico para que no se desborde */
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+  }
+
+  .precio-fila {
+    font-size: 0.65rem;
+    gap: 3px;
+  }
+
+  .precio-fila input {
+    width: 38px;
+    font-size: 0.68rem;
+    padding: 1px 2px;
   }
 }
 
