@@ -1147,18 +1147,21 @@ color: rgba(0,0,0,0.30);
 
 
     
-/*Ajuste celular:los 3 EN LA MISMA FILA, altura aumentada para el título PRECIO */
+/*Ajuste celular:3 botones en una fila, alineados con Anterior/Siguiente */
 @media (max-width:600px){
+  /*MISMO ancho útil que la fila de paginación (100% - 30px de padding) */
   .filter-controls-v2{
-    width:96%!important;
+    width:100%!important;
+    padding:0 15px!important;
+    box-sizing:border-box!important;
     gap:6px!important;
     flex-wrap:nowrap!important;
     justify-content:flex-start!important;
     align-items:stretch!important;
   }
-  /*MÁS ALTURA:ahora cabe el título + los recuadros */
+  /*Altura normal otra vez, sin título */
   .control-wrapper .filter-btn-custom{
-    height:58px!important;
+    height:44px!important;
     font-size:0.75rem!important;
     padding:0 10px!important;
     gap:6px!important;
@@ -1169,34 +1172,31 @@ color: rgba(0,0,0,0.30);
     min-width:0!important;
     max-width:none!important;
   }
-  /*PRECIO:estirable, ocupa todo el ancho hasta el borde derecho */
+  /*PRECIO:se estira hasta el borde derecho, paralelo a "Siguiente" */
   .control-wrapper.precio-wrapper{
     flex:1 1 auto!important;
     min-width:0!important;
-    min-height:58px!important;
-    justify-content:space-evenly!important;
-    gap:2px!important;
-    padding:4px 10px!important;
+    min-height:44px!important;
+    justify-content:center!important;
+    gap:4px!important;
+    padding:3px 10px!important;
   }
-  /*EL TÍTULO VUELVE A APARECER */
+  /*Sin la palabra PRECIO */
   .precio-titulo{
-    display:block!important;
-    font-size:0.65rem!important;
-    letter-spacing:1px!important;
+    display:none!important;
   }
   .precio-fila{
     font-size:0.68rem!important;
-    gap:3px!important;
+    gap:4px!important;
     white-space:nowrap!important;
   }
-  /*Inputs un poco más anchos para llenar el bloque */
+  /*Inputs más anchos para llenar el bloque estirado */
   .precio-fila input{
-    width:48px!important;
-    font-size:0.72rem!important;
+    width:56px!important;
+    font-size:0.75rem!important;
     padding:3px 2px!important;
   }
 }
-
 
     
     /*final bloque estilos*/
@@ -4988,20 +4988,20 @@ function toggleMenu(idMenu) {
 function obtenerTipo(p) {
     const id = (p.id || "").toLowerCase();
     const reglas = [
-        ["Gashapon",  ["gashapon"]],
-        ["Póster",    ["poster"]],
-        ["Carpeta",   ["visual-sheet", "clear-file"]],
+        ["Gashapones",  ["gashapon"]],
+        ["Pósters",    ["poster"]],
+        ["Carpetas",   ["visual-sheet", "clear-file"]],
         ["Posavasos", ["coaster"]],
-        ["Toalla",    ["towel"]],
-        ["Vaso",      ["tumbler", "vaso"]],
-        ["Botella",   ["bottle"]],
-        ["Estuche",   ["pouch", "clear-case", "clear-multi"]],
-        ["Cuadro",    ["canvas", "shikishi", "illustration-board"]],
-        ["Llavero",   ["charm", "keychain", "key-holder", "strap", "colgante", "rubber-collection"]],
-        ["Acrílico",  ["acrylic", "acritz"]],
-        ["Tarjeta",   ["card"]],
-        ["Sticker",   ["sticker"]],
-        ["Cinta",     ["ribbon"]],
+        ["Toallas",    ["towel"]],
+        ["Vasos",      ["tumbler", "vaso"]],
+        ["Botellas",   ["bottle"]],
+        ["Estuches",   ["pouch", "clear-case", "clear-multi"]],
+        ["Cuadros",    ["canvas", "shikishi", "illustration-board"]],
+        ["Llaveros",   ["charm", "keychain", "key-holder", "strap", "colgante", "rubber-collection"]],
+        ["Acrílicos",  ["acrylic", "acritz"]],
+        ["Tarjetas",   ["card"]],
+        ["Stickers",   ["sticker"]],
+        ["Cintas",     ["ribbon"]],
         ["Manga",     ["manga"]]
     ];
     for (const [tipo, claves] of reglas) {
