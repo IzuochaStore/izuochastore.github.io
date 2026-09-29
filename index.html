@@ -1158,7 +1158,7 @@ color: rgba(0,0,0,0.30);
     width: 100% !important;
     max-width: none !important;
     gap: 5px;
-    justify-content: flex-start;
+    justify-content: center;     /* ← centrados */
     flex-wrap: nowrap;
   }
 
@@ -1177,11 +1177,11 @@ color: rgba(0,0,0,0.30);
     white-space: nowrap;
   }
 
-  /* Precio: más ancho para que quepa "De: $ 16.000 a $ 16.000" */
+  /* Precio: un poquito más de ancho */
   .control-wrapper.precio-wrapper {
     flex: 1 1 0;
     min-width: 175px;
-    max-width: 210px;          /* subimos el tope */
+    max-width: 220px;            /* antes 210px */
   }
 
   .precio-wrapper {
@@ -1210,7 +1210,7 @@ color: rgba(0,0,0,0.30);
   }
 
   .precio-fila input {
-    width: 54px;               /* más ancho para 16.000 */
+    width: 54px;
     height: 28px;
     font-size: 0.78rem;
     padding: 2px 3px;
