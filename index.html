@@ -1025,25 +1025,26 @@ FIN PANTALLA REDUCIDA NOTEBOOK
     cursor: not-allowed;
 }
 
-/* Cuadrados de números: Rosa Uraraka Sólido (Donde no estás) */
+/* Cuadrados de números: Rosa Uraraka con relleno gris según % agotado */
 .page-number {
-    width: 40px;
-    height: 40px;
-    background-color: #ec8db0 !important; /* Rosa Uraraka Sólido */
-    border: 2px solid #ec8db0 !important;
-    border-radius: 8px;
-    color: white !important;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+width: 40px;
+height: 40px;
+/* Gris de izquierda a derecha hasta el % guardado en --agotado, el resto rosa */
+background: linear-gradient(to right, #b2b2b2 var(--agotado, 0%), #ec8db0 var(--agotado, 0%)) !important;
+border: 2px solid #ec8db0 !important;
+border-radius: 8px;
+color: white !important;
+font-weight: bold;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 
-/* Cuadrado de número ACTIVO: Verde Deku Sólido */
+/* Cuadrado de número ACTIVO: Verde Deku Sólido (pisa el gris siempre) */
 .page-number.active {
-    background-color: #01744b !important; /* Verde Deku Sólido */
-    border: 2px solid #01744b !important;
+background: #01744b !important; /* shorthand: elimina también el gradiente gris */
+border: 2px solid #01744b !important;
 }
 
 
@@ -1143,24 +1144,44 @@ background: #fff;
 .precio-fila input::placeholder {
 color: rgba(0,0,0,0.30);
 }
+
+
+    
 /* Ajuste celular: los 3 en una fila */
 @media (max-width: 600px) {
 .filter-controls-v2 {
-width: 95% !important;
-gap: 8px;
+width: 96% !important;
+gap: 6px;
+justify-content: flex-start; /* Ordenar y Filtrar se pegan a la izquierda */
 }
 .control-wrapper {
-min-width: 96px;
+flex: 0 0 auto;   /* Ordenar/Filtrar: solo el ancho que necesitan */
+min-width: 0;
+max-width: none;
 }
 .control-wrapper .filter-btn-custom {
 height: 44px;
 font-size: 0.78rem;
-padding: 0 6px;
+padding: 0 10px;
 gap: 6px;
+}
+/* Precio: se estira hacia los lados ocupando todo el espacio sobrante */
+.control-wrapper.precio-wrapper {
+flex: 1 1 auto;
+min-width: 140px;
+}
+/* La palabra PRECIO queda centrada en el eje Y entre el borde verde y los recuadros blancos */
+.precio-wrapper {
+justify-content: space-evenly;
+gap: 0;
+padding: 3px 8px;
 }
 .precio-fila { font-size: 0.68rem; }
 .precio-fila input { width: 42px; font-size: 0.72rem; }
 }
+
+
+
     
     /*final bloque estilos*/
   </style>
@@ -4636,6 +4657,16 @@ function calculateTotalStock(list) {
     renderPaginationControls(list);
 }
 
+
+// Calcula el % de productos agotados de una página y devuelve el estilo del botón
+function estiloPagina(num, fullList) {
+  const inicio = (num - 1) * productsPerPage;
+  const productosPagina = fullList.slice(inicio, inicio + productsPerPage);
+  const agotados = productosPagina.filter(p => (p.stock || 0) <= 0).length;
+  const pct = Math.round((agotados / productsPerPage) * 100); // divide por 12 fijo
+  return `--agotado: ${pct}%;`;
+}
+  
   function renderPaginationControls(fullList) {
     const totalStock = calculateTotalStock(fullList);
     const totalPages = Math.ceil(fullList.length / productsPerPage);
@@ -4660,7 +4691,7 @@ function calculateTotalStock(list) {
         <div class="pagination-row">
             <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')">Anterior</button>
             ${row1Pages.map(num => `
-                <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
+                <button class="page-number ${num === currentPage ? 'active' : ''}" style="${estiloPagina(num, fullList)}" onclick="changePage(${num})">${num}</button>
             `).join('')}
             <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('next')">Siguiente</button>
         </div>
@@ -4673,7 +4704,7 @@ if (extraPages.length > 0) {
         rowsHTML += `
             <div class="pagination-row extra-row">
                 ${chunk.map(num => `
-                    <button class="page-number ${num === currentPage ? 'active' : ''}" onclick="changePage(${num})">${num}</button>
+                    <button class="page-number ${num === currentPage ? 'active' : ''}" style="${estiloPagina(num, fullList)}" onclick="changePage(${num})">${num}</button>
                 `).join('')}
             </div>
         `;
