@@ -5121,9 +5121,10 @@ function construirMenuTipos() {
     const menu = document.getElementById('menuFiltrar');
     menu.innerHTML =
         `<a href="javascript:void(0)" onclick="elegirTipo('todos', this)">Todos (${totalDisponibles})</a>` +
-        ordenados.map(([t, n]) =>
-            `<a href="javascript:void(0)" onclick="elegirTipo('${t}', this)">${t} (${n})</a>`
-        ).join('');
+        ordenados.map(([t, n]) => {
+            const tipoEscapado = t.replace(/'/g, "\\'");
+            return `<a href="javascript:void(0)" onclick="elegirTipo('${tipoEscapado}', this)">${t} (${n})</a>`;
+        }).join('');
 }
 
 function elegirTipo(tipo, elemento) {
