@@ -4698,8 +4698,10 @@ function calculateTotalStock(list) {
 function estiloPagina(num, fullList) {
   const inicio = (num - 1) * productsPerPage;
   const productosPagina = fullList.slice(inicio, inicio + productsPerPage);
+  const totalEnPagina = productosPagina.length;
+  if (totalEnPagina === 0) return `--agotado: 0%;`;
   const agotados = productosPagina.filter(p => (p.stock || 0) <= 0).length;
-  const pct = Math.round((agotados / productsPerPage) * 100); // divide por 12 fijo
+  const pct = Math.round((agotados / totalEnPagina) * 100); // ahora usa la cantidad real de la página
   return `--agotado: ${pct}%;`;
 }
   
@@ -4773,7 +4775,7 @@ function changePage(target) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
   
-    renderProducts(products);
+  aplicarControles();
 
 const searchInput = document.getElementById("searchInput");
     const searchBtn = document.getElementById("searchBtn");
@@ -5079,7 +5081,12 @@ function aplicarControles() {
     } else if (estadoOrden === 'mayor') {
         lista.sort((a, b) => obtenerPrecioNumerico(b) - obtenerPrecioNumerico(a));
     }
-
+// 4) Agotados siempre al final (conservando el orden relativo de los disponibles)
+lista.sort((a, b) => {
+  const aAgotado = (a.stock || 0) <= 0 ? 1 : 0;
+  const bAgotado = (b.stock || 0) <= 0 ? 1 : 0;
+  return aAgotado - bAgotado;
+});
     renderProducts(lista, true);
 }
 
@@ -5096,15 +5103,22 @@ function elegirOrden(orden, elemento) {
 function construirMenuTipos() {
     const base = obtenerListaBase();
     const conteo = {};
+    let totalDisponibles = 0;
+
     base.forEach(p => {
-        const t = obtenerTipo(p);
-        conteo[t] = (conteo[t] || 0) + 1;
+        if ((p.stock || 0) > 0) {          // solo cuenta los que tienen stock
+            const t = obtenerTipo(p);
+            conteo[t] = (conteo[t] || 0) + 1;
+            totalDisponibles++;
+        }
     });
+
     const ordenados = Object.entries(conteo)
-        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])); // más productos primero
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
     const menu = document.getElementById('menuFiltrar');
     menu.innerHTML =
-        `<a href="javascript:void(0)" onclick="elegirTipo('todos', this)">Todos (${base.length})</a>` +
+        `<a href="javascript:void(0)" onclick="elegirTipo('todos', this)">Todos (${totalDisponibles})</a>` +
         ordenados.map(([t, n]) =>
             `<a href="javascript:void(0)" onclick="elegirTipo('${t}', this)">${t} (${n})</a>`
         ).join('');
