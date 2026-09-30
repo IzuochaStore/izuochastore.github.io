@@ -5081,12 +5081,14 @@ function aplicarControles() {
     } else if (estadoOrden === 'mayor') {
         lista.sort((a, b) => obtenerPrecioNumerico(b) - obtenerPrecioNumerico(a));
     }
-// 4) Agotados siempre al final (conservando el orden relativo de los disponibles)
-lista.sort((a, b) => {
-  const aAgotado = (a.stock || 0) <= 0 ? 1 : 0;
-  const bAgotado = (b.stock || 0) <= 0 ? 1 : 0;
-  return aAgotado - bAgotado;
-});
+
+    // 4) Agotados siempre al final (conservando el orden relativo de los disponibles)
+    lista.sort((a, b) => {
+      const aAgotado = (a.stock || 0) <= 0 ? 1 : 0;
+      const bAgotado = (b.stock || 0) <= 0 ? 1 : 0;
+      return aAgotado - bAgotado;
+    });
+
     renderProducts(lista, true);
 }
 
