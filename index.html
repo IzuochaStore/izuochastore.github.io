@@ -4872,12 +4872,13 @@ updateCategories();
 
     let glitchCurrentIndex = 0;
     let glitchImages = [];
-
+    let abiertoDesdeURL = false; //true = se abrió pegando el link directo
   
 function openProductDetail(p, reemplazarHistorial = false){
+    abiertoDesdeURL = reemplazarHistorial;
     document.querySelector('.background').style.display = 'none';
     document.getElementById('productDetailSection').style.display = 'block';
-document.querySelector('.glitch-info').scrollTop = 0;
+    document.querySelector('.glitch-info').scrollTop = 0;
     document.getElementById('glitchName').textContent = p.title;
     document.getElementById('glitchBrand').textContent = p.brand;
     
@@ -4935,8 +4936,18 @@ infoEspecial.innerHTML = `
 }
 
   
-function closeProductDetail() {
-    window.history.back();
+function closeProductDetail(){
+    if (abiertoDesdeURL){
+        //Se abrió desde link directo: no hay entrada "catálogo" en el historial
+        //Cerramos manualmente y limpiamos la URL
+        document.querySelector('.background').style.display = 'block';
+        document.getElementById('productDetailSection').style.display = 'none';
+        window.history.replaceState({},'',window.location.pathname);
+        abiertoDesdeURL = false;
+    }else{
+        //Se abrió con clic en el catálogo: pushState creó una entrada, atrás funciona
+        window.history.back();
+    }
 }
 
   function moveSlider(step) {
